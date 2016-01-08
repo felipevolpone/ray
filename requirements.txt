@@ -1,2 +1,3 @@
 uwsgi
 webapp2
+pytest
