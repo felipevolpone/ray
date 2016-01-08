@@ -3,13 +3,13 @@ YAWPy:
   TODO:
     ☐ Convidar mais gente para contribuir
     ☐ Servidor uWSGI @alta
-    ☐ Desacoplar do GAE @media
     ☐ Integração com Alabama para ORM (?)
     ☐ Ver interface de comandos (BaseCommand, argparse e coisas do tipo) @baixa
-    ☐ Novo nome? (Flames, Alamo, ) @media
     ☐ Criar organização no Github @baixa
       ☐ projeto
       ☐ blog
     ☐ Como manter híbrido entre API REST e com template @baixa
-    ☐ Mudar estrutura para publicar no PyPI @alta
-    ☐ setup.py @media
+    ✔ Mudar estrutura para publicar no PyPI @alta @done (16-01-08 19:33)
+    ✔ setup.py @media @done (16-01-08 19:33)
+    ☐ Dockerfile
+    ☐ Suporte a Python 3 (desde o começo)
