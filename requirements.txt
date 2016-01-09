@@ -1,3 +1,4 @@
 uwsgi
 webapp2
 pytest
+alabama
