@@ -13,7 +13,7 @@ before_install:
 
 script:
   - py.test -v tests/
-  - coverage run --source=onhands tests/
+  - coverage run --source=onhands py.test tests/
 
 
 after_success:
