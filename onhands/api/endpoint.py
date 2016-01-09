@@ -1,4 +1,4 @@
-import json
+from onhands import json_util
 from functools import wraps
 from tests import storage
 
@@ -31,8 +31,9 @@ class EndpointManager(object):
         return methods[http_verb]()
 
     def __process_post(self):
-        entity_json = json.loads(self.__request.body, encoding='utf-8')
-        entity = self.__model().__class__.to_instance(json=entity_json)
+        entity_json = json_util.to_json(self.__request.body)
+        print entity_json
+        entity = self.__model().__class__.to_instance(entity_json)
         return storage.put(entity).to_json()
 
     def __process_get(self):

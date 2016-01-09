@@ -26,11 +26,12 @@ class TestRouter(unittest.TestCase):
         return request.get_response(app)
 
     def test_url_via_package(self):
+        OnHandsSettings.ENDPOINT_MODULES = 'tests.test_router'
+
         # create data
         response = self.__create()
         self.assertEqual(200, response.status_int)
 
-        OnHandsSettings.ENDPOINT_MODULES = 'tests.test_router'
 
         # request = webapp2.Request.blank('/api/user')
         # request.json = {"name": "felipe"}
