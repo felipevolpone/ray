@@ -3,5 +3,4 @@ webapp2
 pytest
 alabama
 webob
-pytest
 pytest-cov
