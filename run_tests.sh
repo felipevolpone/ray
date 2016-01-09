@@ -3,6 +3,6 @@
 #!/bin/bash
 
 #service postgresql start
-uwsgi --ini onhands/wsgi/dev.ini --pidfile dev_onhands.pid &
+#uwsgi --ini onhands/wsgi/dev.ini --pidfile dev_onhands.pid &
 sleep 2
 py.test tests/ $1

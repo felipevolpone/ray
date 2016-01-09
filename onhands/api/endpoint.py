@@ -32,7 +32,6 @@ class EndpointManager(object):
 
     def __process_post(self):
         entity_json = json_util.to_json(self.__request.body)
-        print entity_json
         entity = self.__model().__class__.to_instance(entity_json)
         return storage.put(entity).to_json()
 

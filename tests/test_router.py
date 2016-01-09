@@ -25,19 +25,24 @@ class TestRouter(unittest.TestCase):
         request.method = 'POST'
         return request.get_response(app)
 
-    def test_url_via_package(self):
+    def test_post(self):
         OnHandsSettings.ENDPOINT_MODULES = 'tests.test_router'
 
         # create data
         response = self.__create()
         self.assertEqual(200, response.status_int)
 
+    def test_get(self):
+        OnHandsSettings.ENDPOINT_MODULES = 'tests.test_router'
 
-        # request = webapp2.Request.blank('/api/user')
-        # request.json = {"name": "felipe"}
-        # request.method = 'GET'
+        # create data
+        response = self.__create()
 
-        # response = request.get_response(app)
-        # print response.json
-        # self.assertEqual(response.to_json(), {'age': None, 'name': 'felipe', 'key': 1})
-        # self.assertEqual(201, response.status_int)
+        request = webapp2.Request.blank('/api/user')
+        request.method = 'GET'
+        response = request.get_response(app)
+
+        print response.body
+        print response.text
+        self.assertEqual(response.json, {'age': None, 'name': 'felipe'})
+        self.assertEqual(200, response.status_int)
