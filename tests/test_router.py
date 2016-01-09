@@ -1,6 +1,6 @@
 import unittest
-from onhands.api.api import app, OnHandsSettings
-from onhands.api.endpoint import endpoint
+from onhands.api import app, OnHandsSettings
+from onhands.endpoint import endpoint
 import webapp2
 from alabama.models import StringProperty, IntegerProperty, BaseModel
 from tests.mock import MockResponse
