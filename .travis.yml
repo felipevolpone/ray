@@ -12,9 +12,7 @@ before_install:
   - sudo pip install coveralls
 
 script:
-  - py.test -v tests/
-  - coverage run --source=onhands py.test tests/
-
+  - py.test -v tests/ --cov
 
 after_success:
   - coveralls
