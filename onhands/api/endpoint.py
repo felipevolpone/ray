@@ -1,6 +1,6 @@
 import json
 from functools import wraps
-from alabama import storage
+from tests import storage
 
 
 def endpoint(url):
@@ -32,17 +32,8 @@ class EndpointManager(object):
 
     def __process_post(self):
         entity_json = json.loads(self.__request.body, encoding='utf-8')
-        entity = self.__model().__class__.to_model(json=entity_json)
-        entity.put()
-        return entity.to_json()
+        entity = self.__model().__class__.to_instance(json=entity_json)
+        return storage.put(entity).to_json()
 
     def __process_get(self):
-        return [model.to_json() for model in storage.find(self.__model().__class__)]
-
-    # TODO
-    def __process_put(self):
-        pass
-
-    # TODO
-    def __process_delet(self):
-        pass
+        return [model.to_json() for model in storage.find(self.__model)]
