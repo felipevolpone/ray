@@ -1,6 +1,6 @@
 # Python on Hands
 
-Python on Hands is framework that helps you to deliver well designed software without been stucked in your framework. On Hands it's a ready to production framework that contains a uWSGI server that can be used in production as well. 
+Python on Hands is a framework that helps you to deliver well designed software without been stucked in your framework. On Hands it's a ready to production framework that contains a uWSGI server that can be used in production as well. 
 
 [![Build Status](https://travis-ci.org/felipevolpone/onhands.svg?branch=master)](https://travis-ci.org/felipevolpone/onhands)
 [![Coverage Status](https://coveralls.io/repos/felipevolpone/onhands/badge.svg?branch=master&service=github)](https://coveralls.io/github/felipevolpone/onhands?branch=master)
