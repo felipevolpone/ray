@@ -58,7 +58,5 @@ target/
 
 *.TODO
 TODO.*
-
-dev_onhands.pid
-
+*.pid
 .ropeproject
