@@ -15,7 +15,7 @@ storage.put = put
 
 def find(model):
     if model.__class__.__name__ in database:
-        return database[model.__class__.__name_]
+        return database[model.__class__.__name__]
     else:
         return []
 

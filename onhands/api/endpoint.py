@@ -1,14 +1,14 @@
 from onhands import json_util
-from functools import wraps
+# from functools import wraps
 from tests import storage
 
 
 def endpoint(url):
     def decorator(func):
-        @wraps(func)
+        # @wraps(func)
         def inner(*a, **k):
+            func._yawpy_url = url.replace('/', '')
             return func(*a, **k)
-        inner._yawpy_url = url
         return inner
     return decorator
 
@@ -36,4 +36,4 @@ class EndpointManager(object):
         return storage.put(entity).to_json()
 
     def __process_get(self):
-        return [model.to_json() for model in storage.find(self.__model)]
+        return [model.to_json() for model in storage.find(self.__model())]

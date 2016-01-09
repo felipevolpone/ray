@@ -25,6 +25,7 @@ class TestRouter(unittest.TestCase):
         request.method = 'POST'
         return request.get_response(app)
 
+    @unittest.skip('skip')
     def test_post(self):
         OnHandsSettings.ENDPOINT_MODULES = 'tests.test_router'
 
@@ -43,6 +44,5 @@ class TestRouter(unittest.TestCase):
         response = request.get_response(app)
 
         print response.body
-        print response.text
         self.assertEqual(response.json, {'age': None, 'name': 'felipe'})
         self.assertEqual(200, response.status_int)
