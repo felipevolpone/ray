@@ -14,11 +14,14 @@ class UserModel(BaseModel):
 
 class TestRouter(unittest.TestCase):
 
-    @unittest.skip('skip')
-    def test_basic_router(self):
+    def setUp(self):
+        OnHandsSettings.ENDPOINT_MODULES = 'tests.test_router'
+
+    def test_404(self):
         request = webapp2.Request.blank('/api/')
+        request.method = 'GET'
         response = request.get_response(app)
-        self.assertEqual(200, response.status_int)
+        self.assertEqual(404, response.status_int)
 
     def __create(self):
         request = webapp2.Request.blank('/api/user')
@@ -26,18 +29,14 @@ class TestRouter(unittest.TestCase):
         request.method = 'POST'
         return request.get_response(app)
 
-    @unittest.skip('skip')
     def test_post(self):
-        OnHandsSettings.ENDPOINT_MODULES = 'tests.test_router'
-
         # create data
         response = self.__create()
         self.assertEqual(200, response.status_int)
 
     def test_get(self):
-        OnHandsSettings.ENDPOINT_MODULES = 'tests.test_router'
-
         # create data
+        response = self.__create()
         response = self.__create()
 
         request = webapp2.Request.blank('/api/user')
@@ -45,5 +44,7 @@ class TestRouter(unittest.TestCase):
         response = MockResponse(request.get_response(app))
 
         print response.body
-        self.assertEqual(response.to_json(), {'result': [{'age': 22, 'name': 'felipe'}]})
+        self.assertEqual(response.to_json(),
+                         {'result': [{'age': 22, 'name': 'felipe'},
+                                     {'age': 22, 'name': 'felipe'}]})
         self.assertEqual(200, response.status_int)

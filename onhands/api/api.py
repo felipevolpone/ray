@@ -27,6 +27,7 @@ class ApiHandler(webapp2.RequestHandler):
     def dispatch(self):
         full_path = self.request.path.split('/')
         url_asked = full_path[-1]
+        print 'url_asked', url_asked
         return self._get_class(url_asked)
 
     def _get_class(self, url_asked):
@@ -44,6 +45,6 @@ class ApiHandler(webapp2.RequestHandler):
                 if url == url_asked:
                     return EndpointManager(self.request, self.response, item).process()
 
-        return None
+        self.response.status = 404
 
 app = webapp2.WSGIApplication([('/api/.*', ApiHandler)])
