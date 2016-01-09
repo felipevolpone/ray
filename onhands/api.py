@@ -1,6 +1,4 @@
-import webapp2
-import json
-import importlib
+import webapp2, json, importlib
 from endpoint import EndpointManager
 
 
