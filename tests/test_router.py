@@ -3,6 +3,7 @@ from onhands.api.api import app, OnHandsSettings
 from onhands.api.endpoint import endpoint
 import webapp2
 from alabama.models import StringProperty, IntegerProperty, BaseModel
+from tests.mock import MockResponse
 
 
 @endpoint('/user')
@@ -41,8 +42,8 @@ class TestRouter(unittest.TestCase):
 
         request = webapp2.Request.blank('/api/user')
         request.method = 'GET'
-        response = request.get_response(app)
+        response = MockResponse(request.get_response(app))
 
         print response.body
-        self.assertEqual(response.json, {'age': None, 'name': 'felipe'})
+        self.assertEqual(response.to_json(), {'result': [{'age': 22, 'name': 'felipe'}]})
         self.assertEqual(200, response.status_int)

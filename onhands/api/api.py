@@ -1,6 +1,6 @@
 import webapp2
+import json
 import importlib
-from onhands import json_util
 from endpoint import EndpointManager
 
 
@@ -15,20 +15,7 @@ def to_json(fnc):
         response.headers['Content-Type'] = 'application/json'
         from_func = fnc(*args, **kwargs)
 
-        print 'from_func', from_func
-
-        result = None
-        if not from_func:
-            result = {}
-        elif isinstance(from_func, dict):
-            result = json_util.from_json(from_func)
-        elif isinstance(from_func, list):
-            if len(from_func) > 0:
-                if hasattr(from_func[0], 'to_json'):
-                    from_func = {'result': [obj.to_json() for obj in from_func]}
-                result = json_util.from_json(from_func)
-
-        print 'result', result
+        result = json.dumps({'result': from_func})
         return response.out.write(result)
 
     return inner
