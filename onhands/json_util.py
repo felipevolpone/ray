@@ -6,14 +6,17 @@ _ENCODE = 'utf-8'
 def from_list(models):
     return [model.to_json() for model in models]
 
+
 def from_json(inst, encoding=_ENCODE):
     return json.dumps(inst, encoding=_ENCODE)
 
+
 def to_json(text, encoding=_ENCODE, will_decode=True):
-    json_dict = json.loads(text , encoding=_ENCODE)
+    json_dict = json.loads(text, encoding=_ENCODE)
     if will_decode:
         return decode(json_dict)
     return json_dict
+
 
 def _decode_list(data):
     rv = []
@@ -26,6 +29,7 @@ def _decode_list(data):
             item = decode(item)
         rv.append(item)
     return rv
+
 
 def decode(data):
     if isinstance(data, list):
