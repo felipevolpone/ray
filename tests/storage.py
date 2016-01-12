@@ -13,6 +13,12 @@ def clear():
     database = {}
 
 
+def delete(model, uuid):
+    new_model = model.__class__()
+    new_model.uuid = uuid
+    return new_model
+
+
 def __update_model(new_model):
     if new_model.__class__.__name__ in database:
         for model in database[new_model.__class__.__name__]:

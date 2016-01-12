@@ -49,7 +49,7 @@ class TestEndpoint(TestMock):
         result_create = MockResponse(rsp).to_json()
         uuid_created = result_create['result']['uuid']
 
-        request = Request.blank('/api/user/'+uuid_created, method='GET')
+        request = Request.blank('/api/user/' + uuid_created, method='GET')
         response = MockResponse(request.get_response(app))
 
         result = response.to_json()
@@ -66,8 +66,7 @@ class TestEndpoint(TestMock):
         result_create = MockResponse(rsp).to_json()
         uuid_created = result_create['result']['uuid']
 
-        request = Request.blank('/api/user/'+uuid_created)
-        request.method = 'PUT'
+        request = Request.blank('/api/user/' + uuid_created, method='PUT')
         request.json = {"name": "onhands", 'uuid': uuid_created}
         response = MockResponse(request.get_response(app))
 
@@ -75,4 +74,18 @@ class TestEndpoint(TestMock):
         self.assertEqual(result['result']['uuid'], uuid_created)
         self.assertEqual(result['result']['name'], 'onhands')
         self.assertEqual(result['result']['age'], 22)
+        self.assertEqual(200, response.status_int)
+
+    def test_delete(self):
+        self.__create()
+        rsp = self.__create()
+        result_create = MockResponse(rsp).to_json()
+        uuid_created = result_create['result']['uuid']
+
+        request = Request.blank('/api/user/' + uuid_created, method='DELETE')
+        response = MockResponse(request.get_response(app))
+
+        result = response.to_json()
+        print result
+        self.assertEqual(result['result']['uuid'], uuid_created)
         self.assertEqual(200, response.status_int)

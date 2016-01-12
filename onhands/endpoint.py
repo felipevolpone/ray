@@ -27,7 +27,7 @@ class EndpointManager(object):
 
     def process(self):
         methods = {'post': self.__process_post, 'get': self.__process_get,
-                   'put': self.__process_put}
+                   'put': self.__process_put, 'delete': self.__process_delete}
         http_verb = self.__request.method.lower()
         return methods[http_verb]()
 
@@ -49,6 +49,10 @@ class EndpointManager(object):
 
         return self._find_database()
 
+    def __process_delete(self):
+        id_param = self.__request.param_at(0)
+        return storage.delete(self.__model(), id_param).to_json()
+
     def _find_database(self):
         id_param = self.__request.param_at(0)
         if id_param:
@@ -57,4 +61,4 @@ class EndpointManager(object):
                 raise Exception('Model not found')
             return model.to_json()
 
-        return [model.to_json() for model in storage.find(self.__model(), self.__request.params)]
+        return [m.to_json() for m in storage.find(self.__model(), self.__request.params)]
