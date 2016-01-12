@@ -37,8 +37,8 @@ class ApiHandler(webapp2.RequestHandler):
             except:
                 continue
 
-            if hasattr(item_called, '_yawpy_url'):
-                url = getattr(item_called, '_yawpy_url')
+            if hasattr(item_called, '_onhands_url'):
+                url = getattr(item_called, '_onhands_url')
                 if url == url_asked:
                     return EndpointManager(self.request, self.response, item).process()
 

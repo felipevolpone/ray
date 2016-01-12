@@ -7,7 +7,7 @@ def endpoint(url):
     def decorator(func):
         @wraps(func)
         def inner(*a, **k):
-            func._yawpy_url = url.replace('/', '')
+            func._onhands_url = url.replace('/', '')
             return func(*a, **k)
         return inner
     return decorator
