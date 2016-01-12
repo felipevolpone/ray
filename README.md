@@ -30,12 +30,12 @@ Now, you have the http methods to interact with your model using the urls:
 
 
 ### Hooks
-Hooks are really usefull to add validations in different moments of your application. Hook is a class that connect with your model and will be executed **before the model save, after the model be saved or before the model be deleted**.
+Hooks are really usefull to add validations in different moments of your application. Hook is a class that connect with your model and will be executed **before save the model, after the model be saved or before the model be deleted**.
 ```python
 from yawpy.hooks import Hook
 
 class AgeValidationHook(Hook):
-    def pre_save(self, user):
+    def before_save(self, user):
         if user.age < 18:
             raise Exception('The user must have more than 18 years')
         return True
