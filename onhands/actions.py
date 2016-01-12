@@ -1,3 +1,3 @@
 
-class Action(object):
+class ActionAPI(object):
     pass
