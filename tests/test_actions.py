@@ -13,7 +13,7 @@ class UserModel(Model):
 
 
 class ActionUser(ActionAPI):
-    # __model__ = UserModel
+    __model__ = UserModel
 
     @action("/activate")
     def activate_user(self, id):

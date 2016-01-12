@@ -28,8 +28,5 @@ class ActionAPI(object):
 
                 if hasattr(method, '_action_url'):
                     __action_url = method._action_url
-                    print 'HASUDHSU'
-                    print method._action_url
-                    print url
                     if url == __action_url:
                         return methodname
