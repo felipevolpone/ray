@@ -24,12 +24,16 @@ class ApiHandler(webapp2.RequestHandler):
 
     @to_json
     def dispatch(self):
-        all_path = self.request.path
-        if all_path[-1] == '/':
-            all_path = all_path[:-1]
-        return self._get_class(all_path)
+        url = self.__fix_url(self.request.path)
+        return self._get_class(url)
+
+    def __fix_url(self, url):
+        if url[-1] == '/':
+            return url[:-1]
+        return url
 
     def handle_endpoint(self, full_path):
+        full_path = full_path.split('/')
         url_asked = full_path[-1] if len(full_path) == 3 else full_path[-2]
         module = importlib.import_module(OnHandsSettings.ENDPOINT_MODULES)
 
@@ -46,17 +50,17 @@ class ApiHandler(webapp2.RequestHandler):
                     return EndpointManager(self.request, self.response, item).process()
 
     def is_endpoint(self, full_path):
-        return len(full_path.split('/')) <= 4
+        return len(full_path.split('/')) <= 4 and len(full_path.split('/')) > 2
 
     def is_action(self, full_path):
         return len(full_path.split('/')) == 5
 
     def _get_class(self, fullpath):
         if self.is_endpoint(fullpath):
-            self.handle_endpoint(fullpath)
+            return self.handle_endpoint(fullpath)
         elif self.is_action(fullpath):
-            self.handle_action(fullpath)
-
-        self.response.status = 404
+            return self.handle_action(fullpath)
+        else:
+            self.response.status = 404
 
 app = webapp2.WSGIApplication([('/api/.*', ApiHandler)])
