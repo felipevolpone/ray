@@ -51,7 +51,11 @@ class ApiHandler(webapp2.RequestHandler):
                     return EndpointManager(self.request, self.response, item).process()
 
     def __handle_action(self, url):
-        pass
+        splited = url.split('/')
+        action_url = splited[-1]
+        model_name = splited[2]
+        id_ = splited[3]
+        return ActionAPI.get_action(action_url, model_name, id_)
 
     def is_endpoint(self, full_path):
         return len(full_path.split('/')) <= 4 and len(full_path.split('/')) > 2
