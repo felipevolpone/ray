@@ -86,6 +86,5 @@ class TestEndpoint(TestMock):
         response = MockResponse(request.get_response(app))
 
         result = response.to_json()
-        print result
         self.assertEqual(result['result']['uuid'], uuid_created)
         self.assertEqual(200, response.status_int)
