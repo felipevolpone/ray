@@ -3,7 +3,13 @@ from alabama import storage
 database = {}
 
 
+def clear():
+    global database
+    database = {}
+
+
 def put(model):
+    global database
     if model.__class__.__name__ in database:
         database[model.__class__.__name__].append(model)
     else:
@@ -14,6 +20,7 @@ storage.put = put
 
 
 def find(model):
+    global database
     if model.__class__.__name__ in database:
         return database[model.__class__.__name__]
     else:

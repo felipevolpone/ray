@@ -1,4 +1,6 @@
 from onhands.http import Response
+import unittest
+from tests import storage
 
 
 class MockResponse(Response):
@@ -18,3 +20,9 @@ class MockResponse(Response):
 
             result[key] = value
         return result
+
+
+class TestMock(unittest.TestCase):
+
+    def setUp(self):
+        storage.clear()

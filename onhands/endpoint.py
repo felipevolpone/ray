@@ -37,10 +37,12 @@ class EndpointManager(object):
 
     def __process_get(self):
         id_param = self.__request.param_at(0)
+        print 'id_param', id_param
+        print 'hue', self.__request.params
         if not id_param and not any(self.__request.params):
             return [model.to_json() for model in storage.find(self.__model())]
 
-        return self._find_database()
+        # return self._find_database()
 
     def _find_database(self):
         id_param = self.__request.param_at(0)
