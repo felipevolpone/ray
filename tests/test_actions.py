@@ -26,4 +26,4 @@ class TestAction(TestMock):
     def test_action(self):
         request = Request.blank('/api/user/123/activate', method='PUT')
         response = request.get_response(app)
-        self.assertEqual(500, response.status_int)
+        self.assertEqual(200, response.status_int)

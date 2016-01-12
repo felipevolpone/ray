@@ -1,5 +1,6 @@
 import webapp2, json, importlib
 from endpoint import EndpointManager
+from actions import ActionAPI
 
 
 class OnHandsSettings(object):
@@ -32,7 +33,7 @@ class ApiHandler(webapp2.RequestHandler):
             return url[:-1]
         return url
 
-    def handle_endpoint(self, full_path):
+    def __handle_endpoint(self, full_path):
         full_path = full_path.split('/')
         url_asked = full_path[-1] if len(full_path) == 3 else full_path[-2]
         module = importlib.import_module(OnHandsSettings.ENDPOINT_MODULES)
@@ -44,10 +45,13 @@ class ApiHandler(webapp2.RequestHandler):
             except:
                 continue
 
-            if hasattr(item_called, '_onhands_url'):
-                url = getattr(item_called, '_onhands_url')
+            if hasattr(item_called, '_endpoint_url'):
+                url = getattr(item_called, '_endpoint_url')
                 if url == url_asked:
                     return EndpointManager(self.request, self.response, item).process()
+
+    def __handle_action(self, url):
+        pass
 
     def is_endpoint(self, full_path):
         return len(full_path.split('/')) <= 4 and len(full_path.split('/')) > 2
@@ -57,9 +61,9 @@ class ApiHandler(webapp2.RequestHandler):
 
     def _get_class(self, fullpath):
         if self.is_endpoint(fullpath):
-            return self.handle_endpoint(fullpath)
+            return self.__handle_endpoint(fullpath)
         elif self.is_action(fullpath):
-            return self.handle_action(fullpath)
+            return self.__handle_action(fullpath)
         else:
             self.response.status = 404
 
