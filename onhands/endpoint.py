@@ -36,6 +36,18 @@ class EndpointManager(object):
         return storage.put(entity).to_json()
 
     def __process_get(self):
-        first_param = self.__request.param_at(0)
-        if not first_param and not any(self.__request.params):
+        id_param = self.__request.param_at(0)
+        if not id_param and not any(self.__request.params):
             return [model.to_json() for model in storage.find(self.__model())]
+
+        return self._find_database()
+
+    def _find_database(self):
+        id_param = self.__request.param_at(0)
+        if id_param:
+            model = storage.get(self.__model(), id_param)
+            if not model:
+                raise Exception('Model not found')
+            return model.to_json()
+
+        return [model.to_json() for model in storage.find(self.__model(), self.__request.params)]

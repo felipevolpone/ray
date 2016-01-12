@@ -21,4 +21,4 @@ def param_at(self, index):
     return None
 
 Request = webapp2.Request
-webapp2.Request.param_at = param_at
+Request.param_at = param_at
