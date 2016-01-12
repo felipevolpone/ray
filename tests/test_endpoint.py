@@ -43,22 +43,23 @@ class TestEndpoint(TestMock):
         request.method = 'GET'
         response = MockResponse(request.get_response(app))
 
-        self.assertEqual(response.to_json(),
-                         {'result': [{'age': 22, 'name': 'felipe'},
-                                     {'age': 22, 'name': 'felipe'}]})
+        result = response.to_json()
+        self.assertEqual(2, len(result['result']))
+        self.assertEqual('felipe', result['result'][0]['name'])
+        self.assertEqual(22, result['result'][0]['age'])
         self.assertEqual(200, response.status_int)
 
-    @unittest.skip('skip')
     def test_get(self):
         # create data
         self.__create()
-        self.__create()
+        rsp = self.__create()
+        result_create = MockResponse(rsp).to_json()
+        uuid_created = result_create['result']['uuid']
 
-        request = Request.blank('/api/user/foo')
+        request = Request.blank('/api/user/'+uuid_created)
         request.method = 'GET'
         response = MockResponse(request.get_response(app))
 
-        self.assertEqual(response.to_json(),
-                         {'result': [{'age': 22, 'name': 'felipe'},
-                                     {'age': 22, 'name': 'felipe'}]})
+        result = response.to_json()
+        self.assertEqual(result['result']['uuid'], uuid_created)
         self.assertEqual(200, response.status_int)

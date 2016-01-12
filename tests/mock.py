@@ -24,5 +24,5 @@ class MockResponse(Response):
 
 class TestMock(unittest.TestCase):
 
-    def setUp(self):
+    def tearDown(self):
         storage.clear()
