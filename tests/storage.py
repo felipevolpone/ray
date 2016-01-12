@@ -20,7 +20,7 @@ def __update_model(new_model):
                 for column in new_model.columns():
                     if getattr(new_model, column) is not None:
                         setattr(model, column, getattr(new_model, column))
-                return new_model
+                return model
 
 
 def put(model):
