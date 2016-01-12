@@ -4,6 +4,14 @@ from onhands.model import Model
 from alabama.models import StringProperty
 
 
+class UserHookUseless(Hook):
+    pass
+
+
+class UserWithUselessHook(Model):
+    hooks = [UserHookUseless]
+
+
 class UserHookException(Hook):
     def pre_save(self, user):
         raise Exception('Any exception %s' % (user.name,))
@@ -52,3 +60,11 @@ class TestHook(unittest.TestCase):
         with self.assertRaises(Exception) as e:
             user.put()
         self.assertEqual(str(e.exception), 'The hook UserHookFalse.pre_save didnt return True')
+
+    def test_list_methods(self):
+        self.assertEqual(UserHookUseless.methods, ['pre_save', 'pos_save', 'pre_delete'])
+
+    def test_hook_pre_save_not_implemented(self):
+        user = UserWithUselessHook()
+        with self.assertRaises(NotImplementedError):
+            user.put()

@@ -10,9 +10,3 @@ class Hook(object):
             will not.
         """
         raise NotImplementedError
-
-    def pos_save(self, entity):
-        raise NotImplementedError
-
-    def pre_delete(self, entity):
-        raise NotImplementedError
