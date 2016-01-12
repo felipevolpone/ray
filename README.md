@@ -30,7 +30,7 @@ Now, you have the http methods to interact with your model using the urls:
 
 
 ### Hooks
-Hooks are really usefull to add validations in different moments of your application. Hook is a class that connect with your model and will be executed *before the model save, after the model be saved or before the model be deleted*.
+Hooks are really usefull to add validations in different moments of your application. Hook is a class that connect with your model and will be executed **before the model save, after the model be saved or before the model be deleted**.
 ```python
 from yawpy.hooks import Hook
 
@@ -46,6 +46,12 @@ class UserModel(Model):
     name = ndb.StringProperty()
     age = ndb.IntegerProperty()
 ```
+| Available Hooks |
+| --------------- |
+|  before_delete  |
+|  before_save    |  
+
+
 Then, if you call the .put() method of usermodel and the user doesn't has age bigger than 18, an Exception will be raised.
 
 ## Development

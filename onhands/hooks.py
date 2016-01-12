@@ -1,11 +1,11 @@
 
 class Hook(object):
 
-    methods = ['pre_save', 'pos_save', 'pre_delete']
+    methods = ['before_save', 'pos_save', 'before_delete']
 
-    def pre_save(self, entity):
+    def before_save(self, entity):
         """
-            pre_save it's the final moment before the entity being save.
+            before_save it's the final moment before the entity being save.
             if the methods return true, the entity will be saved, if doesnt
             will not.
         """

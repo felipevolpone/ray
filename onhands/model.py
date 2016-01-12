@@ -20,14 +20,14 @@ class Model(BaseModel):
 
             # this is to make AND with the result of all hoks
             # the flow just continue if the result of all hoks is true
-            if not instance.pre_save(self):
+            if not instance.before_save(self):
                 final_result = False
                 break
 
         if final_result:
             return self.__put()
 
-        raise Exception('The hook %s.pre_save didnt return True' % (instance.__class__.__name__,))
+        raise Exception('The hook %s.before_save didnt return True' % (instance.__class__.__name__,))
 
     def delete(self):
         if not hasattr(self, 'hooks'):

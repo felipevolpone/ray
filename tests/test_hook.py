@@ -13,23 +13,22 @@ class UserWithUselessHook(Model):
 
 
 class UserHookException(Hook):
-    def pre_save(self, user):
+    def before_save(self, user):
         raise Exception('Any exception %s' % (user.name,))
 
 
 class UserHookFalse(Hook):
-    def pre_save(self, user):
+    def before_save(self, user):
         return False
 
 
 class UserHookTrue(Hook):
-    def pre_save(self, user):
+    def before_save(self, user):
         return True
 
 
 class User(Model):
     hooks = [UserHookException]
-
     name = StringProperty()
 
 
@@ -53,18 +52,18 @@ class TestHookBeforeSave(unittest.TestCase):
         user = AnotherUser()
         with self.assertRaises(Exception) as e:
             user.put()
-        self.assertEqual(str(e.exception), 'The hook UserHookFalse.pre_save didnt return True')
+        self.assertEqual(str(e.exception), 'The hook UserHookFalse.before_save didnt return True')
 
     def test_before_save_hook_with_two_hooks(self):
         user = UserWithTwoHooks()
         with self.assertRaises(Exception) as e:
             user.put()
-        self.assertEqual(str(e.exception), 'The hook UserHookFalse.pre_save didnt return True')
+        self.assertEqual(str(e.exception), 'The hook UserHookFalse.before_save didnt return True')
 
     def test_list_methods(self):
-        self.assertEqual(UserHookUseless.methods, ['pre_save', 'pos_save', 'pre_delete'])
+        self.assertEqual(UserHookUseless.methods, ['before_save', 'pos_save', 'before_delete'])
 
-    def test_hook_pre_save_not_implemented(self):
+    def test_hook_before_save_not_implemented(self):
         user = UserWithUselessHook()
         with self.assertRaises(NotImplementedError):
             user.put()
