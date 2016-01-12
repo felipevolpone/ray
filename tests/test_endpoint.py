@@ -1,4 +1,3 @@
-import unittest
 from onhands.api import app, OnHandsSettings
 from onhands.http import Request
 from onhands.endpoint import endpoint
@@ -18,29 +17,24 @@ class TestEndpoint(TestMock):
         OnHandsSettings.ENDPOINT_MODULES = 'tests.test_endpoint'
 
     def test_404(self):
-        request = Request.blank('/api/')
-        request.method = 'GET'
+        request = Request.blank('/api/', method='GET')
         response = request.get_response(app)
         self.assertEqual(404, response.status_int)
 
     def __create(self):
-        request = Request.blank('/api/user')
+        request = Request.blank('/api/user', method='POST')
         request.json = {"name": "felipe", "age": 22}
-        request.method = 'POST'
         return request.get_response(app)
 
     def test_post(self):
-        # create data
         response = self.__create()
         self.assertEqual(200, response.status_int)
 
     def test_get_all(self):
-        # create data
         self.__create()
         self.__create()
 
-        request = Request.blank('/api/user')
-        request.method = 'GET'
+        request = Request.blank('/api/user', method='GET')
         response = MockResponse(request.get_response(app))
 
         result = response.to_json()
@@ -50,27 +44,23 @@ class TestEndpoint(TestMock):
         self.assertEqual(200, response.status_int)
 
     def test_get(self):
-        # create data
         self.__create()
         rsp = self.__create()
         result_create = MockResponse(rsp).to_json()
         uuid_created = result_create['result']['uuid']
 
-        request = Request.blank('/api/user/'+uuid_created)
-        request.method = 'GET'
+        request = Request.blank('/api/user/'+uuid_created, method='GET')
         response = MockResponse(request.get_response(app))
 
         result = response.to_json()
         self.assertEqual(result['result']['uuid'], uuid_created)
         self.assertEqual(200, response.status_int)
 
-        request = Request.blank('/api/user/wrong_uuid')
-        request.method = 'GET'
+        request = Request.blank('/api/user/wrong_uuid', method='GET')
         response = request.get_response(app)
         self.assertEqual(500, response.status_int)
 
     def test_put(self):
-        # create data
         self.__create()
         rsp = self.__create()
         result_create = MockResponse(rsp).to_json()
