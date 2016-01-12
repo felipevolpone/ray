@@ -11,10 +11,10 @@ class UserModel(BaseModel):
     age = IntegerProperty()
 
 
-class TestRouter(unittest.TestCase):
+class TestEndpoint(unittest.TestCase):
 
     def setUp(self):
-        OnHandsSettings.ENDPOINT_MODULES = 'tests.test_router'
+        OnHandsSettings.ENDPOINT_MODULES = 'tests.test_endpoint'
 
     def test_404(self):
         request = webapp2.Request.blank('/api/')
