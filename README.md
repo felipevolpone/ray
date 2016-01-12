@@ -59,8 +59,7 @@ Then, if you call the .put() method of usermodel and the user doesn't has age bi
 - No!
 
 ## Development
-
-#### To run the tests
+To run the tests
 ```bash
 py.test tests/
 ```
