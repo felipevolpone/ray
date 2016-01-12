@@ -39,16 +39,11 @@ class ApiHandler(webapp2.RequestHandler):
         module = importlib.import_module(OnHandsSettings.ENDPOINT_MODULES)
 
         for clazz_name in dir(module):
-            item = getattr(module, clazz_name)
-            try:
-                item_called = item()
-            except:
-                continue
-
+            item_called = getattr(module, clazz_name)
             if hasattr(item_called, '_endpoint_url'):
                 url = getattr(item_called, '_endpoint_url')
                 if url == url_asked:
-                    return EndpointManager(self.request, self.response, item).process()
+                    return EndpointManager(self.request, self.response, item_called).process()
 
     def __handle_action(self, url):
         splited = url.split('/')

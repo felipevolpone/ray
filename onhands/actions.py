@@ -20,13 +20,8 @@ class ActionAPI(object):
 
         for clazz in cls.__subclasses__():
             for methodname in clazz.__dict__:
-                try:
-                    method = getattr(clazz(), methodname)
-                    method(id_)
-                except:
-                    continue
-
+                method = getattr(clazz(), methodname)
                 if hasattr(method, '_action_url'):
                     __action_url = method._action_url
                     if url == __action_url:
-                        return methodname
+                        return method(id_)

@@ -5,9 +5,10 @@ import json
 
 def endpoint(url):
     def decorator(func):
+        func._endpoint_url = url.replace('/', '')
+
         @wraps(func)
         def inner(*a, **k):
-            func._endpoint_url = url.replace('/', '')
             return func(*a, **k)
         return inner
     return decorator
