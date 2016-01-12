@@ -18,7 +18,15 @@ class UserModel(BaseModel):
     name = StringProperty()
     age = IntegerProperty()
 ```
-Now, you have the http methods **post, put, get, delete** to interact with your model using the url: */api/user*
+Now, you have the http methods to interact with your model using the urls:
+HTTP Verb | Path | Description
+--------- | ---- | -----------
+  GET     | /user| List all users
+  GET     | /user/{id} | Get one user
+  POST    | /user| Create an user
+  PUT     | /user/{id} | Update an user
+  DELETE  | /user/{id} | Delete an user
+
 
 ### Hooks
 Hooks are really usefull to add validations in different moments of your application. Hook is a class that connect with your model and will be executed *before the model save, after the model be saved or before the model be deleted*.
