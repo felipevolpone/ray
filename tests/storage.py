@@ -13,8 +13,21 @@ def clear():
     database = {}
 
 
+def __update_model(new_model):
+    if new_model.__class__.__name__ in database:
+        for model in database[new_model.__class__.__name__]:
+            if model.uuid == new_model.uuid:
+                for column in new_model.columns():
+                    if getattr(new_model, column) is not None:
+                        setattr(model, column, getattr(new_model, column))
+                return new_model
+
+
 def put(model):
     global database
+    if model.uuid:
+        return __update_model(model)
+
     model.uuid = __uuid()
     if model.__class__.__name__ in database:
         database[model.__class__.__name__].append(model)

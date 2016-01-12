@@ -34,7 +34,7 @@ class TestEndpoint(TestMock):
         response = self.__create()
         self.assertEqual(200, response.status_int)
 
-    def test_get_without_params(self):
+    def test_get_all(self):
         # create data
         self.__create()
         self.__create()
@@ -62,4 +62,21 @@ class TestEndpoint(TestMock):
 
         result = response.to_json()
         self.assertEqual(result['result']['uuid'], uuid_created)
+        self.assertEqual(200, response.status_int)
+
+    def test_put(self):
+        # create data
+        self.__create()
+        rsp = self.__create()
+        result_create = MockResponse(rsp).to_json()
+        uuid_created = result_create['result']['uuid']
+
+        request = Request.blank('/api/user/'+uuid_created)
+        request.method = 'PUT'
+        request.json = {"name": "onhands", 'uuid': uuid_created}
+        response = MockResponse(request.get_response(app))
+
+        result = response.to_json()
+        self.assertEqual(result['result']['uuid'], uuid_created)
+        self.assertEqual(result['result']['name'], 'onhands')
         self.assertEqual(200, response.status_int)

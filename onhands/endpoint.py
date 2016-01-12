@@ -26,14 +26,21 @@ class EndpointManager(object):
         self.__model = model
 
     def process(self):
-        methods = {'post': self.__process_post, 'get': self.__process_get}
+        methods = {'post': self.__process_post, 'get': self.__process_get,
+                   'put': self.__process_put}
         http_verb = self.__request.method.lower()
         return methods[http_verb]()
 
-    def __process_post(self):
+    def __update_entity(self):
         entity_json = json.loads(self.__request.body)
         entity = self.__model().__class__.to_instance(entity_json)
         return storage.put(entity).to_json()
+
+    def __process_put(self):
+        return self.__update_entity()
+
+    def __process_post(self):
+        return self.__update_entity()
 
     def __process_get(self):
         id_param = self.__request.param_at(0)
