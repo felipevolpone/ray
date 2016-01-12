@@ -61,7 +61,7 @@ class TestHookBeforeSave(unittest.TestCase):
         self.assertEqual(str(e.exception), 'The hook UserHookFalse.before_save didnt return True')
 
     def test_list_methods(self):
-        self.assertEqual(UserHookUseless.methods, ['before_save', 'pos_save', 'before_delete'])
+        self.assertEqual(UserHookUseless.methods, ['before_save', 'before_delete'])
 
     def test_hook_before_save_not_implemented(self):
         user = UserWithUselessHook()

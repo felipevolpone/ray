@@ -1,7 +1,7 @@
 
 class Hook(object):
 
-    methods = ['before_save', 'pos_save', 'before_delete']
+    methods = ['before_save', 'before_delete']
 
     def before_save(self, entity):
         """
