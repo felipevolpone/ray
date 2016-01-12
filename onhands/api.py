@@ -4,6 +4,7 @@ from endpoint import EndpointManager
 
 class OnHandsSettings(object):
     ENDPOINT_MODULES = ''
+    ACTION_MODULES = ''
 
 
 def to_json(fnc):
