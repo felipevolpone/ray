@@ -64,6 +64,11 @@ class TestEndpoint(TestMock):
         self.assertEqual(result['result']['uuid'], uuid_created)
         self.assertEqual(200, response.status_int)
 
+        request = Request.blank('/api/user/wrong_uuid')
+        request.method = 'GET'
+        response = request.get_response(app)
+        self.assertEqual(500, response.status_int)
+
     def test_put(self):
         # create data
         self.__create()
