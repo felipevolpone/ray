@@ -54,6 +54,10 @@ class UserModel(Model):
 
 Then, if you call the .put() method of usermodel and the user doesn't has age bigger than 18, an Exception will be raised.
 
+## FAQ
+**Is Python On Hands a MVC framework?**
+- No!
+
 ## Development
 
 #### To run the tests
