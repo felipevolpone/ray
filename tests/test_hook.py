@@ -41,7 +41,7 @@ class UserWithTwoHooks(Model):
     hooks = [UserHookTrue, UserHookFalse]
 
 
-class TestHook(unittest.TestCase):
+class TestHookBeforeSave(unittest.TestCase):
 
     def test_before_save_hook_case_exception(self):
         user = User(name='felipe')
@@ -68,3 +68,26 @@ class TestHook(unittest.TestCase):
         user = UserWithUselessHook()
         with self.assertRaises(NotImplementedError):
             user.put()
+
+
+class UserDeleteHookTrue(Hook):
+    def before_delete(self, user):
+        return bool(user.name)
+
+
+class UserDelete(Model):
+    hooks = [UserDeleteHookTrue]
+    name = StringProperty()
+
+
+class TestHookBeforeDelete(unittest.TestCase):
+
+    def test_before_delete_exception(self):
+        u = UserDelete()
+        with self.assertRaises(Exception) as e:
+            u.delete()
+        self.assertEqual(str(e.exception), 'The hook UserDeleteHookTrue.before_delete didnt return True')
+
+    def test_before_delete(self):
+        u = UserDelete(name="pythononhands")
+        self.assertTrue(u.delete())

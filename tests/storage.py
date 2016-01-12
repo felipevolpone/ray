@@ -18,6 +18,8 @@ def delete(model, uuid):
     new_model.uuid = uuid
     return new_model
 
+storage.delete = delete
+
 
 def __update_model(new_model):
     if new_model.__class__.__name__ in database:

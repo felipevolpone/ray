@@ -10,3 +10,6 @@ class Hook(object):
             will not.
         """
         raise NotImplementedError
+
+    def before_delete(self, entity):
+        raise NotImplementedError
