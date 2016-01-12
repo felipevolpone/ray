@@ -19,13 +19,14 @@ class UserModel(BaseModel):
     age = IntegerProperty()
 ```
 Now, you have the http methods to interact with your model using the urls:
-HTTP Verb | Path | Description
---------- | ---- | -----------
-  GET     | /user| List all users
-  GET     | /user/{id} | Get one user
-  POST    | /user| Create an user
-  PUT     | /user/{id} | Update an user
-  DELETE  | /user/{id} | Delete an user
+
+|HTTP Verb | Path | Description          |
+|--------- | ---- | -------------------- |
+|  GET     | /user| List all users       |
+|  GET     | /user/{id} | Get one user   |
+|  POST    | /user| Create an user       |
+|  PUT     | /user/{id} | Update an user |
+|  DELETE  | /user/{id} | Delete an user |
 
 
 ### Hooks
