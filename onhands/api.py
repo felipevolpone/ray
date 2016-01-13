@@ -5,7 +5,6 @@ from actions import ActionAPI
 
 class OnHandsSettings(object):
     ENDPOINT_MODULES = ''
-    ACTION_MODULES = ''
 
 
 def to_json(fnc):
@@ -47,9 +46,9 @@ class ApiHandler(webapp2.RequestHandler):
 
     def __handle_action(self, url):
         splited = url.split('/')
-        action_url = splited[-1]
-        id_ = splited[3]
-        return ActionAPI.get_action(action_url, id_)
+        action_url = splited[-1].replace('/','')
+        model_id = splited[3]
+        return ActionAPI.get_action(action_url, model_id)
 
     def is_endpoint(self, full_path):
         return len(full_path.split('/')) <= 4 and len(full_path.split('/')) > 2

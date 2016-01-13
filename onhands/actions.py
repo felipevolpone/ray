@@ -16,8 +16,6 @@ class ActionAPI(object):
 
     @classmethod
     def get_action(cls, url, model_id):
-        url = url.replace('/', '')
-
         for clazz in cls.__subclasses__():
             for methodname in clazz.__dict__:
                 method = getattr(clazz(), methodname)
