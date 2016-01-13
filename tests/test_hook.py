@@ -4,7 +4,8 @@ from onhands.model import Model
 from alabama.models import StringProperty
 
 
-class UserHookUseless(Hook): pass
+class UserHookUseless(Hook): 
+    pass
 
 
 class UserWithUselessHook(Model):
