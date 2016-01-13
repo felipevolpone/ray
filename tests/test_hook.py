@@ -4,8 +4,7 @@ from onhands.model import Model
 from alabama.models import StringProperty
 
 
-class UserHookUseless(Hook):
-    pass
+class UserHookUseless(Hook): pass
 
 
 class UserWithUselessHook(Model):
@@ -32,10 +31,6 @@ class User(Model):
     name = StringProperty()
 
 
-class AnotherUser(Model):
-    hooks = [UserHookFalse]
-
-
 class UserWithTwoHooks(Model):
     hooks = [UserHookTrue, UserHookFalse]
 
@@ -47,12 +42,6 @@ class TestHookBeforeSave(unittest.TestCase):
         with self.assertRaises(Exception) as e:
             user.put()
         self.assertEqual(str(e.exception), 'Any exception felipe')
-
-    def test_before_save_hook_return_false(self):
-        user = AnotherUser()
-        with self.assertRaises(Exception) as e:
-            user.put()
-        self.assertEqual(str(e.exception), 'The hook UserHookFalse.before_save didnt return True')
 
     def test_before_save_hook_with_two_hooks(self):
         user = UserWithTwoHooks()
