@@ -39,10 +39,13 @@ class Model(BaseModel):
 
             # this is to make AND with the result of all hoks
             # the flow just continue if the result of all hoks is true
-            if not instance.before_delete(self):
-                final_result = False
-                break
-
+            try:
+                if not instance.before_delete(self):
+                    final_result = False
+                    break
+            except NotImplementedError:
+                continue
+            
         if final_result:
             return self.__delete()
 

@@ -90,3 +90,13 @@ class TestHookBeforeDelete(unittest.TestCase):
     def test_before_delete(self):
         u = UserDelete(name="pythononhands")
         self.assertTrue(u.delete())
+
+    def test_before_delete_not_implemented(self):
+        class UserDeleteHookTrue(Hook): pass
+        class UserDelete(Model):
+            hooks = [UserDeleteHookTrue]
+
+        u = UserDelete()
+        self.assertTrue(u.delete())
+            
+
