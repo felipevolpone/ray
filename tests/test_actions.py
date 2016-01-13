@@ -28,9 +28,6 @@ class ActionUser(ActionAPI):
 
 class TestAction(TestMock):
 
-    def setUp(self):
-        OnHandsSettings.ACTION_MODULES = 'tests.test_actions'
-
     def test_get_action(self):
         self.assertEqual('activate_user', ActionAPI.get_action('activate', '123'))
 
