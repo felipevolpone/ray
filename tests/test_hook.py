@@ -65,8 +65,7 @@ class TestHookBeforeSave(unittest.TestCase):
 
     def test_hook_before_save_not_implemented(self):
         user = UserWithUselessHook()
-        with self.assertRaises(NotImplementedError):
-            user.put()
+        self.assertTrue(user.put())
 
 
 class UserDeleteHookTrue(Hook):
