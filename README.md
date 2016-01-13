@@ -54,6 +54,20 @@ class UserModel(Model):
 
 Then, if you call the .put() method of usermodel and the user doesn't has age bigger than 18, an Exception will be raised.
 
+### Actions
+```python
+from onhands.actions import ActionAPI, action
+
+class ActionUser(ActionAPI):
+    __model__ = UserModel
+
+    @action("/activate")
+    def activate_user(self, model_id):
+        user = storage.get(UserModel, model_id)
+        user.activate = True
+        storage.put(user)
+```
+
 ## FAQ
 **Is Python On Hands a MVC framework?**
 - No!
