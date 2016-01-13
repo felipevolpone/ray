@@ -19,10 +19,10 @@ class ActionUser(ActionAPI):
     __model__ = UserModel
 
     @action("/activate")
-    def activate_user(self, id_):
+    def activate_user(self, model_id):
         # just to make sure that this method was called
         global any_number
-        any_number = id_
+        any_number = model_id
         return 'activate_user'
 
 

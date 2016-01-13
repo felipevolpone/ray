@@ -21,7 +21,5 @@ class ActionAPI(object):
         for clazz in cls.__subclasses__():
             for methodname in clazz.__dict__:
                 method = getattr(clazz(), methodname)
-                if hasattr(method, '_action_url'):
-                    __action_url = method._action_url
-                    if url == __action_url:
-                        return method(id_)
+                if hasattr(method, '_action_url') and url == method._action_url:
+                    return method(id_)
