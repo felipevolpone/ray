@@ -32,7 +32,7 @@ class TestAction(TestMock):
         OnHandsSettings.ACTION_MODULES = 'tests.test_actions'
 
     def test_get_action(self):
-        self.assertEqual('activate_user', ActionAPI.get_action('/activate', 'user', '123'))
+        self.assertEqual('activate_user', ActionAPI.get_action('/activate', '123'))
 
     def __create(self):
         OnHandsSettings.ENDPOINT_MODULES = 'tests.test_endpoint'
