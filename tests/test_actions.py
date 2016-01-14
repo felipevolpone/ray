@@ -1,4 +1,5 @@
-from onhands.api import OnHandsSettings, app
+from onhands.api import OnHandsSettings
+from onhands.wsgi.wsgi import app
 from onhands.http import Request
 from onhands.actions import ActionAPI, action
 from onhands.model import Model

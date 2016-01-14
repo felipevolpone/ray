@@ -63,5 +63,3 @@ class ApiHandler(webapp2.RequestHandler):
             return self.__handle_action(fullpath)
         else:
             self.response.status = 404
-
-app = webapp2.WSGIApplication([('/api/.*', ApiHandler)])

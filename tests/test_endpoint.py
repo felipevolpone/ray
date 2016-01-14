@@ -1,4 +1,5 @@
-from onhands.api import app, OnHandsSettings
+from onhands.api import OnHandsSettings
+from onhands.wsgi.wsgi import app
 from onhands.http import Request
 from onhands.endpoint import endpoint
 from alabama.models import StringProperty, IntegerProperty, BaseModel
