@@ -55,6 +55,7 @@ class UserModel(Model):
 Then, if you call the .put() method of usermodel and the user doesn't has age bigger than 18, an Exception will be raised.
 
 ### Actions
+Actions provide a simple way to you create behavior in your models through your api.
 ```python
 from onhands.actions import ActionAPI, action
 
