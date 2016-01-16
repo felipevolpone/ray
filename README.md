@@ -10,7 +10,7 @@ Python on Hands is a framework that helps you to deliver well designed software 
 ### Easy APIs
 Create a model and then decorated it with the endpoint decorator.
 ```python
-from yawpy.endpoint import endpoint
+from onhands.endpoint import endpoint
 from alabama import BaseModel, StringProperty, IntegerProperty
 
 @endpoint('/user')
@@ -32,7 +32,7 @@ Now, you have the http methods to interact with your model using the urls:
 ### Hooks
 Hooks are really usefull to add validations in different moments of your application. Hook is a class that connect with your model and will be executed **before save the model, after the model be saved or before the model be deleted**.
 ```python
-from yawpy.hooks import Hook
+from onhands.hooks import Hook
 
 class AgeValidationHook(Hook):
     def before_save(self, user):
