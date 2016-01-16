@@ -4,3 +4,4 @@ pytest
 alabama
 webob
 pytest-cov
+click

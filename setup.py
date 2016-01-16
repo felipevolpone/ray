@@ -11,10 +11,14 @@ setup(
     keywords = "python framework onhands api rest",
     url = "http://github.com/felipevolpone/onhands",
     packages=['onhands'],
-    install_requires=['webapp2', 'webob'],
+    install_requires=['webapp2', 'webob', 'click'],
     long_description="Check on github: http://github.com/felipevolpone/onhands",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Utilities",
     ],
+    entry_points='''
+        [console_scripts]
+        onhands=onhands.commandline:interface
+    '''
 )
