@@ -42,9 +42,14 @@ class TestAction(TestMock):
         response = self.__create()
         user_id = response.to_json()['result']['uuid']
 
-        request = Request.blank('/api/user/'+user_id+'/activate', method='PUT')
+        request = Request.blank('/api/user/'+user_id+'/activate', method='POST')
         response = request.get_response(app)
         self.assertEqual(200, response.status_int)
 
         global any_number
         self.assertEqual(user_id, any_number)
+
+    def test_action_url_404(self):
+        request = Request.blank('/api/user/123/dontexists', method='POST')
+        response = request.get_response(app)
+        self.assertEqual(404, response.status_int)

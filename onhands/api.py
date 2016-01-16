@@ -48,7 +48,10 @@ class ApiHandler(webapp2.RequestHandler):
         splited = url.split('/')
         action_url = splited[-1].replace('/','')
         model_id = splited[3]
-        return ActionAPI.get_action(action_url, model_id)
+        try:
+            return ActionAPI.get_action(action_url, model_id)
+        except:
+            self.response.status = 404
 
     def is_endpoint(self, full_path):
         return len(full_path.split('/')) <= 4 and len(full_path.split('/')) > 2

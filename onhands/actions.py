@@ -21,3 +21,5 @@ class ActionAPI(object):
                 method = getattr(clazz(), methodname)
                 if hasattr(method, '_action_url') and url == method._action_url:
                     return method(model_id)
+
+        raise Exception('404 Method Not Found')
