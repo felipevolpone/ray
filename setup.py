@@ -10,7 +10,7 @@ setup(
     license = "MIT",
     keywords = "python framework onhands api rest",
     url = "http://github.com/felipevolpone/onhands",
-    packages=['onhands', 'tests'],
+    packages=['onhands'],
     install_requires=['webapp2', 'webob'],
     long_description="Check on github: http://github.com/felipevolpone/onhands",
     classifiers=[
