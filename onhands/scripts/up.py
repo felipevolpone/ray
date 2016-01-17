@@ -6,7 +6,7 @@ import click, os
 @click.option('--wsgifile', help='the wsgi.py file that starts application')
 
 def cli(ini, pid, wsgifile):
-    to_run = 'uwsgi --http=0.0.0.0:8080 --wsgi-file='+wsgifile+' --threads=2 --py-autoreload=1'
+    to_run = 'uwsgi --http=0.0.0.0:8080 --wsgi-file='+wsgifile+' --threads=2 --py-autoreload=1 --pidfile='+pid
     if ini:
         to_run = 'uwsgi  --ini ' + ini + ' --pidfile ' + pid
 
