@@ -1,5 +1,5 @@
 from onhands.api import OnHandsSettings
-from onhands.wsgi.wsgi import app
+from onhands.wsgi.wsgi import application
 from onhands.http import Request
 from onhands.endpoint import endpoint
 from alabama.models import StringProperty, IntegerProperty, BaseModel
@@ -19,13 +19,13 @@ class TestEndpoint(TestMock):
 
     def test_404(self):
         request = Request.blank('/api/', method='GET')
-        response = request.get_response(app)
+        response = request.get_response(application)
         self.assertEqual(404, response.status_int)
 
     def __create(self):
         request = Request.blank('/api/user', method='POST')
         request.json = {"name": "felipe", "age": 22}
-        return request.get_response(app)
+        return request.get_response(application)
 
     def test_post(self):
         response = self.__create()
@@ -36,7 +36,7 @@ class TestEndpoint(TestMock):
         self.__create()
 
         request = Request.blank('/api/user', method='GET')
-        response = MockResponse(request.get_response(app))
+        response = MockResponse(request.get_response(application))
 
         result = response.to_json()
         self.assertEqual(2, len(result['result']))
@@ -51,14 +51,14 @@ class TestEndpoint(TestMock):
         uuid_created = result_create['result']['uuid']
 
         request = Request.blank('/api/user/' + uuid_created, method='GET')
-        response = MockResponse(request.get_response(app))
+        response = MockResponse(request.get_response(application))
 
         result = response.to_json()
         self.assertEqual(result['result']['uuid'], uuid_created)
         self.assertEqual(200, response.status_int)
 
         request = Request.blank('/api/user/wrong_uuid', method='GET')
-        response = request.get_response(app)
+        response = request.get_response(application)
         self.assertEqual(500, response.status_int)
 
     def test_put(self):
@@ -69,7 +69,7 @@ class TestEndpoint(TestMock):
 
         request = Request.blank('/api/user/' + uuid_created, method='PUT')
         request.json = {"name": "onhands", 'uuid': uuid_created}
-        response = MockResponse(request.get_response(app))
+        response = MockResponse(request.get_response(application))
 
         result = response.to_json()
         self.assertEqual(result['result']['uuid'], uuid_created)
@@ -84,7 +84,7 @@ class TestEndpoint(TestMock):
         uuid_created = result_create['result']['uuid']
 
         request = Request.blank('/api/user/' + uuid_created, method='DELETE')
-        response = MockResponse(request.get_response(app))
+        response = MockResponse(request.get_response(application))
 
         result = response.to_json()
         self.assertEqual(result['result']['uuid'], uuid_created)

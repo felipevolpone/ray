@@ -1,6 +1,6 @@
 from onhands.api import OnHandsSettings
-from onhands.wsgi.wsgi import app
 from onhands.http import Request
+from onhands.wsgi.wsgi import application
 from onhands.actions import ActionAPI, action
 from onhands.model import Model
 from onhands.endpoint import endpoint
@@ -36,14 +36,14 @@ class TestAction(TestMock):
         OnHandsSettings.ENDPOINT_MODULES = 'tests.test_endpoint'
         request = Request.blank('/api/user', method='POST')
         request.json = {"name": "felipe"}
-        return MockResponse(request.get_response(app))
+        return MockResponse(request.get_response(application))
 
     def test_action(self):
         response = self.__create()
         user_id = response.to_json()['result']['uuid']
 
         request = Request.blank('/api/user/'+user_id+'/activate', method='POST')
-        response = request.get_response(app)
+        response = request.get_response(application)
         self.assertEqual(200, response.status_int)
 
         global any_number
@@ -51,5 +51,5 @@ class TestAction(TestMock):
 
     def test_action_url_404(self):
         request = Request.blank('/api/user/123/dontexists', method='POST')
-        response = request.get_response(app)
+        response = request.get_response(application)
         self.assertEqual(404, response.status_int)
