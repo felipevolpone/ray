@@ -45,7 +45,7 @@ class EndpointManager(object):
 
     def __process_delete(self):
         id_param = self.__request.param_at(0)
-        return self.__model().delete(id_param).to_json()
+        return self.__model(uuid=id_param).delete().to_json()
 
     def _find_database(self):
         id_param = self.__request.param_at(0)

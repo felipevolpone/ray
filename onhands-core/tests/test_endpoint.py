@@ -3,14 +3,13 @@ from onhands.wsgi.wsgi import application
 from onhands.http import Request
 from onhands.endpoint import endpoint
 
-from alabama.models import StringProperty, IntegerProperty, BaseModel
+from alabama.models import StringProperty, IntegerProperty
 from tests.mock import MockResponse, TestMock
 
 import alabamaonhands.all as alabama_it
 from tests import storage as storage_test
 alabama_it.storage = storage_test
 
-import unittest
 
 
 @endpoint('/user')
@@ -24,7 +23,6 @@ class TestEndpoint(TestMock):
     def setUp(self):
         OnHandsSettings.ENDPOINT_MODULES = 'tests.test_endpoint'
     
-    @unittest.skip('skip')
     def test_404(self):
         request = Request.blank('/api/', method='GET')
         response = request.get_response(application)
@@ -39,7 +37,6 @@ class TestEndpoint(TestMock):
         response = self.__create()
         self.assertEqual(200, response.status_int)
 
-    @unittest.skip('skip')
     def test_get_all(self):
         self.__create()
         self.__create()
@@ -86,11 +83,10 @@ class TestEndpoint(TestMock):
         self.assertEqual(result['result']['age'], 22)
         self.assertEqual(200, response.status_int)
 
-    @unittest.skip('slip')
     def test_delete(self):
         self.__create()
         rsp = self.__create()
-        result_create = MockResponse(rsp).to_json()
+        result_create = rsp.to_json()
         id_created = result_create['result']['uuid']
 
         request = Request.blank('/api/user/' + id_created, method='DELETE')

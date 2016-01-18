@@ -23,7 +23,7 @@ class AlabamaModel(Model, BaseModel):
         return storage.put(self)
 
     def __delete(self):
-        return storage.delete(self, self.uuid)
+        return storage.delete(self, uuid=self.uuid)
 
     def put(self):
         succeed = super(AlabamaModel, self).put()
