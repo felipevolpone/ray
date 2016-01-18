@@ -4,6 +4,7 @@ Python on Hands is a framework that helps you to deliver well designed software 
 
 [![Build Status](https://travis-ci.org/felipevolpone/onhands.svg?branch=master)](https://travis-ci.org/felipevolpone/onhands)
 [![Coverage Status](https://coveralls.io/repos/felipevolpone/onhands/badge.svg?branch=master&service=github)](https://coveralls.io/github/felipevolpone/onhands?branch=master)
+[![Code Climate](https://codeclimate.com/github/felipevolpone/onhands/badges/gpa.svg)](https://codeclimate.com/github/felipevolpone/onhands)
 
 ## Features
 
