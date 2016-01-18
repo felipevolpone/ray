@@ -1,6 +1,5 @@
 import unittest
-from alabamaonhands.models import AlabamaModel
-from alabama import connection
+from alabamaonhands.all import AlabamaModel
 
 
 class TestAlabamaModel(unittest.TestCase):

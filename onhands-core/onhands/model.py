@@ -1,11 +1,6 @@
 
 class Model(object):
 
-    def __init__(self, *args, **kwargs):
-        for k, value in kwargs.items():
-            if k in self.__dict__:
-                setattr(self, k, value)
-
     def put(self):
         if not hasattr(self, 'hooks'):
             return True 
