@@ -1,8 +1,9 @@
 from alabama.models import BaseModel
 from alabama import storage
+from onhands.model import ModelOnHands
 
 
-class Model(BaseModel):
+class Model(ModelOnHands, BaseModel):
 
     def __put(self):
         return storage.put(self)
@@ -28,8 +29,7 @@ class Model(BaseModel):
                 continue
 
         if final_result:
-           return True 
-            #return self.__put()
+            return self.__put()
 
         raise Exception('The hook %s.before_save didnt return True' % (instance.__class__.__name__,))
 
@@ -54,3 +54,4 @@ class Model(BaseModel):
             return self.__delete()
 
         raise Exception('The hook %s.before_delete didnt return True' % (instance.__class__.__name__,))
+
