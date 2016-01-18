@@ -1,14 +1,7 @@
 from alabama.models import BaseModel
-from alabama import storage
 
 
 class Model(BaseModel):
-
-    def __put(self):
-        return storage.put(self)
-
-    def __delete(self):
-        return storage.delete(self, self.uuid)
 
     def put(self):
         if not hasattr(self, 'hooks'):
@@ -27,11 +20,10 @@ class Model(BaseModel):
             except NotImplementedError:
                 continue
 
-        if final_result:
-           return True 
-            #return self.__put()
+        if not final_result:
+            raise Exception('The hook %s.before_save didnt return True' % (instance.__class__.__name__,))
 
-        raise Exception('The hook %s.before_save didnt return True' % (instance.__class__.__name__,))
+        return True
 
     def delete(self):
         if not hasattr(self, 'hooks'):
@@ -50,7 +42,8 @@ class Model(BaseModel):
             except NotImplementedError:
                 continue
             
-        if final_result:
-            return self.__delete()
+        if not final_result:
+            raise Exception('The hook %s.before_delete didnt return True' % (instance.__class__.__name__,))
 
-        raise Exception('The hook %s.before_delete didnt return True' % (instance.__class__.__name__,))
+        return True
+
