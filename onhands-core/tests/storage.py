@@ -35,7 +35,7 @@ def put(model):
     global database
     if model.uuid:
         return __update_model(model)
-
+    
     model.uuid = __uuid()
     if model.__class__.__name__ in database:
         database[model.__class__.__name__].append(model)

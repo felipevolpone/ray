@@ -1,16 +1,9 @@
-from functools import wraps
-from tests import storage
 import json
 
-
 def endpoint(url):
-    def decorator(func):
-        func._endpoint_url = url.replace('/', '')
-
-        @wraps(func)
-        def inner(*a, **k):
-            return func(*a, **k)
-        return inner
+    def decorator(clazz):
+        clazz._endpoint_url = url.replace('/', '')
+        return clazz
     return decorator
 
 
@@ -34,8 +27,8 @@ class EndpointManager(object):
 
     def __update_entity(self):
         entity_json = json.loads(self.__request.body)
-        entity = self.__model().__class__.to_instance(entity_json)
-        return storage.put(entity).to_json()
+        entity = self.__model.to_instance(entity_json)
+        return entity.put().to_json()
 
     def __process_put(self):
         return self.__update_entity()
@@ -46,20 +39,21 @@ class EndpointManager(object):
     def __process_get(self):
         id_param = self.__request.param_at(0)
         if not id_param and not any(self.__request.params):
-            return [model.to_json() for model in storage.find(self.__model())]
+            return [model.to_json() for model in self.__model().find()]
 
         return self._find_database()
 
     def __process_delete(self):
         id_param = self.__request.param_at(0)
-        return storage.delete(self.__model(), id_param).to_json()
+        return self.__model().delete(id_param).to_json()
 
     def _find_database(self):
         id_param = self.__request.param_at(0)
         if id_param:
-            model = storage.get(self.__model(), id_param)
+            model = self.__model().get(id_param)
             if not model:
                 raise Exception('Model not found')
             return model.to_json()
 
-        return [m.to_json() for m in storage.find(self.__model(), self.__request.params)]
+        return [m.to_json() for m in self.__model().find(self.__request.params)]
+
