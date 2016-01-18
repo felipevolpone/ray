@@ -2,6 +2,12 @@ from alabama.models import BaseModel
 from alabama import storage
 
 
+class ModelOnHands(object):
+
+    def put(self):
+        pass
+
+
 class Model(BaseModel):
 
     def __put(self):
