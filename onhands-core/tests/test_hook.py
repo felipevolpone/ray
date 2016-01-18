@@ -1,7 +1,6 @@
 import unittest
 from onhands.hooks import Hook
 from onhands.model import Model
-from alabama.models import StringProperty
 
 
 class UserHookUseless(Hook): 
@@ -29,7 +28,8 @@ class UserHookTrue(Hook):
 
 class User(Model):
     hooks = [UserHookException]
-    name = StringProperty()
+    def __init__(self, name=None):
+        self.name = name
 
 
 class UserWithTwoHooks(Model):
@@ -62,7 +62,8 @@ class UserDeleteHookTrue(Hook):
 
 class UserDelete(Model):
     hooks = [UserDeleteHookTrue]
-    name = StringProperty()
+    def __init__(self, name=None):
+        self.name = name
 
 
 class TestHookBeforeDelete(unittest.TestCase):
@@ -84,5 +85,4 @@ class TestHookBeforeDelete(unittest.TestCase):
 
         u = UserDelete()
         self.assertTrue(u.delete())
-            
 

@@ -1,11 +1,14 @@
-from alabama.models import BaseModel
 
+class Model(object):
 
-class Model(BaseModel):
+    def __init__(self, *args, **kwargs):
+        for k, value in kwargs.items():
+            if k in self.__dict__:
+                setattr(self, k, value)
 
     def put(self):
         if not hasattr(self, 'hooks'):
-            return self.__put()
+            return True 
 
         final_result = True
         for hook in self.hooks:
@@ -27,7 +30,7 @@ class Model(BaseModel):
 
     def delete(self):
         if not hasattr(self, 'hooks'):
-            return self.__delete()
+            return True 
 
         final_result = True
         for hook in self.hooks:
