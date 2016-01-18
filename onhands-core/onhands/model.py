@@ -5,7 +5,10 @@ from alabama import storage
 class ModelOnHands(object):
 
     def put(self):
-        pass
+        raise NotImplementedError
+
+    def delete(self):
+        raise NotImplementedError
 
 
 class Model(BaseModel):
