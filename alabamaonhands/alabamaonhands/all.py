@@ -1,4 +1,4 @@
-from alabama.models import BaseModel, ModelBasicProtocol, StringProperty
+from alabama.models import BaseModel, StringProperty
 from alabama import storage
 from alabama.connection import transaction
 from onhands.model import Model
@@ -14,9 +14,9 @@ class Api(ApiHandler):
         super(Api, self).dispatch()
 
 
-class AlabamaModel(Model, BaseModel):
-    __metaclass__ = ModelBasicProtocol
-
+class AlabamaModel(BaseModel, Model):
+    
+    # FIXME
     uuid = StringProperty()
 
     def __put(self):
