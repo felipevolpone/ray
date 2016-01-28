@@ -14,8 +14,3 @@ class TestAlabamaModel(unittest.TestCase):
         model = AlabamaModel()
         self.assertTrue(hasattr(model, 'put'))
         self.assertTrue(hasattr(model, 'delete'))
-
-
-class TestIntegration(TestLoader):
-    def test_api(self):
-        pass

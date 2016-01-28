@@ -19,7 +19,7 @@ setup(
     keywords="python framework onhands api rest",
     url="http://github.com/felipevolpone/onhands",
     packages=['onhands'],
-    install_requires=['webapp2', 'webob', 'click'],
+    install_requires=['webapp2', 'webob', 'click', 'uwsgi'],
     long_description="Check on github: http://github.com/felipevolpone/onhands",
     classifiers=[
         "Development Status :: 3 - Alpha",

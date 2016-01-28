@@ -16,4 +16,4 @@ RUN sudo service postgresql start &&\
     sudo -u postgres createdb -O onhands onhands &&\
     service postgresql stop
 
-RUN sudo pip install Onhands-Alabama onhands
+RUN sudo pip install Onhands-Alabama onhands requests

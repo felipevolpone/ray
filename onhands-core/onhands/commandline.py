@@ -28,4 +28,3 @@ class OnHandsCLI(click.MultiCommand):
 @click.command(cls=OnHandsCLI)
 def interface():
     pass
-
