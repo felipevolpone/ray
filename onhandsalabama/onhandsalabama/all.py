@@ -7,7 +7,7 @@ from onhands.api import to_json as req_json
 
 
 class Api(ApiHandler):
-   
+
     @req_json
     @transaction
     def dispatch(self):
@@ -15,7 +15,7 @@ class Api(ApiHandler):
 
 
 class AlabamaModel(BaseModel, Model):
-    
+
     # FIXME
     uuid = StringProperty()
 
@@ -39,4 +39,3 @@ class AlabamaModel(BaseModel, Model):
         return storage.get(self, model_id)
 
 AlabamaModel.find = storage.find
-
