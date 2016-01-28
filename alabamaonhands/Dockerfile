@@ -12,7 +12,8 @@ RUN sudo apt-get -y install postgresql-9.3 postgresql-client-9.3
 RUN sudo echo "listen_addresses='*'" >> /etc/postgresql/9.3/main/postgresql.conf
 RUN sudo echo "host all all 0.0.0.0/0 md5" >> /etc/postgresql/9.3/main/pg_hba.conf
 RUN sudo service postgresql start &&\
-    sudo -u postgres psql --command "CREATE USER alabama WITH SUPERUSER PASSWORD 'alabama';" &&\
-    sudo -u postgres createdb -O alabama alabama &&\
+    sudo -u postgres psql --command "CREATE USER onhands WITH SUPERUSER PASSWORD 'onhands';" &&\
+    sudo -u postgres createdb -O onhands onhands &&\
     service postgresql stop
-RUN sudo pip install -r requirements.txt
+
+RUN sudo pip install Onhands-Alabama onhands
