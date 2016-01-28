@@ -1,5 +1,5 @@
 import unittest
-from alabamaonhands.all import AlabamaModel
+from onhandsalabama.all import AlabamaModel
 
 
 class TestAlabamaModel(unittest.TestCase):
@@ -8,4 +8,3 @@ class TestAlabamaModel(unittest.TestCase):
         model = AlabamaModel()
         self.assertTrue(hasattr(model, 'put'))
         self.assertTrue(hasattr(model, 'delete'))
-

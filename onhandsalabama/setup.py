@@ -9,8 +9,8 @@ setup(
     license="MIT",
     keywords="python framework onhands api alabama rest",
     url="http://github.com/felipevolpone/onhands",
-    packages=['alabamaonhands'],
-    install_requires=['alabama', 'onhands'],
+    packages=['onhandsalabama'],
+    install_requires=['alabama'],
     long_description="Check on github: http://github.com/felipevolpone/onhands",
     classifiers=[
         "Development Status :: 3 - Alpha",

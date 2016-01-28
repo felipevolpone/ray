@@ -3,8 +3,8 @@ MAINTAINER felipevolpone@gmail.com
 ENV LC_ALL en_US.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 
-WORKDIR /home/onhands
-ADD . /home/onhands
+WORKDIR /home/onhands-alabama
+ADD . /home/onhands-alabama
 
 RUN sudo apt-get update
 RUN sudo apt-get -y install python-pip python-dev build-essential libfreetype6 libfontconfig1 libpq-dev
