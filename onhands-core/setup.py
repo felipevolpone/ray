@@ -11,7 +11,7 @@ def description():
 
 setup(
     name="onhands",
-    version="0.0.3",
+    version="0.0.1",
     author="Felipe Volpone",
     author_email="felipevolpone@gmail.com",
     description=description(),
