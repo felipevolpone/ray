@@ -8,17 +8,14 @@ class Response(webapp2.Response):
         webapp2.Response.__init__(self)
 
 
-def param_at(self, index):
+def param_at(url, index):
     """
         index starts after the word after api.
         Example: /api/user/123, index 0 returns 123
         Example: /api/user/foo/123, index 0 returns foo, index 1 returns 123
     """
-    params_after_base_url = self.upath_info.split('/')[3:]
+    params_after_base_url = url.split('/')[3:]
     if len(params_after_base_url) > index:
         return params_after_base_url[index]
 
     return None
-
-Request = webapp2.Request
-Request.param_at = param_at

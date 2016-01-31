@@ -1,12 +1,12 @@
 from onhands.api import OnHandsSettings
 from onhands.wsgi.wsgi import application
-from onhands.http import Request
+from webapp2 import Request
 from onhands.endpoint import endpoint
 
 from alabama.models import StringProperty, IntegerProperty
 from tests.mock import MockResponse, TestMock
 
-import alabamaonhands.all as alabama_it
+import onhandsalabama.all as alabama_it
 from tests import storage as storage_test
 alabama_it.storage = storage_test
 
@@ -22,7 +22,7 @@ class TestEndpoint(TestMock):
 
     def setUp(self):
         OnHandsSettings.ENDPOINT_MODULES = 'tests.test_endpoint'
-    
+
     def test_404(self):
         request = Request.blank('/api/', method='GET')
         response = request.get_response(application)
@@ -49,7 +49,7 @@ class TestEndpoint(TestMock):
         self.assertEqual('felipe', result['result'][0]['name'])
         self.assertEqual(22, result['result'][0]['age'])
         self.assertEqual(200, response.status_int)
-    
+
     def test_get(self):
         self.__create()
         rsp = self.__create()
@@ -66,8 +66,8 @@ class TestEndpoint(TestMock):
         request = Request.blank('/api/user/wrong_uuid', method='GET')
         response = request.get_response(application)
         self.assertEqual(500, response.status_int)
-    
-    def test_put(self): 
+
+    def test_put(self):
         self.__create()
         rsp = self.__create()
         result_create = rsp.to_json()
@@ -95,4 +95,3 @@ class TestEndpoint(TestMock):
         result = response.to_json()
         self.assertEqual(result['result']['uuid'], id_created)
         self.assertEqual(200, response.status_int)
-

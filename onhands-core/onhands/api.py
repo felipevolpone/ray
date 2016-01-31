@@ -1,4 +1,4 @@
-import webapp2, json, importlib
+import webapp2, json, importlib, http
 from endpoint import EndpointManager
 from actions import ActionAPI
 
@@ -38,11 +38,10 @@ class ApiHandler(webapp2.RequestHandler):
         module = importlib.import_module(OnHandsSettings.ENDPOINT_MODULES)
 
         for clazz_name in dir(module):
-            item_called = getattr(module, clazz_name)
-            if hasattr(item_called, '_endpoint_url'):
-                url = getattr(item_called, '_endpoint_url')
-                if url == url_asked:
-                    return EndpointManager(self.request, self.response, item_called).process()
+            model_clazz = getattr(module, clazz_name)
+            if hasattr(model_clazz, '_endpoint_url'):
+                if model_clazz._endpoint_url == url_asked:
+                    return EndpointManager(self.request, self.response, model_clazz).process()
 
     def __handle_action(self, url):
         splited = url.split('/')

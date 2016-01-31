@@ -1,4 +1,4 @@
-import json
+import json, http
 
 def endpoint(url):
     def decorator(clazz):
@@ -37,18 +37,18 @@ class EndpointManager(object):
         return self.__update_entity()
 
     def __process_get(self):
-        id_param = self.__request.param_at(0)
+        id_param = http.param_at(self.__request.upath_info, 0)
         if not id_param and not any(self.__request.params):
             return [model.to_json() for model in self.__model().find()]
 
         return self._find_database()
 
     def __process_delete(self):
-        id_param = self.__request.param_at(0)
+        id_param = http.param_at(self.__request.upath_info, 0)
         return self.__model(uuid=id_param).delete().to_json()
 
     def _find_database(self):
-        id_param = self.__request.param_at(0)
+        id_param = http.param_at(self.__request.upath_info, 0)
         if id_param:
             model = self.__model().get(id_param)
             if not model:
@@ -56,4 +56,3 @@ class EndpointManager(object):
             return model.to_json()
 
         return [m.to_json() for m in self.__model().find(self.__request.params)]
-

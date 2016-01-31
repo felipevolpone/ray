@@ -1,12 +1,9 @@
-import unittest
-from alabama import connection
-from onhandsalabama.all import AlabamaModel
-from alabama.models import StringProperty, IntegerProperty
-from onhands.endpoint import endpoint
 from onhands.wsgi.wsgi import application
+from onhands.api import OnHandsSettings
+from populate import pop
+from alabama import connection, storage
 
+database = connection.start_db('db.properties')
+connection.create_pool(database)
 
-@endpoint('/user')
-class User(AlabamaModel):
-    name = StringProperty()
-    age = IntegerProperty()
+OnHandsSettings.ENDPOINT_MODULES = 'endpoints'

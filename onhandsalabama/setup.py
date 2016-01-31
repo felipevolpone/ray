@@ -1,15 +1,15 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
-    name="Onhands-Alabama",
-    version="0.0.1",
+    name="onhands-alabama",
+    version="0.0.2",
     author="Felipe Volpone",
     author_email="felipevolpone@gmail.com",
     description=(""),
     license="MIT",
     keywords="python framework onhands api alabama rest",
     url="http://github.com/felipevolpone/onhands",
-    packages=['onhandsalabama'],
+    packages=find_packages(),
     install_requires=['alabama'],
     long_description="Check on github: http://github.com/felipevolpone/onhands",
     classifiers=[

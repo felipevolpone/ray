@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def description():
@@ -10,15 +10,15 @@ def description():
     """
 
 setup(
-    name="OnHands",
-    version="0.0.1",
+    name="onhands",
+    version="0.0.3",
     author="Felipe Volpone",
     author_email="felipevolpone@gmail.com",
     description=description(),
     license="MIT",
     keywords="python framework onhands api rest",
     url="http://github.com/felipevolpone/onhands",
-    packages=['onhands'],
+    packages=find_packages(),
     install_requires=['webapp2', 'webob', 'click', 'uwsgi'],
     long_description="Check on github: http://github.com/felipevolpone/onhands",
     classifiers=[
