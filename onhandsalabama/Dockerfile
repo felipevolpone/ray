@@ -17,4 +17,4 @@ RUN sudo service postgresql start &&\
     sudo -u postgres createdb -O onhands onhands &&\
     service postgresql stop
 
-RUN sudo pip install onhands onhands-alabama requests pytest
+RUN sudo pip install onhands onhands-alabama requests pytest --upgrade
