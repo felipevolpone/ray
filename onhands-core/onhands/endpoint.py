@@ -1,5 +1,6 @@
 import json, http
 
+
 def endpoint(url):
     def decorator(clazz):
         clazz._endpoint_url = url.replace('/', '')
@@ -26,7 +27,7 @@ class EndpointManager(object):
         return methods[http_verb]()
 
     def __update_entity(self):
-        entity_json = self.__request.json
+        entity_json = json.loads(self.__request.body)
         entity = self.__model.to_instance(entity_json)
         return entity.put().to_json()
 

@@ -1,12 +1,15 @@
-import unittest
-import requests
+import unittest, requests, json
 # from onhandsalabama.all import AlabamaModel
+
+
+def jsonify(data):
+    return json.loads(data)
 
 
 class TestIntegration(unittest.TestCase):
     def test_api(self):
         resp = requests.post('http://localhost:8080/api/user',
-                             data={'name': 'felipe', 'age': 23})
+                             data=jsonify({'name': 'felipe', 'age': 23}))
         self.assertEqual(200, resp.status_code)
 
         resp = requests.get('http://localhost:8080/api/user')

@@ -1,7 +1,6 @@
 import click, os, sys
 
-cmd_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                          'scripts'))
+cmd_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),'scripts'))
 
 
 class OnHandsCLI(click.MultiCommand):

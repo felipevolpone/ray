@@ -3,7 +3,7 @@ from onhands.hooks import Hook
 from onhands.model import Model
 
 
-class UserHookUseless(Hook): 
+class UserHookUseless(Hook):
     pass
 
 
@@ -28,6 +28,7 @@ class UserHookTrue(Hook):
 
 class User(Model):
     hooks = [UserHookException]
+
     def __init__(self, name=None):
         self.name = name
 
@@ -62,6 +63,7 @@ class UserDeleteHookTrue(Hook):
 
 class UserDelete(Model):
     hooks = [UserDeleteHookTrue]
+
     def __init__(self, name=None):
         self.name = name
 
@@ -79,10 +81,11 @@ class TestHookBeforeDelete(unittest.TestCase):
         self.assertTrue(u.delete())
 
     def test_before_delete_not_implemented(self):
-        class UserDeleteHookTrue(Hook): pass
+        class UserDeleteHookTrue(Hook):
+            pass
+
         class UserDelete(Model):
             hooks = [UserDeleteHookTrue]
 
         u = UserDelete()
         self.assertTrue(u.delete())
-

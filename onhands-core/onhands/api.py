@@ -1,4 +1,4 @@
-import webapp2, json, importlib, http
+import webapp2, json, importlib
 from endpoint import EndpointManager
 from actions import ActionAPI
 
