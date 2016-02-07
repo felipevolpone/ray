@@ -1,17 +1,7 @@
+from alabama.connection import transaction
 from alabama.models import BaseModel, StringProperty
 from alabama import storage
-from alabama.connection import transaction
 from onhands.model import Model
-from onhands.api import ApiHandler
-from onhands.api import to_json as req_json
-
-
-class Api(ApiHandler):
-
-    @req_json
-    @transaction
-    def dispatch(self):
-        super(Api, self).dispatch()
 
 
 class AlabamaModel(BaseModel, Model):
@@ -19,26 +9,28 @@ class AlabamaModel(BaseModel, Model):
     # FIXME
     uuid = StringProperty()
 
-    def __put(self):
-        return storage.put(self)
+    @transaction
+    def __put(self, *args, **kwargs):
+        return storage.put(self, *args, **kwargs)
 
-    def __delete(self):
-        return storage.delete(self, uuid=self.uuid)
+    @transaction
+    def __delete(self, *args, **kwargs):
+        return storage.delete(self, uuid=self.uuid, *args, **kwargs)
 
-    def put(self):
+    def put(self, *args, **kwargs):
         succeed = super(AlabamaModel, self).put()
         if succeed:
-            return self.__put()
+            return self.__put(*args, **kwargs)
 
-    def delete(self):
+    def delete(self, *args, **kwargs):
         succeed = super(AlabamaModel, self).delete()
         if succeed:
-            return self.__delete()
+            return self.__delete(*args, **kwargs)
 
-    def get(self, model_id):
-        return storage.get(self, model_id)
+    @transaction
+    def get(self, model_id, *args, **kwargs):
+        return storage.get(self.__class__, model_id, *args, **kwargs)
 
-    def find(self):
-        return storage.find(self)
-
-
+    @transaction
+    def find(self, *args, **kwargs):
+        return storage.find(self.__class__, *args, **kwargs)

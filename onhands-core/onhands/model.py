@@ -3,7 +3,7 @@ class Model(object):
 
     def put(self):
         if not hasattr(self, 'hooks'):
-            return True 
+            return True
 
         final_result = True
         for hook in self.hooks:
@@ -25,7 +25,7 @@ class Model(object):
 
     def delete(self):
         if not hasattr(self, 'hooks'):
-            return True 
+            return True
 
         final_result = True
         for hook in self.hooks:
@@ -39,9 +39,8 @@ class Model(object):
                     break
             except NotImplementedError:
                 continue
-            
+
         if not final_result:
             raise Exception('The hook %s.before_delete didnt return True' % (instance.__class__.__name__,))
 
         return True
-
