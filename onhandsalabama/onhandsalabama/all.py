@@ -38,4 +38,7 @@ class AlabamaModel(BaseModel, Model):
     def get(self, model_id):
         return storage.get(self, model_id)
 
-AlabamaModel.find = storage.find
+    def find(self):
+        return storage.find(self)
+
+

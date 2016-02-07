@@ -3,7 +3,7 @@ import unittest, requests, json
 
 
 def jsonify(data):
-    return json.loads(data)
+    return json.dumps(data)
 
 
 class TestIntegration(unittest.TestCase):
