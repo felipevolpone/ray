@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="onhands-alabama",
-    version="0.0.4",
+    version="0.0.5",
     author="Felipe Volpone",
     author_email="felipevolpone@gmail.com",
     description=(""),
