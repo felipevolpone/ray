@@ -11,9 +11,17 @@ class TestIntegration(unittest.TestCase):
     def test_api(self):
         resp = requests.post('http://localhost:8080/api/user',
                              data=jsonify({'name': 'felipe', 'age': 23}))
+        returned = resp.json()
+        uuid = returned['result']['uuid']
+        self.assertEqual('felipe', returned['result']['name'])
+        self.assertEqual(23, returned['result']['age'])
         self.assertEqual(200, resp.status_code)
 
         resp = requests.get('http://localhost:8080/api/user')
-        print resp.content
-        print dir(resp)
         self.assertEqual(200, resp.status_code)
+        returned = resp.json()
+
+        self.assertEqual(1, len(returned['result']))
+        self.assertEqual('felipe', returned['result'][0]['name'])
+        self.assertEqual(23, returned['result'][0]['age'])
+        self.assertEqual(uuid, returned['result'][0]['uuid'])
