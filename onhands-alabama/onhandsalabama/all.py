@@ -29,7 +29,7 @@ class AlabamaModel(BaseModel, Model):
 
     @transaction
     def get(self, model_id, *args, **kwargs):
-        return storage.get(self.__class__, model_id, *args, **kwargs)
+        return storage.get(self.__class__, uuid=model_id, *args, **kwargs)
 
     @transaction
     def find(self, *args, **kwargs):
