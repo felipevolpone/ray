@@ -12,10 +12,11 @@ Python on Hands is a framework that helps you to deliver well designed software 
 Create a model and then decorated it with the endpoint decorator.
 ```python
 from onhands.endpoint import endpoint
-from alabama import BaseModel, StringProperty, IntegerProperty
+from onhandsalabama import AlabamaModel
+from alabama import StringProperty, IntegerProperty
 
 @endpoint('/user')
-class UserModel(BaseModel):
+class UserModel(AlabamaModel):
     name = StringProperty()
     age = IntegerProperty()
 ```
@@ -31,7 +32,7 @@ Now, you have the http methods to interact with your model using the urls:
 
 
 ### Hooks
-Hooks are really usefull to add validations in different moments of your application. Hook is a class that connect with your model and will be executed **before save the model, after the model be saved or before the model be deleted**.
+Hooks are really useful to add validations in different moments of your application. Hook is a class that connect with your model and will be executed **before save the model, after the model be saved or before the model be deleted**.
 ```python
 from onhands.hooks import Hook
 
@@ -44,8 +45,8 @@ class AgeValidationHook(Hook):
 @endpoint('/user')
 class UserModel(Model):
     hooks = [AgeValidationHook]
-    name = ndb.StringProperty()
-    age = ndb.IntegerProperty()
+    name = StringProperty()
+    age = IntegerProperty()
 ```
 | Available Hooks |
 | --------------- |
@@ -70,8 +71,8 @@ class ActionUser(ActionAPI):
         storage.put(user)
 ```
 
-### Command line
-OnHands runs a WSGI server to serve your application. Also, you can just run the command bellow and starting writing your business rules. The option *--wsgifile*, must be used to tell to OnHands in which file it should find your *application*.
+### Running server
+OnHands runs a WSGI server to serve your application. Also, you can just run the command bellow and starting writing your business rules. The option *--wsgifile*, must be used to tell to OnHands in which file it should find your *application* scope.
 
 ```python
 # app.py file
@@ -92,7 +93,14 @@ OnHands works perfectly with [Alabama](http://github.com/felipevolpone/alabama_o
 - No!
 
 ## Development
-To run the tests
+**To run the tests**
 ```bash
 py.test tests/
 ```
+
+## TO DO
+[ ] Authentication
+[ ] Decorators to return Content-Type: html and csv.
+[ ] Request Middleware
+[ ] Google App Engine Integration
+[ ] API versions
