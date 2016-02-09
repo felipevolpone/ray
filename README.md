@@ -53,10 +53,10 @@ class UserModel(Model):
 |  before_save    |  
 
 
-Then, if you call the .put() method of usermodel and the user doesn't has age bigger than 18, an Exception will be raised.
+Then, if you call the .put() method of UserModel and the user doesn't has age bigger than 18, an Exception will be raised.
 
 ### Actions
-Actions provide a simple way to you create behavior in your models through your api.
+Actions provide a simple way to you create behavior in your models through your api. After writing the code bellow, you can use the url */api/user/< id >/activate* to invoke the activate_user method.
 ```python
 from onhands.actions import ActionAPI, action
 
