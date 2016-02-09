@@ -39,6 +39,7 @@ class EndpointManager(object):
 
     def __process_get(self):
         id_param = http.param_at(self.__request.upath_info, 0)
+        print id_param
         if not id_param and not any(self.__request.params):
             return [model.to_json() for model in self.__model().find()]
 
@@ -49,7 +50,7 @@ class EndpointManager(object):
         return self.__model(uuid=id_param).delete().to_json()
 
     def _find_database(self):
-        id_param = str(http.param_at(self.__request.upath_info, 0))
+        id_param = http.param_at(self.__request.upath_info, 0)
         if id_param:
             model = self.__model().get(id_param)
             if not model:

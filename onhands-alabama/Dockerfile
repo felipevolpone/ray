@@ -18,10 +18,4 @@ RUN sudo service postgresql start &&\
 
 RUN sudo pip install alabama requests pytest
 
-RUN git clone https://github.com/felipevolpone/onhands.git
-WORKDIR /home/onhands-alabama/onhands/onhands-core
-RUN sudo pip install --editable .
-WORKDIR /home/onhands-alabama/onhands/onhands-alabama
-RUN sudo pip install --editable .
-
 WORKDIR /home/onhands-test

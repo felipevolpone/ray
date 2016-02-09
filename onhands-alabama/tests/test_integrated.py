@@ -26,8 +26,7 @@ class TestIntegration(unittest.TestCase):
         self.assertEqual(23, returned['result'][0]['age'])
         self.assertEqual(uuid, returned['result'][0]['uuid'])
 
-        print uuid
-        resp = requests.get('http://localhost:8080/api/user/'+uuid)
+        resp = requests.get('http://localhost:8080/api/user/' + uuid)
         # returned = resp.json()
         print resp.content
         self.assertEqual(201, resp.status_code)

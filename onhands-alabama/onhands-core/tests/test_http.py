@@ -13,6 +13,3 @@ class TestHttp(unittest.TestCase):
 
         request = Request.blank('api/user')
         self.assertEqual(None, param_at(request.upath_info, 0))
-
-        request = Request.blank('/api/user/fc19dfc03e8344db8058ebc44a2065c6')
-        self.assertEqual('fc19dfc03e8344db8058ebc44a2065c6', param_at(request.upath_info, 0))
