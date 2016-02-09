@@ -1,4 +1,5 @@
 import json, http
+from . import exceptions
 
 
 def endpoint(url):
@@ -46,14 +47,15 @@ class EndpointManager(object):
 
     def __process_delete(self):
         id_param = http.param_at(self.__request.upath_info, 0)
-        return self.__model(uuid=id_param).delete().to_json()
+        return self.__model(uuid=id_param).delete()
 
     def _find_database(self):
         id_param = str(http.param_at(self.__request.upath_info, 0))
         if id_param:
             model = self.__model().get(id_param)
             if not model:
-                raise Exception('Model not found')
+                raise exceptions.ModelNotFoud()
+
             return model.to_json()
 
         return [m.to_json() for m in self.__model().find(self.__request.params)]

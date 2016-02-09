@@ -1,6 +1,7 @@
 import webapp2, json, importlib
 from endpoint import EndpointManager
 from actions import ActionAPI
+from . import exceptions
 
 
 class OnHandsSettings(object):
@@ -32,7 +33,7 @@ class ApiHandler(webapp2.RequestHandler):
             return url[:-1]
         return url
 
-    def __handle_endpoint(self, full_path):
+    def __call_enpodint(self, full_path):
         full_path = full_path.split('/')
         url_asked = full_path[-1] if len(full_path) == 3 else full_path[-2]
         module = importlib.import_module(OnHandsSettings.ENDPOINT_MODULES)
@@ -43,9 +44,16 @@ class ApiHandler(webapp2.RequestHandler):
                 if model_clazz._endpoint_url == url_asked:
                     return EndpointManager(self.request, self.response, model_clazz).process()
 
+    def __handle_endpoint(self, full_path):
+        try:
+            return self.__call_enpodint(full_path)
+        except exceptions.ModelNotFoud:
+            self.response.status = 404
+            return
+
     def __handle_action(self, url):
         splited = url.split('/')
-        action_url = splited[-1].replace('/','')
+        action_url = splited[-1].replace('/', '')
         model_id = splited[3]
         try:
             return ActionAPI.get_action(action_url, model_id)
