@@ -11,7 +11,6 @@ from tests import storage as storage_test
 alabama_it.storage = storage_test
 
 
-
 @endpoint('/user')
 class UserModel(alabama_it.AlabamaModel):
     name = StringProperty()
