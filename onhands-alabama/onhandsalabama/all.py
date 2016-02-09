@@ -18,14 +18,16 @@ class AlabamaModel(BaseModel, Model):
         return storage.delete(self, uuid=self.uuid, *args, **kwargs)
 
     def put(self, *args, **kwargs):
-        succeed = super(AlabamaModel, self).put()
-        if succeed:
+        can_save = super(AlabamaModel, self).put()
+        if can_save:
             return self.__put(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        succeed = super(AlabamaModel, self).delete()
-        if succeed:
-            return self.__delete(*args, **kwargs)
+        can_delete = super(AlabamaModel, self).delete()
+        if can_delete:
+            deleted = self.__delete(*args, **kwargs)
+            if deleted:
+                return self
 
     @transaction
     def get(self, model_id, *args, **kwargs):
