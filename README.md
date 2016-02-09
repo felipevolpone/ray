@@ -1,6 +1,6 @@
 # Python on Hands
 
-Python on Hands is a framework that helps you to deliver well designed software without been stucked in your framework. On Hands it's a ready to production framework that contains a uWSGI server that can be used in production as well. 
+Python on Hands is a framework that helps you to deliver well designed software without been stucked in your framework. On Hands it's a ready to production framework that contains a uWSGI server that can be used in production as well.
 
 [![Build Status](https://travis-ci.org/felipevolpone/onhands.svg?branch=master)](https://travis-ci.org/felipevolpone/onhands)
 [![Coverage Status](https://coveralls.io/repos/felipevolpone/onhands/badge.svg?branch=master&service=github)](https://coveralls.io/github/felipevolpone/onhands?branch=master)
@@ -69,6 +69,23 @@ class ActionUser(ActionAPI):
         user.activate = True
         storage.put(user)
 ```
+
+### Command line
+OnHands runs a WSGI server to serve your application. Also, you can just run the command bellow and starting writing your business rules. The option *--wsgifile*, must be used to tell to OnHands in which file it should find your *application*.
+
+```python
+# app.py file
+from onhands.wsgi.wsgi import application
+```
+
+```bash
+onhands up --wsgifile=app.py
+```
+
+## Integration with
+
+### Alabama
+OnHands works perfectly with [Alabama](http://github.com/felipevolpone/alabama_orm). You can see an example on onhands-alabama directory.
 
 ## FAQ
 **Is Python On Hands a MVC framework?**
