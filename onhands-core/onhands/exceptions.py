@@ -1,0 +1,3 @@
+
+class ModelNotFoud(Exception):
+    pass
