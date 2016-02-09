@@ -65,7 +65,7 @@ class TestEndpoint(TestMock):
 
         request = Request.blank('/api/user/wrong_uuid', method='GET')
         response = request.get_response(application)
-        self.assertEqual(500, response.status_int)
+        self.assertEqual(404, response.status_int)
 
     def test_put(self):
         self.__create()
@@ -91,7 +91,6 @@ class TestEndpoint(TestMock):
 
         request = Request.blank('/api/user/' + id_created, method='DELETE')
         response = MockResponse(request.get_response(application))
-
         result = response.to_json()
         self.assertEqual(result['result']['uuid'], id_created)
         self.assertEqual(200, response.status_int)

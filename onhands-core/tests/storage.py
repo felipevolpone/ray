@@ -59,6 +59,6 @@ storage.find = find
 def get(cls, uuid):
     global database
     if cls.__class__.__name__ in database:
-        sfor model in database[cls.__class__.__name__]:
+        for model in database[cls.__class__.__name__]:
             if model.uuid == uuid:
                 return model
