@@ -1,7 +1,6 @@
-# uwsgi
+webob
 webapp2
 pytest
 alabama
-webob
 pytest-cov
 click
