@@ -4,8 +4,8 @@ python:
   - 2.7
 
 before_install:
-  - sudo pip install -r onhands-core/requirements.txt
-  - sudo pip install coveralls
+    - sudo pip install coveralls
+    - sudo pip install -r onhands-core/requirements.txt
 
 script:
   - cd onhands-core
