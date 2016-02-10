@@ -10,6 +10,7 @@ before_install:
 script:
   - cd onhands-core
   # - py.test -v tests/ --cov onhands/
+  - sudo pip install webapp2 --upgrade
   - py.test -v tests/
 
 after_success:
