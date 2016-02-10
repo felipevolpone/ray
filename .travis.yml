@@ -8,7 +8,8 @@ before_install:
   - sudo pip install coveralls
 
 script:
-  - cd onhands-core && py.test -v tests/ --cov onhands/
+  - cd onhands-core
+  - py.test -v tests/ --cov onhands/
 
 after_success:
   - coveralls
