@@ -9,7 +9,8 @@ before_install:
 
 script:
   - cd onhands-core
-  - py.test -v tests/ --cov onhands/
+  # - py.test -v tests/ --cov onhands/
+  - py.test -v tests/
 
 after_success:
   - coveralls
