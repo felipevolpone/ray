@@ -1,0 +1,27 @@
+language: python
+
+python:
+  - 2.7
+
+env:
+  global:
+    - EMAIL=shippable@gmail.com
+
+before_install:
+    - sudo pip install coveralls
+
+script:
+  - sudo pip install -r onhands-core/requirements.txt
+  - cd onhands-core
+  - pip freeze
+  - py.test -v tests/
+
+after_success:
+  - coveralls
+
+notifications:
+    email:
+        recipients:
+            - felipevolpone@gmail.com
+        on_success: change
+        on_failure: always
