@@ -47,7 +47,7 @@ class ApiHandler(webapp2.RequestHandler):
     def __handle_endpoint(self, full_path):
         try:
             return self.__call_enpodint(full_path)
-        except exceptions.ModelNotFoud:
+        except exceptions.ModelNotFound:
             self.response.status = 404
             return
 

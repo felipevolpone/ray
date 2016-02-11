@@ -1,3 +1,3 @@
 
-class ModelNotFoud(Exception):
+class ModelNotFound(Exception):
     pass

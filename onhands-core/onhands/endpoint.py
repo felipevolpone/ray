@@ -55,7 +55,7 @@ class EndpointManager(object):
         if id_param:
             model = self.__model().get(id_param)
             if not model:
-                raise exceptions.ModelNotFoud()
+                raise exceptions.ModelNotFound()
 
             return model.to_json()
 
