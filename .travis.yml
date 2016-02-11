@@ -14,9 +14,7 @@ before_install:
 script:
   - cd onhands-core
   - pip freeze
-  # - py.test -v tests/ --cov onhands/
-  - sudo pip install webapp2 --upgrade
-  - py.test -v tests/
+  - py.test -v tests/ --cov onhands/
 
 after_success:
   - coveralls
