@@ -7,7 +7,7 @@ before_install:
     - sudo pip install coveralls
 
 script:
-  - sudo pip install -r onhands-core/requirements.txt
+  - pip install -r onhands-core/requirements.txt
   - cd onhands-core
   - pip freeze
   - py.test -v onhands-core/tests/ --cov onhands-core/onhands
