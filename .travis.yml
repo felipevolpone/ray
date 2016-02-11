@@ -10,7 +10,7 @@ script:
   - pip install -r onhands-core/requirements.txt
   - cd onhands-core
   - pip freeze
-  - py.test -v onhands-core/tests/ --cov onhands-core/onhands
+  - py.test -v tests/ --cov onhands
 
 after_success:
   - coveralls
