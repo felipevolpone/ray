@@ -1,6 +1,30 @@
 
 class Model(object):
 
+    def __init__(self, *args, **kwargs):
+        for k, value in kwargs.items():
+            if k in dir(self):
+                setattr(self, k, value)
+
+    def describe(self):
+        raise NotImplementedError
+
+    def columns(self):
+        raise NotImplementedError
+
+    @classmethod
+    def to_instance(cls, json):
+        return cls(**json)
+
+    def to_json(self):
+        return_json = {}
+
+        for field_name in sorted(self.columns()):
+            value = getattr(self, field_name)
+            return_json[field_name] = value
+
+        return return_json
+
     def put(self):
         if not hasattr(self, 'hooks'):
             return True

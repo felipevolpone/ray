@@ -1,16 +1,26 @@
-from onhands.api import OnHandsSettings
+import unittest
+
 from webapp2 import Request
+
+from onhands.api import OnHandsSettings
 from onhands.wsgi.wsgi import application
 from onhands.actions import ActionAPI, action
-from onhands.model import Model
 from onhands.endpoint import endpoint
-from alabama.models import StringProperty
-from tests.mock import TestMock, MockResponse
+
+from tests.model_interface import ModelInterface
+from tests.mock import MockResponse
 
 
 @endpoint('/user')
-class UserModel(Model):
-    name = StringProperty()
+class UserModel(ModelInterface):
+
+    def __init__(self, *a, **k):
+        self.name = None
+        self.age = None
+        super(UserModel, self).__init__(*a, **k)
+
+    def describe(self):
+        return {'name': str, 'age': int}
 
 
 any_number = 10
@@ -27,22 +37,15 @@ class ActionUser(ActionAPI):
         return 'activate_user'
 
 
-class TestAction(TestMock):
+class TestAction(unittest.TestCase):
 
     def test_get_action(self):
         self.assertEqual('activate_user', ActionAPI.get_action('activate', '123'))
 
-    def __create(self):
-        OnHandsSettings.ENDPOINT_MODULES = 'tests.test_endpoint'
-        request = Request.blank('/api/user', method='POST')
-        request.json = {"name": "felipe"}
-        return MockResponse(request.get_response(application))
-
     def test_action(self):
-        response = self.__create()
-        user_id = response.to_json()['result']['uuid']
+        user_id = '12312'
 
-        request = Request.blank('/api/user/'+user_id+'/activate', method='POST')
+        request = Request.blank('/api/user/' + user_id + '/activate', method='POST')
         response = request.get_response(application)
         self.assertEqual(200, response.status_int)
 

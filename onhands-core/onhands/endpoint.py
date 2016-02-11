@@ -40,6 +40,7 @@ class EndpointManager(object):
 
     def __process_get(self):
         id_param = http.param_at(self.__request.upath_info, 0)
+        # TODO implement find with params
         if not id_param and not any(self.__request.params):
             return [model.to_json() for model in self.__model().find()]
 
@@ -47,7 +48,7 @@ class EndpointManager(object):
 
     def __process_delete(self):
         id_param = http.param_at(self.__request.upath_info, 0)
-        return self.__model(uuid=id_param).delete().to_json()
+        return self.__model(id=id_param).delete().to_json()
 
     def _find_database(self):
         id_param = str(http.param_at(self.__request.upath_info, 0))
@@ -58,4 +59,5 @@ class EndpointManager(object):
 
             return model.to_json()
 
+        # FIXME change self.__request.params to a dict
         return [m.to_json() for m in self.__model().find(self.__request.params)]
