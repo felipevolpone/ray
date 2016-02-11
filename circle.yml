@@ -10,10 +10,6 @@ dependencies:
 
 test:
     override:
-        - ls -la
-        - cd onhands-core
-        - ls -la
-        - cd onhands-core
-        - py.test tests/
+        - py.test onhands-core/tests/ --cov onhands-core/onhands/
     post:
         - coveralls
