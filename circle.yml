@@ -10,4 +10,5 @@ dependencies:
 test:
     override:
         - cd onhands-core;
+        - ls -la
         - py.test tests/
