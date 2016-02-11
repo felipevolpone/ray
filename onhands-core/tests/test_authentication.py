@@ -10,6 +10,13 @@ class MyAuth(Authentication):
         return {'username': username, 'password': password}
 
 
+class MyAuthFail(Authentication):
+
+    @classmethod
+    def authenticate(cls, username, password):
+        return None
+
+
 class TestAuthentication(unittest.TestCase):
 
     def test_login(self):
@@ -18,3 +25,6 @@ class TestAuthentication(unittest.TestCase):
 
         with self.assertRaises(Exception):
             Authentication.login('admin', 'admin')
+
+        with self.assertRaises(Exception):
+            MyAuthFail.login('admin', 'admin')
