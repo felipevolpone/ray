@@ -5,7 +5,7 @@ machine:
 
 dependencies:
     pre:
-        - sudo pip install coveralls
+        - sudo pip install python-coveralls
         - sudo pip install -r onhands-core/requirements.txt
 
 test:
