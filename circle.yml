@@ -1,0 +1,10 @@
+
+
+dependencies:
+    pre:
+        - pip install -r onhands-core/requirements.txt
+
+test:
+    override:
+        - cd onhans-core;
+        - py.test tests/
