@@ -8,11 +8,15 @@ env:
     - EMAIL=shippable@gmail.com
 
 before_install:
-  - sudo pip install -r requirements.txt
-  - sudo pip install coveralls
+    - sudo pip install coveralls
+    - sudo pip install -r onhands-core/requirements.txt
 
 script:
-  - py.test -v tests/ --cov onhands/
+  - cd onhands-core
+  - pip freeze
+  # - py.test -v tests/ --cov onhands/
+  - sudo pip install webapp2 --upgrade
+  - py.test -v tests/
 
 after_success:
   - coveralls
@@ -23,4 +27,3 @@ notifications:
             - felipevolpone@gmail.com
         on_success: change
         on_failure: always
-
