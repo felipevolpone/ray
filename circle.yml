@@ -9,5 +9,5 @@ dependencies:
 
 test:
     override:
-        - cd onhans-core;
+        - cd onhands-core;
         - py.test tests/
