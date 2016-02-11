@@ -51,7 +51,7 @@ class UserModel(Model):
 | Available Hooks |
 | --------------- |
 |  before_delete  |
-|  before_save    |  
+|  before_save    |
 
 
 Then, if you call the .put() method of UserModel and the user doesn't has age bigger than 18, an Exception will be raised.
@@ -100,7 +100,10 @@ py.test tests/
 
 ## TO DO
 [ ] Authentication
-[ ] Decorators to return Content-Type: html and csv.
-[ ] Request Middleware
-[ ] Google App Engine Integration
+[ ] Request Middleware (like Django)
+[ ] Google App Engine
 [ ] API versions
+[ ] Python 3 compability
+[ ] HTTP Task Queue
+[ ] HTTP Mail Service
+[ ] Decorators to return Content-Type: html and csv.
