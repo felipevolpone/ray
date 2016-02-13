@@ -20,8 +20,7 @@ script:
     - py.test test_integrated.py
 
     # onhands-core build
-    - cd ../onhands-core
-    - pip install --editable .
+    - cd ../../onhands-core
     - py.test -v tests/ --cov onhands
 
 

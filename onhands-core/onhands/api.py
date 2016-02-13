@@ -50,6 +50,9 @@ class ApiHandler(webapp2.RequestHandler):
         except exceptions.ModelNotFound:
             self.response.status = 404
             return
+        except exceptions.Forbidden:
+            self.response.status = 403
+            return
 
     def __handle_action(self, url):
         splited = url.split('/')
