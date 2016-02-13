@@ -11,7 +11,10 @@ script:
   - cd onhands-core
   - pip freeze
   - py.test -v tests/ --cov onhands
-  - cd ../onhands-sqlalchemy/tests/
+  - cd ../onhands-sqlalchemy/
+  - pip install --editable .
+  - pip install requests
+  - cd tests/
   - ./run_tests.sh
 
 after_success:
