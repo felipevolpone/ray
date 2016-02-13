@@ -4,26 +4,28 @@ python:
   - 2.7
 
 before_install:
-    - sudo pip install coveralls
+    - pip install coveralls
+    - pip install python-coveralls
 
 script:
-  # onhands-core build
-  - pip install -r onhands-core/requirements.txt
-  - cd onhands-core
-  - pip install --editable .
-  - py.test -v tests/ --cov onhands
+    - pip install -r onhands-core/requirements.txt
 
-  # onhands-sqlalchemy build
-  - cd ../onhands-sqlalchemy/
-  - pip install --editable .
-  - pip install requests
-  - cd tests/
-  - onhands up --wsgifile app.py &
-  - sleep 2
-  - py.test test_integrated.py
+    # onhands-sqlalchemy build
+    - cd ../onhands-sqlalchemy/
+    - pip install --editable .
+    - pip install requests
+    - cd tests/
+    - onhands up --wsgifile app.py &
+    - sleep 2
+    - py.test test_integrated.py
+
+    # onhands-core build
+    - cd onhands-core
+    - pip install --editable .
+    - py.test -v tests/ --cov onhands
+
 
 after_success:
-  - cd onhands-core/
   - coveralls
 
 notifications:
