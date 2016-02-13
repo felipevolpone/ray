@@ -18,7 +18,11 @@ class AlchemyModel(Model):
         return sorted([column.key for column in class_mapper(cls).columns])
 
     def put(self):
-        self._session.add(self)
+        if self.id:
+            self._session.query(self.__class__).filter(self.__class__.id == self.id).update(self.to_json())
+        else:
+            self._session.add(self)
+
         self._session.commit()
         return self
 

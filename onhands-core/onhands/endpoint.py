@@ -28,7 +28,11 @@ class EndpointManager(object):
         return methods[http_verb]()
 
     def __update_entity(self):
+        id_param = http.param_at(self.__request.upath_info, 0)
         entity_json = json.loads(self.__request.body)
+        if id_param:
+            entity_json['id'] = id_param
+
         entity = self.__model.to_instance(entity_json)
         return entity.put().to_json()
 
@@ -42,14 +46,20 @@ class EndpointManager(object):
         id_param = http.param_at(self.__request.upath_info, 0)
 
         # TODO implement find with params
-        if not id_param and not any(self.__request.params):
-            return [model.to_json() for model in self.__model().find()]
+        try:
+            if not id_param and not any(self.__request.params):
+                return [model.to_json() for model in self.__model().find()]
 
-        return self._find_database(id_param)
+            return self._find_database(id_param)
+        except:
+            raise exceptions.ModelNotFound()
 
     def __process_delete(self):
         id_param = http.param_at(self.__request.upath_info, 0)
-        return self.__model(id=id_param).delete().to_json()
+        try:
+            return self.__model(id=id_param).delete().to_json()
+        except:
+            raise exceptions.ModelNotFound()
 
     def _find_database(self, id_param):
         if id_param:

@@ -20,6 +20,7 @@ class TestIntegrated(unittest.TestCase):
         return requests.post(build_url(), data=data)
 
     def test_api(self):
+        # test post create
         resp = self._create(name='felipe', age=22)
         result = json.loads(resp.content)['result']
         self.assertEqual(result['name'], 'felipe')
@@ -27,19 +28,37 @@ class TestIntegrated(unittest.TestCase):
         self.assertIsNotNone(result['id'])
         id_created = str(result['id'])
 
+        self._create(name='john', age=26)
+
+        # test get all
         resp = requests.get(build_url())
         result = json.loads(resp.content)['result']
         self.assertEqual(result[0]['name'], 'felipe')
         self.assertEqual(result[0]['age'], 22)
         self.assertIsNotNone(result[0]['id'])
+        self.assertEqual(result[1]['name'], 'john')
 
-        self._create(name='john', age=26)
-
+        # test get by id
         resp = requests.get(build_url(id_created))
         result = json.loads(resp.content)['result']
         self.assertEqual('felipe', result['name'])
         self.assertEqual(22, result['age'])
 
-        resp = requests.delete(build_url(id_created))
+        # test update
+        data = json.dumps({'name': 'felipe volpone'})
+        resp = requests.put(build_url(id_created), data=data)
+        self.assertEqual(200, resp.status_code)
+
+        resp = requests.get(build_url(id_created))
         result = json.loads(resp.content)['result']
-        self.assertEqual(id_created, result['id'])
+        self.assertEqual('felipe volpone', result['name'])
+        self.assertEqual(22, result['age'])
+        self.assertEqual(int(id_created), result['id'])
+
+        # test delete
+        resp = requests.delete(build_url(id_created))
+        self.assertEqual(200, resp.status_code)
+
+        # test get
+        resp = requests.get(build_url(id_created))
+        self.assertEqual(404, resp.status_code)

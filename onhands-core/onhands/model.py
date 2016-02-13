@@ -21,7 +21,8 @@ class Model(object):
 
         for field_name in sorted(self.columns()):
             value = getattr(self, field_name)
-            return_json[field_name] = value
+            if value:
+                return_json[field_name] = value
 
         return return_json
 
