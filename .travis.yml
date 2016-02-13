@@ -22,7 +22,6 @@ script:
   - sleep 2
   - py.test test_integrated.py
 
-
 after_success:
   - coveralls
 
