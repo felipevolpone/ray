@@ -99,8 +99,9 @@ py.test tests/
 ```
 
 ## TO DO
+[ ] SQLAlchemy Integration - Where param at url
+[ ] SQLAlchemy Integration
 [ ] Authentication
-[ ] Python Active Record Integration
 [ ] Request Middleware (like Django)
 [ ] Google App Engine
 [ ] HTTP Task Queue

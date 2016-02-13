@@ -1,3 +1,6 @@
+import base64
+from onhands import authentication_helper
+
 
 class Authentication(object):
 
@@ -13,14 +16,15 @@ class Authentication(object):
     def authenticate(cls, username, password):
         """ Here you can implement select in the database
             to garantee that the username and the password
-            are from the same user
+            are from the same user. This method must return
+            a dict
         """
         raise NotImplementedError
 
     @classmethod
     def sign_cookie(cls, user_json):
-        # remove password
-        pass
+        cookie_name, cookie_value = authentication_helper.sign_cookie(user_json)
+        return cookie_name, base64.b64encode(cookie_value)
 
     @classmethod
     def is_loged(cls, user_json):

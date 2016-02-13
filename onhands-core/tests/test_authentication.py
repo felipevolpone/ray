@@ -1,6 +1,7 @@
 
 import unittest
 from onhands.authentication import Authentication
+from onhands import authentication_helper
 
 
 class MyAuth(Authentication):
@@ -28,3 +29,7 @@ class TestAuthentication(unittest.TestCase):
 
         with self.assertRaises(Exception):
             MyAuthFail.login('admin', 'admin')
+
+    def test_cookie_sign(self):
+        _, cookie_value = Authentication.sign_cookie({'username': 'felipe', 'password': '123'})
+        self.assertTrue(authentication_helper._validate(cookie_value))
