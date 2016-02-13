@@ -7,11 +7,13 @@ before_install:
     - sudo pip install coveralls
 
 script:
+  # onhands-core build
   - pip install -r onhands-core/requirements.txt
   - cd onhands-core
   - pip install --editable .
   - py.test -v tests/ --cov onhands
 
+  # onhands-sqlalchemy build
   - cd ../onhands-sqlalchemy/
   - pip install --editable .
   - pip install requests
