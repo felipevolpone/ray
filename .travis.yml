@@ -23,6 +23,7 @@ script:
   - py.test test_integrated.py
 
 after_success:
+  - cd onhands-core/
   - coveralls
 
 notifications:
