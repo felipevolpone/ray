@@ -1,3 +1,4 @@
+#/bin/bash -xe
 
 onhands up --wsgifile app.py &
 sleep 1
