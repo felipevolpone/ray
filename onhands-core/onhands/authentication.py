@@ -3,6 +3,14 @@ import base64
 from onhands import authentication_helper
 
 
+def protected():
+    def decorator(func):
+        def inner(*args, **kwargs):
+            pass
+        return inner
+    return decorator
+
+
 class Authentication(object):
 
     @classmethod

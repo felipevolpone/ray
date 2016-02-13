@@ -17,7 +17,7 @@ class UserModel(ModelInterface):
         self.name = None
         self.age = None
         super(UserModel, self).__init__(*a, **k)
-    
+
     @classmethod
     def describe(cls):
         return {'name': str, 'age': int}
@@ -28,7 +28,6 @@ class TestEndpoint(unittest.TestCase):
     def setUp(self):
         OnHandsSettings.ENDPOINT_MODULES = 'tests.test_endpoint'
 
-    @unittest.skip('skip')
     def test_404(self):
         request = Request.blank('/api/', method='GET')
         response = request.get_response(application)
@@ -70,3 +69,16 @@ class TestEndpoint(unittest.TestCase):
         request = Request.blank('/api/user/' + uuid_created, method='DELETE')
         response = request.get_response(application)
         self.assertEqual(200, response.status_int)
+
+
+@endpoint('/person')
+class PersonModel(ModelInterface):
+    pass
+
+
+class TestProctedEndpoint(unittest.TestCase):
+
+    def test_protected(self):
+        req = Request.blank('/api/person', method='GET')
+        response = req.get_response(application)
+        self.assertEqual(404, response.status_int)
