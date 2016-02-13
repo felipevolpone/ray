@@ -18,7 +18,7 @@ OnHandsSettings.ENDPOINT_MODULES = 'app'
 class User(AlchemyModel, Base):
     __tablename__ = 'tb_user'
     __engine__ = engine
-    
+
     id = Column(Integer, primary_key=True)
     name = Column(String)
     age = Column(Integer)

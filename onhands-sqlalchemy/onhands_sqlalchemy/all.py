@@ -1,5 +1,4 @@
 from sqlalchemy.orm import class_mapper
-from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from onhands.model import Model
 
@@ -13,10 +12,10 @@ class AlchemyModel(Model):
 
     def describe(self):
         pass
-   
+
     @classmethod
     def columns(cls):
-       return sorted([column.key for column in class_mapper(cls).columns])
+        return sorted([column.key for column in class_mapper(cls).columns])
 
     def put(self):
         self._session.add(self)
@@ -24,6 +23,9 @@ class AlchemyModel(Model):
         return self
 
     def find(self, *args, **kwargs):
-        a = self._session.query(self.__class__).all()
-        print a
-        return a
+        return self._session.query(self.__class__).all()
+
+    def delete(self, *args, **kwargs):
+        self._session.query(self.__class__).filter(self.__class__.id == self.id).delete()
+        self._session.commit()
+        return self
