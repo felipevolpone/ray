@@ -6,7 +6,7 @@ from onhands import exceptions
 
 def protected(func):
     def inner(*args, **kwargs):
-        func(*args, **kwargs)
+        return func(*args, **kwargs)
         raise exceptions.Forbidden
     return inner
 

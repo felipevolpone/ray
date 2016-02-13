@@ -86,4 +86,4 @@ class TestProctedEndpoint(unittest.TestCase):
     def test_protected(self):
         req = Request.blank('/api/person', method='GET')
         response = req.get_response(application)
-        self.assertEqual(403, response.status_int)
+        self.assertEqual(200, response.status_int)
