@@ -18,7 +18,10 @@ script:
   - pip install --editable .
   - pip install requests
   - cd tests/
-  - ./run_tests.sh
+  - onhands up --wsgifile app.py &
+  - sleep 2
+  - py.test test_integrated.py
+
 
 after_success:
   - coveralls
