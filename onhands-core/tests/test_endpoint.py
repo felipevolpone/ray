@@ -78,6 +78,9 @@ class PersonModel(ModelInterface):
 
 class TestProctedEndpoint(unittest.TestCase):
 
+    def setUp(self):
+        OnHandsSettings.ENDPOINT_MODULES = 'tests.test_endpoint'
+
     def test_protected(self):
         req = Request.blank('/api/person', method='GET')
         response = req.get_response(application)
