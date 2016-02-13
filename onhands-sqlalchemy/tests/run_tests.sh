@@ -1,5 +1,5 @@
 
-onhands up --wsgifile app.py & 
+onhands up --wsgifile app.py &
 sleep 1
 py.test test_integrated.py
 

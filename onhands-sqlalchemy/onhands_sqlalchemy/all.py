@@ -29,3 +29,6 @@ class AlchemyModel(Model):
         self._session.query(self.__class__).filter(self.__class__.id == self.id).delete()
         self._session.commit()
         return self
+
+    def get(self, *args, **kwargs):
+        return self._session.query(self.__class__).filter(self.__class__.id == self.id).one()

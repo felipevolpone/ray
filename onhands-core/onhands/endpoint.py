@@ -40,20 +40,20 @@ class EndpointManager(object):
 
     def __process_get(self):
         id_param = http.param_at(self.__request.upath_info, 0)
+
         # TODO implement find with params
         if not id_param and not any(self.__request.params):
             return [model.to_json() for model in self.__model().find()]
 
-        return self._find_database()
+        return self._find_database(id_param)
 
     def __process_delete(self):
         id_param = http.param_at(self.__request.upath_info, 0)
         return self.__model(id=id_param).delete().to_json()
 
-    def _find_database(self):
-        id_param = str(http.param_at(self.__request.upath_info, 0))
+    def _find_database(self, id_param):
         if id_param:
-            model = self.__model().get(id_param)
+            model = self.__model(id=id_param).get()
             if not model:
                 raise exceptions.ModelNotFound()
 
