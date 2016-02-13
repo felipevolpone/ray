@@ -33,3 +33,4 @@ class TestAuthentication(unittest.TestCase):
     def test_cookie_sign(self):
         _, cookie_value = Authentication.sign_cookie({'username': 'felipe', 'password': '123'})
         self.assertTrue(authentication_helper._validate(cookie_value))
+        self.assertTrue(Authentication.is_loged(cookie_value))

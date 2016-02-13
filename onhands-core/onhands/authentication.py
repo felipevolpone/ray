@@ -27,5 +27,5 @@ class Authentication(object):
         return cookie_name, base64.b64encode(cookie_value)
 
     @classmethod
-    def is_loged(cls, user_json):
-        pass
+    def is_loged(cls, cookie_value):
+        return authentication_helper._validate(cookie_value)
