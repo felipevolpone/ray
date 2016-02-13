@@ -1,0 +1,4 @@
+[run]
+omit =
+    */onhands-core/onhands/scripts/*
+    */onhands-core/onhands/commandline.py

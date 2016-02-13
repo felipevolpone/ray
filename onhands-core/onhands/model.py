@@ -26,33 +26,32 @@ class Model(object):
 
         return return_json
 
+    def _hasnt_hooks(self):
+        return not hasattr(self, 'hooks')
+
     def put(self):
-        if not hasattr(self, 'hooks'):
+        if self._hasnt_hooks():
             return True
 
-        final_result = True
         for hook in self.hooks:
             instance = hook()
 
             # this is to make AND with the result of all hoks
             # the flow just continue if the result of all hoks is true
+
             try:
                 if not instance.before_save(self):
-                    final_result = False
-                    break
+                    raise Exception('The hook %s.before_save didnt return True' % (instance.__class__.__name__,))
+
             except NotImplementedError:
                 continue
-
-        if not final_result:
-            raise Exception('The hook %s.before_save didnt return True' % (instance.__class__.__name__,))
 
         return True
 
     def delete(self):
-        if not hasattr(self, 'hooks'):
+        if self._hasnt_hooks():
             return True
 
-        final_result = True
         for hook in self.hooks:
             instance = hook()
 
@@ -60,12 +59,8 @@ class Model(object):
             # the flow just continue if the result of all hoks is true
             try:
                 if not instance.before_delete(self):
-                    final_result = False
-                    break
+                    raise Exception('The hook %s.before_delete didnt return True' % (instance.__class__.__name__,))
             except NotImplementedError:
                 continue
-
-        if not final_result:
-            raise Exception('The hook %s.before_delete didnt return True' % (instance.__class__.__name__,))
 
         return True
