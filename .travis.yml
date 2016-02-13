@@ -11,7 +11,7 @@ script:
     - pip install -r onhands-core/requirements.txt
 
     # onhands-sqlalchemy build
-    - cd ../onhands-sqlalchemy/
+    - cd onhands-sqlalchemy/
     - pip install --editable .
     - pip install requests
     - cd tests/
@@ -20,7 +20,7 @@ script:
     - py.test test_integrated.py
 
     # onhands-core build
-    - cd onhands-core
+    - cd ../onhands-core
     - pip install --editable .
     - py.test -v tests/ --cov onhands
 
