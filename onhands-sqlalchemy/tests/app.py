@@ -9,18 +9,19 @@ from onhands.api import OnHandsSettings
 
 
 Base = declarative_base()
+engine = create_engine('sqlite:///example.db')
 
 
-OnHandsSettings.ENDPOINT_MODULES = 'tests.test_endpoint'
+OnHandsSettings.ENDPOINT_MODULES = 'app'
 
 @endpoint('/user')
 class User(AlchemyModel, Base):
     __tablename__ = 'tb_user'
+    __engine__ = engine
     
     id = Column(Integer, primary_key=True)
     name = Column(String)
     age = Column(Integer)
 
 
-engine = create_engine('sqlite:///example.db')
 Base.metadata.create_all(engine)

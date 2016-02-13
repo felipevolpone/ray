@@ -21,9 +21,11 @@ class ModelInterface(Model):
         return self
 
     def get(self, *args, **kwargs):
+        print 'EHUEHUEHU'
         return self
 
     def find(self, *args, **kwargs):
+        print 'HAUSHUASDHUAHS'
         return [self]
 
     def delete(self, *args, **kwargs):

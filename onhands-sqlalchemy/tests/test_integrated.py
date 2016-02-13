@@ -12,4 +12,16 @@ class TestIntegrated(unittest.TestCase):
     def test_api(self):
         data = json.dumps({'age': 22, 'name': 'felipe'})
         resp = requests.post('http://localhost:8080/api/user', data=data)   
-        self.assertEqual({u'result': {u'age': 22, u'name': 'felipe'}}, resp.json())
+        result = json.loads(resp.content)['result']
+        self.assertEqual(result['name'], 'felipe')
+        self.assertEqual(result['age'], 22)
+        self.assertIsNotNone(result['id'])
+
+
+        resp = requests.get('http://localhost:8080/api/user')
+        print resp.json()
+        result = json.loads(resp.content)['result']
+        self.assertEqual(result[0]['name'], 'felipe')
+        self.assertEqual(result[0]['age'], 22)
+        self.assertIsNotNone(result[0]['id'])
+
