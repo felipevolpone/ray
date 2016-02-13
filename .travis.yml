@@ -9,6 +9,9 @@ before_install:
 
 script:
     - pip install -r onhands-core/requirements.txt
+    - cd onhands-core/
+    - pip install --editable .
+    - cd ..
 
     # onhands-sqlalchemy build
     - cd onhands-sqlalchemy/
