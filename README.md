@@ -100,10 +100,12 @@ py.test tests/
 
 ## TO DO
 [ ] Authentication
+[ ] Python Active Record Integration
 [ ] Request Middleware (like Django)
 [ ] Google App Engine
-[ ] API versions
-[ ] Python 3 compability
 [ ] HTTP Task Queue
 [ ] HTTP Mail Service
+[ ] SQLAlchemy Integration
+[ ] API versions
+[ ] Python 3 compability
 [ ] Decorators to return Content-Type: html and csv.

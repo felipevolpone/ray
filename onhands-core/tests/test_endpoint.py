@@ -17,8 +17,9 @@ class UserModel(ModelInterface):
         self.name = None
         self.age = None
         super(UserModel, self).__init__(*a, **k)
-
-    def describe(self):
+    
+    @classmethod
+    def describe(cls):
         return {'name': str, 'age': int}
 
 

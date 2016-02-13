@@ -12,8 +12,9 @@ class ModelInterface(Model):
         super(ModelInterface, self).__init__(*a, **k)
         self.id = None
 
-    def columns(self):
-        return self.describe().keys()
+    @classmethod
+    def columns(cls):
+        return cls.describe().keys()
 
     def put(self, *args, **kwargs):
         self.uuid = gen_uuid()
