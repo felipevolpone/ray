@@ -11,6 +11,8 @@ script:
   - cd onhands-core
   - pip freeze
   - py.test -v tests/ --cov onhands
+  - cd ../onhands-sqlalchemy/tests/
+  - ./run_tests.sh
 
 after_success:
   - coveralls
