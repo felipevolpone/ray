@@ -35,6 +35,21 @@ class ActionUser(ActionAPI):
         return 'activate_user'
 
 
+@endpoint('/person')
+class PersonModel(ModelInterface):
+    pass
+
+
+class ActionPerson(ActionAPI):
+    __model__ = PersonModel
+
+    @action("/activate")
+    def activate(self, model_id):
+        global any_number
+        any_number = model_id
+        return 'activate_user'
+
+
 class TestAction(unittest.TestCase):
 
     def test_get_action(self):
@@ -44,6 +59,14 @@ class TestAction(unittest.TestCase):
         user_id = '12312'
 
         request = Request.blank('/api/user/' + user_id + '/activate', method='POST')
+        response = request.get_response(application)
+        self.assertEqual(200, response.status_int)
+
+        global any_number
+        self.assertEqual(user_id, any_number)
+
+        user_id = '498230'
+        request = Request.blank('/api/person/' + user_id + '/activate', method='POST')
         response = request.get_response(application)
         self.assertEqual(200, response.status_int)
 

@@ -25,6 +25,7 @@ class ActionAPI(object):
 
             if clazz.__model__._endpoint_url == model_name:
                 action_class = clazz
+                break
 
         if not action_class:
             raise exceptions.MethodNotFound()
