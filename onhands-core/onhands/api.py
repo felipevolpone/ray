@@ -28,10 +28,10 @@ class ApiHandler(webapp2.RequestHandler):
             return self.process(url)
         except exceptions.ModelNotFound:
             self.response.status = 404
-            return
+        except exceptions.MethodNotFound:
+            self.response.status = 404
         except exceptions.Forbidden:
             self.response.status = 403
-            return
 
     def __fix_url(self, url):
         if url[-1] == '/':
@@ -51,10 +51,7 @@ class ApiHandler(webapp2.RequestHandler):
         action_url = http.param_at(url, -1)
         model_name = http.param_at(url, 2)
         model_id = http.param_at(url, 3)
-        try:
-            return ActionAPI.get_action(model_name, action_url, model_id)
-        except:
-            self.response.status = 404
+        return ActionAPI.get_action(model_name, action_url, model_id)
 
     def is_endpoint(self, full_path):
         return len(full_path.split('/')) <= 4 and len(full_path.split('/')) > 2

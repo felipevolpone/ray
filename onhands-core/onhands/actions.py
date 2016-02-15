@@ -18,10 +18,10 @@ class ActionAPI(object):
     @classmethod
     def get_action(cls, model_name, url, model_id):
         action_class = None
-        for clazz in cls.__subclasses__():
 
+        for clazz in cls.__subclasses__():
             if not hasattr(clazz, '__model__'):
-                raise exceptions.ActionDoNotHaveModel
+                raise exceptions.ActionDoNotHaveModel()
 
             if clazz.__model__._endpoint_url == model_name:
                 action_class = clazz

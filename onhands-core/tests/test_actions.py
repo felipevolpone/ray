@@ -77,3 +77,23 @@ class TestAction(unittest.TestCase):
         request = Request.blank('/api/user/123/dontexists', method='POST')
         response = request.get_response(application)
         self.assertEqual(404, response.status_int)
+
+
+@endpoint('/any')
+class AnyModel(ModelInterface):
+    pass
+
+
+class ActionWrong(ActionAPI):
+
+    @action("/activate")
+    def activate(self, model_id):
+        pass
+
+
+class TestWrongCases(unittest.TestCase):
+
+    def test_action_without_model(self):
+        request = Request.blank('/api/any/123/activate', method='POST')
+        response = request.get_response(application)
+        self.assertEqual(500, response.status_int)
