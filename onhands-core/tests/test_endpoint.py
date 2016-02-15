@@ -2,7 +2,7 @@ import unittest
 
 from webapp2 import Request
 
-from onhands.api import OnHandsSettings
+from onhands.endpoint import OnHandsSettings
 from onhands.wsgi.wsgi import application
 from onhands.endpoint import endpoint
 from onhands.authentication import Authentication

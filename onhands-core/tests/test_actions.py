@@ -2,13 +2,11 @@ import unittest
 
 from webapp2 import Request
 
-from onhands.api import OnHandsSettings
 from onhands.wsgi.wsgi import application
 from onhands.actions import ActionAPI, action
 from onhands.endpoint import endpoint
 
 from tests.model_interface import ModelInterface
-from tests.mock import MockResponse
 
 
 @endpoint('/user')

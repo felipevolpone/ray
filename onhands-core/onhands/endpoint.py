@@ -1,5 +1,10 @@
-import json, http
+import json, http, importlib
 from . import exceptions
+from . import authentication_helper
+
+
+class OnHandsSettings(object):
+    ENDPOINT_MODULES = ''
 
 
 def endpoint(url=None, authentication=None):
@@ -10,12 +15,62 @@ def endpoint(url=None, authentication=None):
     return decorator
 
 
-class EndpointManager(object):
-    """
-        EndpointManager handles with the request of a endpoint model.
-        This will execute a method that is related with the http verb
-        that it's correspond.
-    """
+class EndpointHandler(object):
+
+    def __init__(self, request, response, fullpath):
+        self.__response = response
+        self.__request = request
+        self.__url = fullpath
+
+    def process(self):
+        # is login
+        if self.__url.split('/')[-1] == 'login':
+            return self.__login()
+
+        if self.__is_protected() and not self.__allowed():
+            raise exceptions.Forbidden
+
+        return self.__handle()
+
+    def _get_endpoint_class(self):
+        full_path = self.__url.split('/')
+        url_asked = full_path[-1] if len(full_path) == 3 else full_path[-2]
+        module = importlib.import_module(OnHandsSettings.ENDPOINT_MODULES)
+
+        for clazz_name in dir(module):
+            model_clazz = getattr(module, clazz_name)
+            if hasattr(model_clazz, '_endpoint_url'):
+                if model_clazz._endpoint_url == url_asked:
+                    return model_clazz
+
+    def __handle(self):
+        endpoint_class = self._get_endpoint_class()
+        return EndpointProcessor(self.__request, self.__response, endpoint_class).process()
+
+    def __is_protected(self):
+        try:
+            endpoint_class = self._get_endpoint_class()
+            return (hasattr(endpoint_class, '_authentication_class') and
+                    endpoint_class._authentication_class is not None)
+        except:
+            return False
+
+    def __allowed(self):
+        try:
+            cookie = self.__request.cookies.get(authentication_helper._COOKIE_NAME)
+            return self._authentication_class.is_loged(cookie)
+        except:
+            return False
+
+    def __login(self):
+        login_json = json.loads(self.__request.body)
+        endpoint_clazz = self._get_endpoint_class()
+        user_json = endpoint_clazz._authentication_class.login(**login_json)
+        cookie_name, cookie_value = endpoint_clazz._authentication_class.sign_cookie(user_json)
+        self.__response.set_cookie(cookie_name, cookie_value, path='/')
+
+
+class EndpointProcessor(object):
 
     def __init__(self, request, response, model):
         self.__request = request
