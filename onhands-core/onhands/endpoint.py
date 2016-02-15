@@ -2,9 +2,10 @@ import json, http
 from . import exceptions
 
 
-def endpoint(url):
+def endpoint(url=None, authentication=None):
     def decorator(clazz):
         clazz._endpoint_url = url.replace('/', '')
+        clazz._authentication_class = authentication
         return clazz
     return decorator
 

@@ -5,7 +5,7 @@ from webapp2 import Request
 from onhands.api import OnHandsSettings
 from onhands.wsgi.wsgi import application
 from onhands.endpoint import endpoint
-from onhands.authentication import protected
+from onhands.authentication import Authentication
 
 from tests.mock import MockResponse
 from tests.model_interface import ModelInterface
@@ -72,8 +72,14 @@ class TestEndpoint(unittest.TestCase):
         self.assertEqual(200, response.status_int)
 
 
-@protected
-@endpoint('/person')
+class MyAuth(Authentication):
+
+    @classmethod
+    def authenticate(cls, username, password):
+        return {'username': 'felipe'}
+
+
+@endpoint('/person', authentication=MyAuth)
 class PersonModel(ModelInterface):
     pass
 
@@ -83,7 +89,14 @@ class TestProctedEndpoint(unittest.TestCase):
     def setUp(self):
         OnHandsSettings.ENDPOINT_MODULES = 'tests.test_endpoint'
 
-    def test_protected(self):
-        req = Request.blank('/api/person', method='GET')
+    def test_login(self):
+        req = Request.blank('/api/person/login', method='POST')
+        req.json = {"username": "felipe", "password": '123'}
         response = req.get_response(application)
         self.assertEqual(200, response.status_int)
+
+    # @unittest.skip('skip')
+    def test_protected(self):
+        req = Request.blank('/api/person/', method='GET')
+        response = req.get_response(application)
+        self.assertEqual(403, response.status_int)

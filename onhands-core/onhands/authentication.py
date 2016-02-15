@@ -1,14 +1,6 @@
 
 import base64
 from onhands import authentication_helper
-from onhands import exceptions
-
-
-def protected(func):
-    def inner(*args, **kwargs):
-        return func(*args, **kwargs)
-        raise exceptions.Forbidden
-    return inner
 
 
 class Authentication(object):

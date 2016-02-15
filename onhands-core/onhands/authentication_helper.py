@@ -7,7 +7,7 @@ from collections import OrderedDict
 import json
 
 
-__COOKIE_NAME = 'OnHandsAuth'
+_COOKIE_NAME = 'OnHandsAuth'
 _QUEUE_KEY = 'OnHandsQueue'
 _QUEUE_PASS = '123f4qaerf'
 __ID_SECURITY_KEY = 'ONHANDS'
@@ -19,7 +19,7 @@ def sign_cookie(user_json):
     key = __get_key()
     user_as_str = json.dumps(OrderedDict(user_json))
     signature = key.sign(user_as_str, '')
-    return __COOKIE_NAME, json.dumps({"s": signature[0], "c": user_json})
+    return _COOKIE_NAME, json.dumps({"s": signature[0], "c": user_json})
 
 
 def __parse_text(cookie_text):
