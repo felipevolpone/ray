@@ -27,7 +27,7 @@ class UserModel(ModelInterface):
 class TestEndpoint(unittest.TestCase):
 
     def setUp(self):
-        OnHandsSettings.ENDPOINT_MODULES = 'tests.test_endpoint'
+        OnHandsSettings.ENDPOINT_MODULES.append('tests.test_endpoint')
 
     def test_404(self):
         request = Request.blank('/api/', method='GET')
@@ -87,7 +87,7 @@ class PersonModel(ModelInterface):
 class TestProctedEndpoint(unittest.TestCase):
 
     def setUp(self):
-        OnHandsSettings.ENDPOINT_MODULES = 'tests.test_endpoint'
+        OnHandsSettings.ENDPOINT_MODULES.append('tests.test_endpoint')
 
     def test_login(self):
         req = Request.blank('/api/person/login', method='POST')

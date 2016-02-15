@@ -12,7 +12,7 @@ Base = declarative_base()
 engine = create_engine('sqlite:///example.db')
 
 
-OnHandsSettings.ENDPOINT_MODULES = 'app'
+OnHandsSettings.ENDPOINT_MODULES.append('app')
 
 @endpoint('/user')
 class User(AlchemyModel, Base):

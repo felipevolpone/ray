@@ -2,6 +2,7 @@ import webapp2, json
 from endpoint import EndpointHandler
 from actions import ActionAPI
 from . import exceptions
+from . import http
 
 
 def to_json(fnc):
@@ -47,11 +48,11 @@ class ApiHandler(webapp2.RequestHandler):
             self.response.status = 404
 
     def __handle_action(self, url):
-        splited = url.split('/')
-        action_url = splited[-1].replace('/', '')
-        model_id = splited[3]
+        action_url = http.param_at(url, -1)
+        model_name = http.param_at(url, 2)
+        model_id = http.param_at(url, 3)
         try:
-            return ActionAPI.get_action(action_url, model_id)
+            return ActionAPI.get_action(model_name, action_url, model_id)
         except:
             self.response.status = 404
 

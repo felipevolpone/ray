@@ -38,7 +38,7 @@ class ActionUser(ActionAPI):
 class TestAction(unittest.TestCase):
 
     def test_get_action(self):
-        self.assertEqual('activate_user', ActionAPI.get_action('activate', '123'))
+        self.assertEqual('activate_user', ActionAPI.get_action('user', 'activate', '123'))
 
     def test_action(self):
         user_id = '12312'

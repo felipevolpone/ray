@@ -4,7 +4,7 @@ from . import authentication_helper
 
 
 class OnHandsSettings(object):
-    ENDPOINT_MODULES = ''
+    ENDPOINT_MODULES = []
 
 
 def endpoint(url=None, authentication=None):
@@ -35,13 +35,13 @@ class EndpointHandler(object):
     def _get_endpoint_class(self):
         full_path = self.__url.split('/')
         url_asked = full_path[-1] if len(full_path) == 3 else full_path[-2]
-        module = importlib.import_module(OnHandsSettings.ENDPOINT_MODULES)
 
-        for clazz_name in dir(module):
-            model_clazz = getattr(module, clazz_name)
-            if hasattr(model_clazz, '_endpoint_url'):
-                if model_clazz._endpoint_url == url_asked:
-                    return model_clazz
+        for module_name in OnHandsSettings.ENDPOINT_MODULES:
+            module = importlib.import_module(module_name)
+            for clazz_name in dir(module):
+                model_clazz = getattr(module, clazz_name)
+                if hasattr(model_clazz, '_endpoint_url') and model_clazz._endpoint_url == url_asked:
+                        return model_clazz
 
     def __handle(self):
         endpoint_class = self._get_endpoint_class()
@@ -84,7 +84,7 @@ class EndpointProcessor(object):
         return methods[http_verb]()
 
     def __update_entity(self):
-        id_param = http.param_at(self.__request.upath_info, 0)
+        id_param = http.get_id(self.__request.upath_info)
         entity_json = json.loads(self.__request.body)
         if id_param:
             entity_json['id'] = id_param
@@ -99,7 +99,7 @@ class EndpointProcessor(object):
         return self.__update_entity()
 
     def __process_get(self):
-        id_param = http.param_at(self.__request.upath_info, 0)
+        id_param = http.get_id(self.__request.upath_info)
 
         # TODO implement find with params
         try:
@@ -111,7 +111,7 @@ class EndpointProcessor(object):
             raise exceptions.ModelNotFound()
 
     def __process_delete(self):
-        id_param = http.param_at(self.__request.upath_info, 0)
+        id_param = http.get_id(self.__request.upath_info)
         try:
             return self.__model(id=id_param).delete().to_json()
         except:
