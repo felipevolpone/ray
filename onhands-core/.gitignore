@@ -56,7 +56,5 @@ docs/_build/
 # PyBuilder
 target/
 
-*.TODO
-TODO.*
 *.pid
 .ropeproject
