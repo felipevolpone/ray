@@ -21,6 +21,7 @@ class EndpointHandler(object):
         self.__response = response
         self.__request = request
         self.__url = fullpath
+        self.__endpoint_class = self._get_endpoint_class()
 
     def process(self):
         # is login
@@ -44,29 +45,26 @@ class EndpointHandler(object):
                         return model_clazz
 
     def __handle(self):
-        endpoint_class = self._get_endpoint_class()
-        return EndpointProcessor(self.__request, self.__response, endpoint_class).process()
+        return EndpointProcessor(self.__request, self.__response, self.__endpoint_class).process()
 
     def __is_protected(self):
         try:
-            endpoint_class = self._get_endpoint_class()
-            return (hasattr(endpoint_class, '_authentication_class') and
-                    endpoint_class._authentication_class is not None)
+            return (hasattr(self.__endpoint_class, '_authentication_class') and
+                    self.__endpoint_class._authentication_class is not None)
         except:
             return False
 
     def __allowed(self):
         try:
             cookie = self.__request.cookies.get(authentication_helper._COOKIE_NAME)
-            return self._authentication_class.is_loged(cookie)
+            return self.__endpoint_class._authentication_class.is_loged(cookie)
         except:
             return False
 
     def __login(self):
         login_json = json.loads(self.__request.body)
-        endpoint_clazz = self._get_endpoint_class()
-        user_json = endpoint_clazz._authentication_class.login(**login_json)
-        cookie_name, cookie_value = endpoint_clazz._authentication_class.sign_cookie(user_json)
+        user_json = self.__endpoint_class._authentication_class.login(**login_json)
+        cookie_name, cookie_value = self.__endpoint_class._authentication_class.sign_cookie(user_json)
         self.__response.set_cookie(cookie_name, cookie_value, path='/')
 
 

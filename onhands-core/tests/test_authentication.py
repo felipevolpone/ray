@@ -34,18 +34,3 @@ class TestAuthentication(unittest.TestCase):
         _, cookie_value = Authentication.sign_cookie({'username': 'felipe', 'password': '123'})
         self.assertTrue(authentication_helper._validate(cookie_value))
         self.assertTrue(Authentication.is_loged(cookie_value))
-#
-#
-# @protected
-# @endpoint('/user')
-# class User(Model):
-#     name = StringProperty()
-#     age = IntegerProperty()
-#
-#
-# class UserActions(Action):
-#     __model__ = User
-#
-#     @action('/vote')
-#     def vote(self):
-#         pass

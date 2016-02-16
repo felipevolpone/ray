@@ -100,7 +100,7 @@ py.test tests/
 
 ## TO DO
 [ ] SQLAlchemy Integration - Where param at url
-[ ] SQLAlchemy Integration
+[x] SQLAlchemy Integration
 [ ] Authentication
 [ ] Request Middleware (like Django)
 [ ] Google App Engine
