@@ -13,3 +13,7 @@ class MethodNotFound(Exception):
 
 class ActionDoNotHaveModel(Exception):
     pass
+
+
+class NotAuthorized(Exception):
+    pass

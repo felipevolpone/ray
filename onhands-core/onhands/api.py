@@ -32,6 +32,8 @@ class ApiHandler(webapp2.RequestHandler):
             self.response.status = 404
         except exceptions.Forbidden:
             self.response.status = 403
+        except exceptions.NotAuthorized:
+            self.response.status = 403
 
     def __fix_url(self, url):
         if url[-1] == '/':

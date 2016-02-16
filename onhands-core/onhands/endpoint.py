@@ -64,9 +64,6 @@ class EndpointHandler(object):
     def __login(self):
         login_json = json.loads(self.__request.body)
         user_json = self.__endpoint_class._authentication_class.login(**login_json)
-        if not user_json:
-            raise exceptions.Forbidden()
-
         cookie_name, cookie_value = self.__endpoint_class._authentication_class.sign_cookie(user_json)
         self.__response.set_cookie(cookie_name, cookie_value, path='/')
 

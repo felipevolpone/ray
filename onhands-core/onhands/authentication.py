@@ -1,6 +1,7 @@
 
 import base64
 from onhands import authentication_helper
+from exceptions import NotAuthorized
 
 
 class Authentication(object):
@@ -11,7 +12,7 @@ class Authentication(object):
         if user_json:
             return user_json
 
-        raise Exception
+        raise NotAuthorized
 
     @classmethod
     def authenticate(cls, username, password):

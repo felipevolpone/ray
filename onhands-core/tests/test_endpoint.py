@@ -107,7 +107,7 @@ class TestProctedEndpoint(unittest.TestCase):
         req = Request.blank('/api/person/login', method='POST')
         req.json = {"username": "felipe", "password": 'admin'}
         response = req.get_response(application)
-        self.assertEqual(500, response.status_int)
+        self.assertEqual(403, response.status_int)
 
         req = Request.blank('/api/person/', method='GET')
         response = req.get_response(application)
