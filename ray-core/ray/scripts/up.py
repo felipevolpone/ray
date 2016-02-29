@@ -3,7 +3,7 @@ import click, os
 
 @click.command()
 @click.option('--ini', default=None, help='uwsgi ini file')
-@click.option('--pid', default='dev_onhands.pid', help='pid file')
+@click.option('--pid', default='dev_ray.pid', help='pid file')
 @click.option('--wsgifile', help='the wsgi.py file that starts application')
 
 def cli(ini, pid, wsgifile=None):

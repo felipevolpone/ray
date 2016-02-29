@@ -1,16 +1,15 @@
 
 import base64
-from functools import wraps
 from Crypto.PublicKey import RSA
 from Crypto import Random
 from collections import OrderedDict
 import json
 
 
-_COOKIE_NAME = 'OnHandsAuth'
-_QUEUE_KEY = 'OnHandsQueue'
+_COOKIE_NAME = 'RayAuth'
+_QUEUE_KEY = 'RayQueue'
 _QUEUE_PASS = '123f4qaerf'
-__ID_SECURITY_KEY = 'ONHANDS'
+__ID_SECURITY_KEY = 'RAY'
 
 __KEY = RSA.generate(2048, Random.new().read).exportKey()
 

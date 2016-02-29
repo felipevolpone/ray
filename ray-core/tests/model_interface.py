@@ -1,4 +1,4 @@
-from onhands.model import Model
+from ray.model import Model
 import uuid
 
 

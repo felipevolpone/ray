@@ -1,7 +1,7 @@
 
 import unittest
-from onhands.authentication import Authentication
-from onhands import authentication_helper
+from ray.authentication import Authentication
+from ray import authentication_helper
 
 
 class MyAuth(Authentication):

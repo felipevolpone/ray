@@ -3,7 +3,7 @@ from . import exceptions
 from . import authentication_helper
 
 
-class OnHandsSettings(object):
+class RaySettings(object):
     ENDPOINT_MODULES = []
 
 
@@ -37,7 +37,7 @@ class EndpointHandler(object):
         full_path = self.__url.split('/')
         url_asked = full_path[-1] if len(full_path) == 3 else full_path[-2]
 
-        for module_name in OnHandsSettings.ENDPOINT_MODULES:
+        for module_name in RaySettings.ENDPOINT_MODULES:
             module = importlib.import_module(module_name)
             for clazz_name in dir(module):
                 model_clazz = getattr(module, clazz_name)

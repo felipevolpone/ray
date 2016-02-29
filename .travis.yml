@@ -8,23 +8,21 @@ before_install:
     - pip install python-coveralls
 
 script:
-    - pip install -r onhands-core/requirements.txt
-    - cd onhands-core/
+    - pip install -r ray-core/requirements.txt
+    - cd ray-core/
     - pip install --editable .
     - cd ..
 
-    # onhands-sqlalchemy build
-    - cd onhands-sqlalchemy/
+    - cd ray-sqlalchemy/
     - pip install --editable .
     - pip install requests
     - cd tests/
-    - onhands up --wsgifile app.py &
+    - ray up --wsgifile app.py &
     - sleep 2
     - py.test test_integrated.py
 
-    # onhands-core build
-    - cd ../../onhands-core
-    - py.test -v tests/ --cov onhands
+    - cd ../../ray-core
+    - py.test -v tests/ --cov ray
 
 
 after_success:

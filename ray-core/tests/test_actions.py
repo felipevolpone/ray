@@ -2,9 +2,9 @@ import unittest
 
 from webapp2 import Request
 
-from onhands.wsgi.wsgi import application
-from onhands.actions import ActionAPI, action
-from onhands.endpoint import endpoint
+from ray.wsgi.wsgi import application
+from ray.actions import ActionAPI, action
+from ray.endpoint import endpoint
 
 from tests.model_interface import ModelInterface
 

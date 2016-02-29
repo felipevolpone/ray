@@ -2,10 +2,10 @@ import unittest
 
 from webapp2 import Request
 
-from onhands.endpoint import OnHandsSettings
-from onhands.wsgi.wsgi import application
-from onhands.endpoint import endpoint
-from onhands.authentication import Authentication
+from ray.endpoint import RaySettings
+from ray.wsgi.wsgi import application
+from ray.endpoint import endpoint
+from ray.authentication import Authentication
 
 from tests.mock import MockResponse
 from tests.model_interface import ModelInterface
@@ -27,7 +27,7 @@ class UserModel(ModelInterface):
 class TestEndpoint(unittest.TestCase):
 
     def setUp(self):
-        OnHandsSettings.ENDPOINT_MODULES.append('tests.test_endpoint')
+        RaySettings.ENDPOINT_MODULES.append('tests.test_endpoint')
 
     def test_404(self):
         request = Request.blank('/api/', method='GET')
@@ -61,7 +61,7 @@ class TestEndpoint(unittest.TestCase):
     def test_put(self):
         uuid_created = 'h12u3189adjs'
         request = Request.blank('/api/user/' + uuid_created, method='PUT')
-        request.json = {"name": "onhands", 'uuid': uuid_created}
+        request.json = {"name": "ray", 'uuid': uuid_created}
         response = request.get_response(application)
         self.assertEqual(200, response.status_int)
 
@@ -95,7 +95,7 @@ class PersonModel(ModelInterface):
 class TestProctedEndpoint(unittest.TestCase):
 
     def setUp(self):
-        OnHandsSettings.ENDPOINT_MODULES.append('tests.test_endpoint')
+        RaySettings.ENDPOINT_MODULES.append('tests.test_endpoint')
 
     def test_login(self):
         req = Request.blank('/api/person/login', method='POST')

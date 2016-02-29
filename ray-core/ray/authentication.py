@@ -1,6 +1,6 @@
 
 import base64
-from onhands import authentication_helper
+from . import authentication_helper
 from exceptions import NotAuthorized
 
 

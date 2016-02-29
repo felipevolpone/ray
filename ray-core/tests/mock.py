@@ -1,4 +1,4 @@
-from onhands.http import Response
+from ray.http import Response
 
 
 class MockResponse(Response):

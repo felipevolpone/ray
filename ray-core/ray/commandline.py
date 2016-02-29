@@ -4,7 +4,7 @@ cmd_folder = os.path.abspath(os.path.join(os.path.dirname(__file__),
                              'scripts'))
 
 
-class OnHandsCLI(click.MultiCommand):
+class RayCLI(click.MultiCommand):
 
     def list_commands(self, ctx):
         rv = []
@@ -18,13 +18,13 @@ class OnHandsCLI(click.MultiCommand):
         try:
             if sys.version_info[0] == 2:
                 name = name.encode('ascii', 'replace')
-            mod = __import__('onhands.scripts.' + name,
-                             None, None, ['onhands.commandline'])
+            mod = __import__('ray.scripts.' + name,
+                             None, None, ['ray.commandline'])
         except ImportError:
             return
         return mod.cli
 
 
-@click.command(cls=OnHandsCLI)
+@click.command(cls=RayCLI)
 def interface():
     pass

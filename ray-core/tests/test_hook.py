@@ -1,6 +1,6 @@
 import unittest
-from onhands.hooks import Hook
-from onhands.model import Model
+from ray.hooks import Hook
+from ray.model import Model
 
 
 class UserHookUseless(Hook):
@@ -77,7 +77,7 @@ class TestHookBeforeDelete(unittest.TestCase):
         self.assertEqual(str(e.exception), 'The hook UserDeleteHookTrue.before_delete didnt return True')
 
     def test_before_delete(self):
-        u = UserDelete(name="pythononhands")
+        u = UserDelete(name="ray")
         self.assertTrue(u.delete())
 
     def test_before_delete_not_implemented(self):
