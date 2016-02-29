@@ -12,11 +12,11 @@ Ray is a framework that helps you to deliver well designed software without been
 Create a model and then decorated it with the endpoint decorator.
 ```python
 from ray.endpoint import endpoint
-from onhandsalabama import AlabamaModel
+from ray-sqlalchemy import AlchemyModel
 from alabama import StringProperty, IntegerProperty
 
 @endpoint('/user')
-class UserModel(AlabamaModel):
+class UserModel(AlchemyModel):
     name = StringProperty()
     age = IntegerProperty()
 ```
