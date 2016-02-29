@@ -10,7 +10,7 @@ def description():
     """
 
 setup(
-    name="ray",
+    name="ray_framework",
     version="0.0.1",
     author="Felipe Volpone",
     author_email="felipevolpone@gmail.com",
