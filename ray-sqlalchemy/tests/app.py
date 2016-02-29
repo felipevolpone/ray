@@ -5,7 +5,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from ray_sqlalchemy.all import AlchemyModel
-from ray.api import RaySettings
+from ray.endpoint import RaySettings
 
 
 Base = declarative_base()
