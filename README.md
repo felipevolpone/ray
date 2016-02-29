@@ -1,17 +1,17 @@
-# Python on Hands
+# Ray
 
-Python on Hands is a framework that helps you to deliver well designed software without been stucked in your framework. On Hands it's a ready to production framework that contains a uWSGI server that can be used in production as well.
+Ray is a framework that helps you to deliver well designed software without been stucked in your framework. On Hands it's a ready to production framework that contains a uWSGI server that can be used in production as well.
 
-[![Build Status](https://travis-ci.org/felipevolpone/onhands.svg?branch=master)](https://travis-ci.org/felipevolpone/onhands)
-[![Coverage Status](https://coveralls.io/repos/felipevolpone/onhands/badge.svg?branch=master&service=github)](https://coveralls.io/github/felipevolpone/onhands?branch=master)
-[![Code Climate](https://codeclimate.com/github/felipevolpone/onhands/badges/gpa.svg)](https://codeclimate.com/github/felipevolpone/onhands)
+[![Build Status](https://travis-ci.org/felipevolpone/ray.svg?branch=master)](https://travis-ci.org/felipevolpone/ray)
+[![Coverage Status](https://coveralls.io/repos/felipevolpone/ray/badge.svg?branch=master&service=github)](https://coveralls.io/github/felipevolpone/ray?branch=master)
+[![Code Climate](https://codeclimate.com/github/felipevolpone/ray/badges/gpa.svg)](https://codeclimate.com/github/felipevolpone/ray)
 
 ## Features
 
 ### Easy APIs
 Create a model and then decorated it with the endpoint decorator.
 ```python
-from onhands.endpoint import endpoint
+from ray.endpoint import endpoint
 from onhandsalabama import AlabamaModel
 from alabama import StringProperty, IntegerProperty
 
@@ -34,7 +34,7 @@ Now, you have the http methods to interact with your model using the urls:
 ### Hooks
 Hooks are really useful to add validations in different moments of your application. Hook is a class that connect with your model and will be executed **before save the model, after the model be saved or before the model be deleted**.
 ```python
-from onhands.hooks import Hook
+from ray.hooks import Hook
 
 class AgeValidationHook(Hook):
     def before_save(self, user):
@@ -59,7 +59,7 @@ Then, if you call the .put() method of UserModel and the user doesn't has age bi
 ### Actions
 Actions provide a simple way to you create behavior in your models through your api. After writing the code bellow, you can use the url */api/user/< id >/activate* to invoke the activate_user method.
 ```python
-from onhands.actions import ActionAPI, action
+from ray.actions import ActionAPI, action
 
 class ActionUser(ActionAPI):
     __model__ = UserModel
@@ -72,21 +72,21 @@ class ActionUser(ActionAPI):
 ```
 
 ### Running server
-OnHands runs a WSGI server to serve your application. Also, you can just run the command bellow and starting writing your business rules. The option *--wsgifile*, must be used to tell to OnHands in which file it should find your *application* scope.
+Ray runs a WSGI server to serve your application. Also, you can just run the command bellow and starting writing your business rules. The option *--wsgifile*, must be used to tell to Ray in which file it should find your *application* scope.
 
 ```python
 # app.py file
-from onhands.wsgi.wsgi import application
+from ray.wsgi.wsgi import application
 ```
 
 ```bash
-onhands up --wsgifile=app.py
+ray up --wsgifile=app.py
 ```
 
 ## Integration with
 
-### Alabama
-OnHands works perfectly with [Alabama](http://github.com/felipevolpone/alabama_orm). You can see an example on onhands-alabama directory.
+### SQLAlchemy
+# TODO put some info
 
 ## FAQ
 **Is Python On Hands a MVC framework?**
