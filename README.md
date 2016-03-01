@@ -1,6 +1,6 @@
 # Ray
 
-Ray is a framework that helps you to deliver well designed software without been stucked in your framework. On Hands it's a ready to production framework that contains a uWSGI server that can be used in production as well.
+Ray is a framework that helps you to deliver well designed software without been stucked in your framework. Ray it's a ready to production framework that contains a uWSGI server ready to be used on production enviroment.
 
 [![Build Status](https://travis-ci.org/felipevolpone/ray.svg?branch=master)](https://travis-ci.org/felipevolpone/ray)
 [![Coverage Status](https://coveralls.io/repos/felipevolpone/ray/badge.svg?branch=master&service=github)](https://coveralls.io/github/felipevolpone/ray?branch=master)
@@ -13,7 +13,9 @@ Create a model and then decorated it with the endpoint decorator.
 ```python
 from ray.endpoint import endpoint
 from ray-sqlalchemy import AlchemyModel
-from alabama import StringProperty, IntegerProperty
+from sqlalchemy import Column, Integer, String
+
+Base = declarative_base()
 
 @endpoint('/user')
 class UserModel(AlchemyModel):
@@ -43,7 +45,7 @@ class AgeValidationHook(Hook):
         return True
 
 @endpoint('/user')
-class UserModel(Model):
+class UserModel(AlchemyModel):
     hooks = [AgeValidationHook]
     name = StringProperty()
     age = IntegerProperty()
@@ -71,6 +73,22 @@ class ActionUser(ActionAPI):
         storage.put(user)
 ```
 
+### Authentication
+Ray has a built-in authentication module. To use it, you just need to inherite the Authentication class and implement the method **authenticate**.
+
+```python
+from ray.authentication import Authentication
+
+
+class MyAuth(Authentication):
+
+    @classmethod
+    def authenticate(cls, username, password):
+        if username == 'ray' and password == 'charles':
+            return {'username': 'ray'}
+```
+
+
 ### Running server
 Ray runs a WSGI server to serve your application. Also, you can just run the command bellow and starting writing your business rules. The option *--wsgifile*, must be used to tell to Ray in which file it should find your *application* scope.
 
@@ -86,10 +104,11 @@ ray up --wsgifile=app.py
 ## Integration with
 
 ### SQLAlchemy
-# TODO put some info
+You can use all features of SQLAlchemy with Ray.
+
 
 ## FAQ
-**Is Python On Hands a MVC framework?**
+**Is Ray a MVC framework?**
 - No!
 
 ## Development
@@ -100,13 +119,10 @@ py.test tests/
 
 ## TO DO
 [ ] SQLAlchemy Integration - Where param at url
-[x] SQLAlchemy Integration
-[ ] Authentication
 [ ] Request Middleware (like Django)
 [ ] Google App Engine
 [ ] HTTP Task Queue
 [ ] HTTP Mail Service
 [ ] SQLAlchemy Integration
 [ ] API versions
-[ ] Python 3 compability
 [ ] Decorators to return Content-Type: html and csv.
