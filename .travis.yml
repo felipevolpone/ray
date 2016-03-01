@@ -5,7 +5,6 @@ python:
 
 before_install:
     - pip install coveralls
-    - pip install python-coveralls
 
 script:
     - pip install -r ray-core/requirements.txt
@@ -27,7 +26,7 @@ script:
 
 
 after_success:
-  - coveralls --config_file=.coveragerc
+  - coveralls --rcfile=.coveragerc
 
 notifications:
     email:
