@@ -10,7 +10,7 @@ before_install:
 script:
     - pip install -r ray-core/requirements.txt
     - cd ray-core/
-    - py.test -v tests/ --cov ray
+    - py.test tests/ --cov ray/
     # - pip install --editable .
     # - cd ..
 
