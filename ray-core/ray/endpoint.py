@@ -25,9 +25,6 @@ class EndpointHandler(object):
 
     def process(self):
         # is login
-        if self.__url.split('/')[-1] == 'login':
-            return self.__login()
-
         if self.__is_protected() and not self.__allowed():
             raise exceptions.Forbidden
 
@@ -46,26 +43,6 @@ class EndpointHandler(object):
 
     def __handle(self):
         return EndpointProcessor(self.__request, self.__response, self.__endpoint_class).process()
-
-    def __is_protected(self):
-        try:
-            return (hasattr(self.__endpoint_class, '_authentication_class') and
-                    self.__endpoint_class._authentication_class is not None)
-        except:
-            return False
-
-    def __allowed(self):
-        try:
-            cookie = self.__request.cookies.get(authentication_helper._COOKIE_NAME)
-            return self.__endpoint_class._authentication_class.is_loged(cookie)
-        except:
-            return False
-
-    def __login(self):
-        login_json = json.loads(self.__request.body)
-        user_json = self.__endpoint_class._authentication_class.login(**login_json)
-        cookie_name, cookie_value = self.__endpoint_class._authentication_class.sign_cookie(user_json)
-        self.__response.set_cookie(cookie_name, cookie_value, path='/')
 
 
 class EndpointProcessor(object):
