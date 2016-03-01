@@ -4,12 +4,14 @@ python:
   - 2.7
 
 before_install:
-    - pip install coveralls
+    - pip install python-coveralls
+    - pip install nose
 
 script:
     - pip install -r ray-core/requirements.txt
     - cd ray-core/
-    - py.test tests/ --cov ray/
+    #- py.test tests/ --cov ray/
+    - nosetests --with-coverage
     # - pip install --editable .
     # - cd ..
 
@@ -26,7 +28,7 @@ script:
 
 
 after_success:
-  - coveralls --rcfile=.coveragerc
+  - coveralls --config_file=.coveragerc
 
 notifications:
     email:
