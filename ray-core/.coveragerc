@@ -2,3 +2,8 @@
 omit =
     */ray/scripts/*
     */ray/commandline.py
+
+[report]
+omit =
+    */ray/scripts/*
+    */ray/commandline.py
