@@ -1,4 +1,4 @@
-# Ray
+# Ray :saxophone:
 
 Ray is a framework that helps you to deliver well designed software without been stucked in your framework. Ray it's a ready to production framework that contains a uWSGI server ready to be used on production enviroment.
 
