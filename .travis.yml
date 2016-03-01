@@ -27,7 +27,7 @@ script:
 
 
 after_success:
-  - coveralls
+  - coveralls --rcfile=.coveragerc
 
 notifications:
     email:
