@@ -12,7 +12,7 @@ Ray is a framework that helps you to deliver well designed software without been
 Create a model and then decorated it with the endpoint decorator.
 ```python
 from ray.endpoint import endpoint
-from ray-sqlalchemy import AlchemyModel
+from ray_sqlalchemy import AlchemyModel
 from sqlalchemy import Column, Integer, String
 
 Base = declarative_base()
