@@ -10,9 +10,9 @@ before_install:
 script:
     - pip install -r ray-core/requirements.txt
     - cd ray-core/
-    - py.test -v tests/ --cov ray
+    - py.test -v tests/
     # - pip install --editable .
-    - cd ..
+    # - cd ..
 
     # - cd ray-sqlalchemy/
     # - pip install --editable .
