@@ -10,19 +10,20 @@ before_install:
 script:
     - pip install -r ray-core/requirements.txt
     - cd ray-core/
-    - pip install --editable .
+    - py.test -v tests/ --cov ray
+    # - pip install --editable .
     - cd ..
 
-    - cd ray-sqlalchemy/
-    - pip install --editable .
-    - pip install requests
-    - cd tests/
-    - ray up --wsgifile app.py &
-    - sleep 2
-    - py.test test_integrated.py
+    # - cd ray-sqlalchemy/
+    # - pip install --editable .
+    # - pip install requests
+    # - cd tests/
+    # - ray up --wsgifile app.py &
+    # - sleep 2
+    # - py.test test_integrated.py
 
-    - cd ../../ray-core
-    - py.test -v tests/ --cov ray
+    # - cd ../../ray-core
+    # - py.test -v tests/ --cov ray
 
 
 after_success:
