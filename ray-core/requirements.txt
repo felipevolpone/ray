@@ -1,6 +1,7 @@
-webob
-webapp2
 pytest
-alabama
 pytest-cov
+webapp2
+webob
 click
+uwsgi
+pycrypto'
