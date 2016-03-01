@@ -74,7 +74,7 @@ class ActionUser(ActionAPI):
 ```
 
 ### Authentication
-Ray has a built-in authentication module. To use it, you just need to inherite the Authentication class and implement the method **authenticate**.
+Ray has a built-in authentication module. To use it, you just need to inherite the Authentication class and implement the method **authenticate**, that will check the data in the database and then return if the user can loggin or not. Remember that this method must return a dictionary if the authentication was succeed.
 
 ```python
 from ray.authentication import Authentication
@@ -84,8 +84,21 @@ class MyAuth(Authentication):
 
     @classmethod
     def authenticate(cls, username, password):
-        if username == 'ray' and password == 'charles':
-            return {'username': 'ray'}
+        user = User.query(User.username == username, User.password == password).one()
+        return {'username': 'ray'} if user else None
+```
+
+Now, you can just add this to your endpoint:
+```python
+@endpoint('/person', authentication=MyAuth)
+class PersonModel(ModelInterface):
+    pass
+```
+
+Then, your model endpoint is protected. To use it, you need to login. To login:
+```python
+import request
+request.post('http://localhost:8080/api/login', data={"username": "yourusername", "password": "yourpassword"})
 ```
 
 
