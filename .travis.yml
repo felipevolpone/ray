@@ -11,7 +11,7 @@ script:
     - pip install -r ray-core/requirements.txt
     - cd ray-core/
     #- py.test tests/ --cov ray/
-    - nosetests --with-coverage
+    - nosetests --tests=ray-core/tests --with-coverage
     # - pip install --editable .
     # - cd ..
 
@@ -28,7 +28,7 @@ script:
 
 
 after_success:
-  - coveralls --config_file=.coveragerc
+  - coveralls --config_file=ray-core/.coveragerc
 
 notifications:
     email:
