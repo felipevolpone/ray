@@ -43,7 +43,8 @@ class ApiHandler(webapp2.RequestHandler):
 
     def process(self, fullpath):
         if self.is_login(fullpath):
-            return LoginHandler(self.request, self.response, fullpath)
+            return (LoginHandler(self.request, self.response, fullpath)
+                                .process())
 
         elif self.is_endpoint(fullpath):
             return EndpointHandler(self.request, self.response, fullpath).process()
