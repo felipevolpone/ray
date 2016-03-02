@@ -1,11 +1,9 @@
 
 from ray.wsgi.wsgi import application
-from ray.endpoint import endpoint
-from sqlalchemy import Column, Integer, String
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
+from ray.endpoint import endpoint, RaySettings
 from ray_sqlalchemy.all import AlchemyModel
-from ray.endpoint import RaySettings
+from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy.ext.declarative import declarative_base
 
 
 Base = declarative_base()
