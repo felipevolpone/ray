@@ -28,7 +28,7 @@ script:
 
 
 after_success:
-  - coveralls --config_file=ray-core/.coveragerc
+  - coveralls --config_file=.coveragerc
 
 notifications:
     email:
