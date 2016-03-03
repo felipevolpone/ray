@@ -24,11 +24,12 @@ class EndpointHandler(object):
         self.__endpoint_class = self._get_endpoint_class()
 
     def process(self):
-        # is login
         if self.__is_protected() and not self.__allowed():
-            raise exceptions.Forbidden
+            raise exceptions.MethodNotFound()
 
-        return self.__handle()
+        return EndpointProcessor(self.__request,
+                                 self.__response,
+                                 self.__endpoint_class).process()
 
     def _get_endpoint_class(self):
         full_path = self.__url.split('/')
@@ -36,13 +37,29 @@ class EndpointHandler(object):
 
         for module_name in RaySettings.ENDPOINT_MODULES:
             module = importlib.import_module(module_name)
+
             for clazz_name in dir(module):
                 model_clazz = getattr(module, clazz_name)
-                if hasattr(model_clazz, '_endpoint_url') and model_clazz._endpoint_url == url_asked:
+
+                if (hasattr(model_clazz, '_endpoint_url')
+                    and model_clazz._endpoint_url == url_asked):
                         return model_clazz
 
-    def __handle(self):
-        return EndpointProcessor(self.__request, self.__response, self.__endpoint_class).process()
+    def __is_protected(self):
+        try:
+            return (hasattr(self.__endpoint_class, '_authentication_class')
+                    and
+                    self.__endpoint_class._authentication_class is not None)
+        except:
+            return False
+
+    def __allowed(self):
+        try:
+            cookie = (self.__request
+                          .cookies.get(authentication_helper._COOKIE_NAME))
+            return self.__endpoint_class._authentication_class.is_loged(cookie)
+        except:
+            return False
 
 
 class EndpointProcessor(object):

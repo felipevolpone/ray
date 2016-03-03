@@ -78,7 +78,6 @@ class TestAction(unittest.TestCase):
         response = request.get_response(application)
         self.assertEqual(404, response.status_int)
 
-
 @endpoint('/any')
 class AnyModel(ModelInterface):
     pass
@@ -96,4 +95,4 @@ class TestWrongCases(unittest.TestCase):
     def test_action_without_model(self):
         request = Request.blank('/api/any/123/activate', method='POST')
         response = request.get_response(application)
-        self.assertEqual(500, response.status_int)
+        self.assertEqual(404, response.status_int)

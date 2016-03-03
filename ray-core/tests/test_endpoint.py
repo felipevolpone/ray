@@ -24,7 +24,6 @@ class UserModel(ModelInterface):
         return {'name': str, 'age': int}
 
 
-@unittest.skip("skip")
 class TestEndpoint(unittest.TestCase):
 
     def setUp(self):
@@ -58,6 +57,7 @@ class TestEndpoint(unittest.TestCase):
         request = Request.blank('/api/user/' + uuid_created, method='GET')
         response = MockResponse(request.get_response(application))
         self.assertEqual(200, response.status_int)
+
 
     def test_put(self):
         uuid_created = 'h12u3189adjs'
@@ -93,27 +93,26 @@ class PersonModel(ModelInterface):
         return {'login': str}
 
 
-@unittest.skip("skip")
 class TestProctedEndpoint(unittest.TestCase):
 
     def setUp(self):
         RaySettings.ENDPOINT_MODULES.append('tests.test_endpoint')
 
     def test_login(self):
-        req = Request.blank('/api/person/login', method='POST')
+        req = Request.blank('/api/login', method='POST')
         req.json = {"username": "felipe", "password": '123'}
         response = req.get_response(application)
         cookie = response.headers['Set-Cookie']
         self.assertEqual(200, response.status_int)
 
-        req = Request.blank('/api/person/login', method='POST')
+        req = Request.blank('/api/login', method='POST')
         req.json = {"username": "felipe", "password": 'admin'}
         response = req.get_response(application)
         self.assertEqual(403, response.status_int)
 
         req = Request.blank('/api/person/', method='GET')
         response = req.get_response(application)
-        self.assertEqual(403, response.status_int)
+        self.assertEqual(404, response.status_int)
 
         req = Request.blank('/api/person/', method='GET')
         req.headers['Cookie'] = cookie
