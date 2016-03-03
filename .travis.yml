@@ -8,7 +8,8 @@ before_install:
     - pip install nose
 
 script:
-    - pip install -r ray-core/requirements.txt
+    - cd ray-core
+    - pip install -r requirements.txt
     #- py.test tests/ --cov ray/
     - nosetests --tests=tests --with-coverage --cover-package=ray
     # - pip install --editable .
