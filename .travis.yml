@@ -10,7 +10,7 @@ before_install:
 script:
     - pip install -r ray-core/requirements.txt
     #- py.test tests/ --cov ray/
-    - nosetests --tests=ray-core/tests --with-coverage
+    - nosetests --tests=tests --with-coverage --cover-package=ray
     # - pip install --editable .
     # - cd ..
 
