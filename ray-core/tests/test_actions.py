@@ -78,6 +78,7 @@ class TestAction(unittest.TestCase):
         response = request.get_response(application)
         self.assertEqual(404, response.status_int)
 
+
 @endpoint('/any')
 class AnyModel(ModelInterface):
     pass

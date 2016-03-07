@@ -58,7 +58,6 @@ class TestEndpoint(unittest.TestCase):
         response = MockResponse(request.get_response(application))
         self.assertEqual(200, response.status_int)
 
-
     def test_put(self):
         uuid_created = 'h12u3189adjs'
         request = Request.blank('/api/user/' + uuid_created, method='PUT')

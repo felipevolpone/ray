@@ -41,9 +41,8 @@ class EndpointHandler(object):
             for clazz_name in dir(module):
                 model_clazz = getattr(module, clazz_name)
 
-                if (hasattr(model_clazz, '_endpoint_url')
-                    and model_clazz._endpoint_url == url_asked):
-                        return model_clazz
+                if (hasattr(model_clazz, '_endpoint_url') and model_clazz._endpoint_url == url_asked):
+                    return model_clazz
 
     def __is_protected(self):
         try:
