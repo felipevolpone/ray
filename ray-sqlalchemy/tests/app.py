@@ -12,6 +12,7 @@ engine = create_engine('sqlite:///example.db')
 
 RaySettings.ENDPOINT_MODULES.append('app')
 
+
 @endpoint('/user')
 class User(AlchemyModel, Base):
     __tablename__ = 'tb_user'
