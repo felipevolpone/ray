@@ -8,6 +8,12 @@ Ray is a framework that helps you to deliver well-designed software without been
 
 ## Features
 
+* Easy APIs
+* Database Hooks
+* Authentication
+* uWSGI built-in server
+* Integration with SQLAlchemy
+
 ### Easy APIs
 Create a model and then decorated it with the endpoint decorator.
 ```python
@@ -74,7 +80,7 @@ class ActionUser(ActionAPI):
 ```
 
 ### Authentication
-Ray has a built-in authentication module. To use it, you just need to inherit the Authentication class and implement the method authenticate, that will check the data in the database and then return if the user can login or not. Remember that this method must return a dictionary if the authentication succeeded.
+Ray has a built-in authentication module. To use it, you just need to inherit the Authentication class and implement the method *authenticate*, that will check the data in the database and then return if the user can login or not. Remember that this method must return a dictionary if the authentication succeeded.
 
 ```python
 from ray.authentication import Authentication
@@ -95,7 +101,7 @@ class PersonModel(ModelInterface):
     pass
 ```
 
-Then, your model endpoint is protected. To use it, you need to login. To login:
+Then, your model endpoint is protected. To use it, you need to login.
 ```python
 import request
 request.post('http://localhost:8080/api/login', data={"username": "yourusername", "password": "yourpassword"})
@@ -130,12 +136,12 @@ You can use all features of SQLAlchemy with Ray.
 py.test tests/
 ```
 
-## TO DO
+## todo
 - [ ] Shields
-- [ ] SQLAlchemy Integration - Where param at url
-- [ ] Decorators to return Content-Type: html and csv.
+- [ ] Where param at url
 - [ ] HTTP Task Queue
 - [ ] HTTP Mail Service
 - [ ] Google App Engine
 - [ ] Request Middleware (like Django)
+- [ ] Decorators to return Content-Type: html and csv.
 - [ ] API versions
