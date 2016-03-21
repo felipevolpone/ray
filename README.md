@@ -1,6 +1,6 @@
 # Ray :saxophone:
 
-Ray is a framework that helps you to deliver well designed software without been stucked in your framework. Ray it's a ready to production framework that contains a uWSGI server ready to be used on production enviroment.
+Ray is a framework that helps you to deliver well-designed software without been stucked in your framework. Ray it's a ready to production framework that contains a uWSGI server ready to be used on production enviroment.
 
 [![Build Status](https://travis-ci.org/felipevolpone/ray.svg?branch=master)](https://travis-ci.org/felipevolpone/ray)
 [![Coverage Status](https://coveralls.io/repos/felipevolpone/ray/badge.svg?branch=master&service=github)](https://coveralls.io/github/felipevolpone/ray?branch=master)
