@@ -25,6 +25,7 @@ class ApiHandler(webapp2.RequestHandler):
     def dispatch(self):
         url = self.__fix_url(self.request.path)
 
+        # FIXME join error handler
         try:
             return self.process(url)
         except exceptions.ModelNotFound:
@@ -47,8 +48,7 @@ class ApiHandler(webapp2.RequestHandler):
 
     def process(self, fullpath):
         if self.is_login(fullpath):
-            return (LoginHandler(self.request, self.response, fullpath)
-                                .process())
+            return LoginHandler(self.request, self.response, fullpath).process()
 
         elif self.is_endpoint(fullpath):
             return EndpointHandler(self.request, self.response, fullpath).process()

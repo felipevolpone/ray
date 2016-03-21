@@ -131,11 +131,11 @@ py.test tests/
 ```
 
 ## TO DO
-[ ] Shields
-[ ] SQLAlchemy Integration - Where param at url
-[ ] Decorators to return Content-Type: html and csv.
-[ ] HTTP Task Queue
-[ ] HTTP Mail Service
-[ ] Google App Engine
-[ ] Request Middleware (like Django)
-[ ] API versions
+- [ ] Shields
+- [ ] SQLAlchemy Integration - Where param at url
+- [ ] Decorators to return Content-Type: html and csv.
+- [ ] HTTP Task Queue
+- [ ] HTTP Mail Service
+- [ ] Google App Engine
+- [ ] Request Middleware (like Django)
+- [ ] API versions
