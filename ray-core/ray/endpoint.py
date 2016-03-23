@@ -1,6 +1,6 @@
 import json, http, importlib
-from . import exceptions
-from . import authentication_helper
+from . import exceptions, authentication_helper
+from .shield import ShieldHandler
 
 
 class RaySettings(object):
@@ -68,6 +68,9 @@ class EndpointProcessor(object):
         self.__response = response
         self.__model = model
 
+        cookie_content = http.get_cookie_content(self.__request)
+        self.__shield_class = ShieldHandler(cookie_content).get_shield(model)
+
     def process(self):
         methods = {'post': self.__process_post, 'get': self.__process_get,
                    'put': self.__process_put, 'delete': self.__process_delete}
@@ -84,12 +87,21 @@ class EndpointProcessor(object):
         return entity.put().to_json()
 
     def __process_put(self):
+        if not self.__shield_class.put(self.__shield_class.info):
+            raise exceptions.MethodNotFound()
+
         return self.__update_entity()
 
     def __process_post(self):
+        if not self.__shield_class.post(self.__shield_class.info):
+            raise exceptions.MethodNotFound()
+
         return self.__update_entity()
 
     def __process_get(self):
+        if not self.__shield_class.get(self.__shield_class.info):
+            raise exceptions.MethodNotFound()
+
         id_param = http.get_id(self.__request.upath_info)
 
         # TODO implement find with params
@@ -102,6 +114,9 @@ class EndpointProcessor(object):
             raise exceptions.ModelNotFound()
 
     def __process_delete(self):
+        if not self.__shield_class.delete(self.__shield_class.info):
+            raise exceptions.MethodNotFound()
+
         id_param = http.get_id(self.__request.upath_info)
         try:
             return self.__model(id=id_param).delete().to_json()

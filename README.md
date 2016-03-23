@@ -11,6 +11,7 @@ Ray is a framework that helps you to deliver well-designed software without been
 * Easy APIs
 * Database Hooks
 * Authentication
+* Protecting API
 * uWSGI built-in server
 * Integration with SQLAlchemy
 
@@ -106,6 +107,24 @@ Then, your model endpoint is protected. To use it, you need to login.
 import request
 request.post('http://localhost:8080/api/_login', data={"username": "yourusername", "password": "yourpassword"})
 ```
+
+### Shields
+Ray has an option to you protect your API when the endpoint is not behind an authentication. You can use Shields. How it works? You inherit from Shield class and implement just the http method that you *want protect*.
+
+```python
+class PersonShield(Shield):
+    __model__ = PersonModel
+
+    def get(self, info):
+        return info['profile'] == 'admin'
+
+    # def put(self, info): pass
+
+    # def post(self, info): pass
+
+    # def delete(self, info): pass
+```
+This shield protects the GET method of /api/person. The parameter *info* in the get method on the shield, is the dictionary returned on your Authentication class. So, all Shields's methods receive this parameter.
 
 
 ### Running server

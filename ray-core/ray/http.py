@@ -1,5 +1,7 @@
 import webapp2
 
+from . import authentication_helper
+
 
 class Response(webapp2.Response):
 
@@ -26,3 +28,8 @@ def param_at(url, index):
 
 def get_id(url):
     return param_at(url, 3)
+
+
+def get_cookie_content(request):
+    cookie_text = request.cookies.get(authentication_helper._COOKIE_NAME)
+    return authentication_helper.cookie_content(cookie_text)

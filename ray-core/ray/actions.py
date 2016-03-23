@@ -18,7 +18,7 @@ class ActionAPI(object):
     def __init__(self, model_name=None):
         self.model_name = model_name
 
-    def process_action(self, url, model_id):
+    def process_action(self, action_url, model_id):
         action_class = None
 
         for clazz in self.__class__.__subclasses__():
@@ -34,7 +34,7 @@ class ActionAPI(object):
 
         for methodname in action_class.__dict__:
             method = getattr(clazz(), methodname)
-            if hasattr(method, '_action_url') and url == method._action_url:
+            if hasattr(method, '_action_url') and action_url == method._action_url:
                 return method(model_id)
 
         raise exceptions.MethodNotFound()

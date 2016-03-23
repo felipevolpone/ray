@@ -17,3 +17,7 @@ class ActionDoNotHaveModel(Exception):
 
 class NotAuthorized(Exception):
     pass
+
+
+class ShieldDoNotHaveModel(Exception):
+    pass

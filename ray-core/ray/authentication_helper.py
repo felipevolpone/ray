@@ -21,6 +21,13 @@ def sign_cookie(user_json):
     return _COOKIE_NAME, json.dumps({"s": signature[0], "c": user_json})
 
 
+def cookie_content(cookie_text):
+    text = __parse_text(cookie_text)
+    if not text:
+        return False
+    return text['c']
+
+
 def __parse_text(cookie_text):
     if not cookie_text:
         return False
