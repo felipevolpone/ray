@@ -2,8 +2,7 @@ import webapp2, json
 from endpoint import EndpointHandler
 from login import LoginHandler
 from actions import ActionAPI
-from . import exceptions
-from . import http
+from . import exceptions, http
 
 
 def to_json(fnc):
@@ -25,26 +24,14 @@ class ApiHandler(webapp2.RequestHandler):
     def dispatch(self):
         url = self.__fix_url(self.request.path)
 
-        # FIXME join error handler
         try:
             return self.process(url)
-        except exceptions.ModelNotFound:
+        except (exceptions.ModelNotFound, exceptions.MethodNotFound, exceptions.ActionDoNotHaveModel):
             self.response.status = 404
-        except exceptions.MethodNotFound:
-            self.response.status = 404
-        except exceptions.Forbidden:
+        except (exceptions.Forbidden, exceptions.NotAuthorized):
             self.response.status = 403
-        except exceptions.NotAuthorized:
-            self.response.status = 403
-        except exceptions.ActionDoNotHaveModel:
-            self.response.status = 404
         else:
             self.response.status = 500
-
-    def __fix_url(self, url):
-        if url[-1] == '/':
-            return url[:-1]
-        return url
 
     def process(self, fullpath):
         if self.is_login(fullpath):
@@ -55,17 +42,25 @@ class ApiHandler(webapp2.RequestHandler):
 
         elif self.is_action(fullpath):
             return self.__handle_action(fullpath)
+
         else:
             self.response.status = 404
 
+    def __fix_url(self, url):
+        if url[-1] == '/':
+            return url[:-1]
+        return url
+
     def __handle_action(self, url):
+        # eg: /api/user/123/action
+
         action_url = http.param_at(url, -1)
         model_name = http.param_at(url, 2)
         model_id = http.param_at(url, 3)
-        return ActionAPI.get_action(model_name, action_url, model_id)
+        return ActionAPI(model_name).process_action(action_url, model_id)
 
     def is_login(self, full_path):
-        return full_path == '/api/login'
+        return full_path == '/api/_login'
 
     def is_endpoint(self, full_path):
         return len(full_path.split('/')) <= 4 and len(full_path.split('/')) > 2

@@ -15,15 +15,17 @@ def action(url):
 
 class ActionAPI(object):
 
-    @classmethod
-    def get_action(cls, model_name, url, model_id):
+    def __init__(self, model_name=None):
+        self.model_name = model_name
+
+    def process_action(self, url, model_id):
         action_class = None
 
-        for clazz in cls.__subclasses__():
+        for clazz in self.__class__.__subclasses__():
             if not hasattr(clazz, '__model__'):
                 raise exceptions.ActionDoNotHaveModel()
 
-            if clazz.__model__._endpoint_url == model_name:
+            if clazz.__model__._endpoint_url == self.model_name:
                 action_class = clazz
                 break
 
