@@ -156,7 +156,9 @@ py.test tests/
 ```
 
 ## todo
-- [ ] Shields
+- [x] Shields
+- [ ] Shields to Actions
+- [ ] Admin panel (like django-admin)
 - [ ] Where param at url
 - [ ] HTTP Task Queue
 - [ ] HTTP Mail Service
