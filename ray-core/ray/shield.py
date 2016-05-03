@@ -20,6 +20,22 @@ class ShieldHandler(object):
 
 
 class Shield(object):
+    """
+        The Shiled must be inherited if you want to protect some url in some cases. Each method
+        represents a http call, so just inherit that http verb you wanna protect.
+
+        See this example:
+        class PersonShield(Shield):
+            __model__ = PersonModel
+
+            def get(self, info):
+                return info['profile'] == 'admin'
+
+        This way, the http request: GET /api/person/ will be under the protection of this method. This means that,
+        if the property 'profile' in the cookie of the logged user is 'admin', the url will send an response. If This
+        is no true, will send a 404.
+        The info parameter in the get method is the response of the Authentication.authenticate method (a dict).
+    """
 
     def __init__(self, info):
         self.info = info

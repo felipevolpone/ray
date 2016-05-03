@@ -19,6 +19,10 @@ def to_json(fnc):
 
 
 class ApiHandler(webapp2.RequestHandler):
+    """
+        This class is the beginning of all entrypoint in the Ray API. Here, each url
+        will be redirect to the right handler: ActionHandler, LoginHandler or EndpointHandler.
+    """
 
     @to_json
     def dispatch(self):
@@ -52,7 +56,7 @@ class ApiHandler(webapp2.RequestHandler):
         return url
 
     def __handle_action(self, url):
-        # eg: /api/user/123/action
+        # url e.g: /api/user/123/action
 
         action_url = http.param_at(url, -1)
         model_name = http.param_at(url, 2)

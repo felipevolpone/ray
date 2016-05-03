@@ -27,4 +27,8 @@ class RayCLI(click.MultiCommand):
 
 @click.command(cls=RayCLI)
 def interface():
+    """
+        All command line are redirect to the name of the file inside the scripts directory. This means that
+        the command: ray up, will call the scripts/up.py file.
+    """
     pass

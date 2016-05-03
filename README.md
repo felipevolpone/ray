@@ -1,6 +1,6 @@
 # Ray :saxophone:
 
-Ray is a framework that helps you to deliver well-designed software without been stucked in your framework. Ray it's a ready to production framework that contains a uWSGI server ready to be used on production enviroment.
+Ray is a framework that helps you to deliver well-designed software without been stuck in your framework. Ray it's a ready to production framework that contains a uWSGI server ready to be used on production environment.
 
 [![Build Status](https://travis-ci.org/felipevolpone/ray.svg?branch=master)](https://travis-ci.org/felipevolpone/ray)
 [![Coverage Status](https://coveralls.io/repos/felipevolpone/ray/badge.svg?branch=master&service=github)](https://coveralls.io/github/felipevolpone/ray?branch=master)
@@ -109,7 +109,7 @@ request.post('http://localhost:8080/api/_login', data={"username": "yourusername
 ```
 
 ### Shields
-Ray has an option to you protect your API when the endpoint is not behind an authentication. You can use Shields. How it works? You inherit from Shield class and implement just the http method that you *want protect*.
+Ray has an option to you protect your API: using Shields. How it works? You inherit from the Shield class and implement just the http method that you *want to protect*.
 
 ```python
 class PersonShield(Shield):
@@ -124,8 +124,8 @@ class PersonShield(Shield):
 
     # def delete(self, info): pass
 ```
-This shield protects the GET method of /api/person. The parameter *info* in the get method on the shield, is the dictionary returned on your Authentication class. So, all Shields's methods receive this parameter.
-
+This shield protects the GET method of /api/person. The parameter *info* in the get method on the shield, is the dictionary returned on your Authentication class. So, all Shields's methods receive this parameter. When you overwrite
+a method, Ray will assume that method is under that Shield protection.
 
 ### Running server
 Ray runs a WSGI server to serve your application. Also, you can just run the command bellow and starting writing your business rules. The option *--wsgifile*, must be used to tell to Ray in which file it should find your *application* scope.
