@@ -66,7 +66,7 @@ class UserModel(AlchemyModel):
 Then, if you call the .put() method of UserModel and the user doesn't has age bigger than 18, an Exception will be raised.
 
 ### Actions
-Actions provide a simple way to you create behavior in your models through your api. After writing the code bellow, you can use the url */api/user/< id >/activate* to invoke the activate_user method.
+Actions provide a simple way to you create behavior in your models through your api. After writing the code bellow, you can use the url */api/user/<id>/activate* to invoke the activate_user method.
 ```python
 from ray.actions import ActionAPI, action
 
@@ -150,19 +150,24 @@ You can use all features of SQLAlchemy with Ray.
 - No!
 
 ## Development
-**To run the tests**
+**Running the tests**
 ```bash
+# inside the ray-core dir
 py.test tests/
 ```
 
-## todo
-- [x] Shields
-- [ ] Shields to Actions
+## to do list
+### high priority
 - [ ] Admin panel (like django-admin)
 - [ ] Where param at url
+
+### middle priority
 - [ ] HTTP Task Queue
 - [ ] HTTP Mail Service
 - [ ] Google App Engine
-- [ ] Request Middleware (like Django)
 - [ ] Decorators to return Content-Type: html and csv.
+
+### low priority
+- [ ] Shields to Actions
+- [ ] Request Middleware (like Django)
 - [ ] API versions
