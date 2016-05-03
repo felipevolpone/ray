@@ -8,8 +8,6 @@ class ShieldHandler(object):
         self.content = cookie_content
 
     def get_shield(self, model_class):
-        if not any(Shield.__subclasses__()):
-            return Shield(self.content)
 
         for clazz in Shield.__subclasses__():
             if not hasattr(clazz, '__model__'):
@@ -18,7 +16,7 @@ class ShieldHandler(object):
             if clazz.__model__ == model_class:
                 return clazz(self.content)
 
-        raise exceptions.MethodNotFound()
+        return Shield(self.content)
 
 
 class Shield(object):
