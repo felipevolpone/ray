@@ -42,6 +42,7 @@ def _validate(cookie_text):
     text = __parse_text(cookie_text)
     if not text:
         return False
+
     signature = (text['s'], )
     content = text['c']
     key = __get_key()

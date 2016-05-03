@@ -25,6 +25,7 @@ class EndpointHandler(object):
 
     def process(self):
         if self.__is_protected() and not self.__allowed():
+            print 'nao achou'
             raise exceptions.MethodNotFound()
 
         return EndpointProcessor(self.__request,
@@ -69,12 +70,14 @@ class EndpointProcessor(object):
         self.__model = model
 
         cookie_content = http.get_cookie_content(self.__request)
+        print 'cookie_content', cookie_content
         self.__shield_class = ShieldHandler(cookie_content).get_shield(model)
 
     def process(self):
         methods = {'post': self.__process_post, 'get': self.__process_get,
                    'put': self.__process_put, 'delete': self.__process_delete}
         http_verb = self.__request.method.lower()
+        print 'HTTP_VERB', http_verb
         return methods[http_verb]()
 
     def __update_entity(self):
@@ -99,9 +102,11 @@ class EndpointProcessor(object):
         return self.__update_entity()
 
     def __process_get(self):
+        print 'veio ate aqui'
         if not self.__shield_class.get(self.__shield_class.info):
+            print 'cagou'
             raise exceptions.MethodNotFound()
-
+        print 'veioasodaisod'
         id_param = http.get_id(self.__request.upath_info)
 
         # TODO implement find with params
