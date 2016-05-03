@@ -1,5 +1,10 @@
 import unittest
 from ray.api import ApiHandler
+from ray.wsgi.wsgi import application
+
+from webapp2 import Request
+
+from tests.mock import MockResponse
 
 
 class TestApiHandler(unittest.TestCase):
@@ -17,3 +22,16 @@ class TestApiHandler(unittest.TestCase):
         self.assertFalse(api_handler.is_action('/api/user'))
         self.assertFalse(api_handler.is_action('/api/user/123'))
         self.assertTrue(api_handler.is_action('/api/user/123/activate'))
+
+
+class TestWhereAtAPI(unittest.TestCase):
+
+    # FIXME test if the params sent in the url are getting in the sqlalchemy.
+    # maybe is a good idea check this inside the ray-sqlalchemy module.
+    # this test will just cover the parse of the query parameters to dict
+    # and send it to the ModelInterface
+
+    def test_where(self):
+        request = Request.blank('/api/user?name=felipe', method='GET')
+        response = MockResponse(request.get_response(application))
+        self.assertEqual(200, response.status_int)

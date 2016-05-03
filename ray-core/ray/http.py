@@ -33,3 +33,17 @@ def get_id(url):
 def get_cookie_content(request):
     cookie_text = request.cookies.get(authentication_helper._COOKIE_NAME)
     return authentication_helper.cookie_content(cookie_text)
+
+
+def query_params_to_dict(get):
+    # if key in self.request.GET:
+    #     value = self.request.GET[key]
+    # if isinstance(value, unicode):
+    #     value = value.encode('UTF-8')
+    #     return value
+
+    params = {}
+    for key, value in get.items():
+        params[key] = value
+
+    return params
