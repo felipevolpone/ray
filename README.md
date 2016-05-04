@@ -158,13 +158,13 @@ py.test tests/
 
 ## to do list
 ### high priority
-- [ ] Admin panel (like django-admin)
 - [ ] Where param at url
 
 ### middle priority
 - [ ] HTTP Task Queue
 - [ ] HTTP Mail Service
 - [ ] Google App Engine
+- [ ] Admin panel (like django-admin)
 - [ ] Decorators to return Content-Type: html and csv.
 
 ### low priority
