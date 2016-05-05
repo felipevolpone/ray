@@ -5,6 +5,7 @@ from webapp2 import Request
 from ray.wsgi.wsgi import application
 from ray.actions import ActionAPI, action
 from ray.endpoint import endpoint
+from ray.shield import Shield
 
 from tests.model_interface import ModelInterface
 
@@ -24,6 +25,18 @@ class UserModel(ModelInterface):
 any_number = 10
 
 
+class UserShield(Shield):
+    __model__ = UserModel
+
+    @classmethod
+    def protect_enable(cls, info):
+        return True
+
+    @classmethod
+    def protect_fail(cls, info):
+        return False
+
+
 class ActionUser(ActionAPI):
     __model__ = UserModel
 
@@ -34,20 +47,16 @@ class ActionUser(ActionAPI):
         any_number = model_id
         return 'activate_user'
 
-
-@endpoint('/person')
-class PersonModel(ModelInterface):
-    pass
-
-
-class ActionPerson(ActionAPI):
-    __model__ = PersonModel
-
-    @action("/activate")
-    def activate(self, model_id):
+    # to test Shileds with Actions
+    @action('/enable', protection=UserShield.protect_enable)
+    def enable_user(self, model_id):
         global any_number
-        any_number = model_id
-        return 'activate_user'
+        any_number = 'enabled'
+        return True
+
+    @action('/enable_fail', protection=UserShield.protect_fail)
+    def enable_fail(self, model_id):
+        return True
 
 
 class TestAction(unittest.TestCase):
@@ -65,13 +74,19 @@ class TestAction(unittest.TestCase):
         global any_number
         self.assertEqual(user_id, any_number)
 
-        user_id = '498230'
-        request = Request.blank('/api/person/' + user_id + '/activate', method='POST')
+    def test_action_with_shields(self):
+        user_id = '123'
+        request = Request.blank('/api/user/' + user_id + '/enable', method='POST')
         response = request.get_response(application)
         self.assertEqual(200, response.status_int)
 
         global any_number
-        self.assertEqual(user_id, any_number)
+        self.assertEqual('enabled', any_number)
+
+        user_id = '123'
+        request = Request.blank('/api/user/' + user_id + '/enable_fail', method='POST')
+        response = request.get_response(application)
+        self.assertEqual(403, response.status_int)
 
     def test_action_url_404(self):
         request = Request.blank('/api/user/123/dontexists', method='POST')
@@ -88,7 +103,7 @@ class ActionWrong(ActionAPI):
 
     @action("/activate")
     def activate(self, model_id):
-        pass
+        return False
 
 
 class TestWrongCases(unittest.TestCase):

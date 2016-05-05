@@ -24,7 +24,7 @@ def sign_cookie(user_json):
 def cookie_content(cookie_text):
     text = __parse_text(cookie_text)
     if not text:
-        return False
+        return None
     return text['c']
 
 

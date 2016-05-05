@@ -156,18 +156,16 @@ You can use all features of SQLAlchemy with Ray.
 py.test tests/
 ```
 
-## to do list
-### high priority
-- [ ] Where param at url
+**to do list**
+- [ ] Shields to Actions
+- [ ] Google App Engine Compability
 
-### middle priority
+**middle priority**
 - [ ] HTTP Task Queue
 - [ ] HTTP Mail Service
-- [ ] Google App Engine
 - [ ] Admin panel (like django-admin)
 - [ ] Decorators to return Content-Type: html and csv.
 
-### low priority
-- [ ] Shields to Actions
+**low priority**
 - [ ] Request Middleware (like Django)
 - [ ] API versions
