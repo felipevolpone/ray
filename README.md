@@ -184,10 +184,10 @@ py.test tests/
 - [ ] Google App Engine Compability
 
 **middle priority**
-- [ ] HTTP Task Queue
-- [ ] HTTP Mail Service
 - [ ] Admin panel (like django-admin)
 - [ ] Decorators to return Content-Type: html and csv.
+- [ ] HTTP Task Queue
+- [ ] HTTP Mail Service
 
 **low priority**
 - [ ] Request Middleware (like Django)
