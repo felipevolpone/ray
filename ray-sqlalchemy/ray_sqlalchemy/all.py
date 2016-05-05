@@ -27,7 +27,14 @@ class AlchemyModel(Model):
         return self
 
     def find(self, *args, **kwargs):
-        return self._session.query(self.__class__).all()
+        if not kwargs:
+            return self._session.query(self.__class__).all()
+
+        query = self._session.query(self.__class__)
+        for field, value in kwargs.items():
+            query = query.filter(getattr(self.__class__, field) == value)
+
+        return query.all()
 
     def delete(self, *args, **kwargs):
         self._session.query(self.__class__).filter(self.__class__.id == self.id).delete()

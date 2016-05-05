@@ -67,6 +67,7 @@ class ApiHandler(webapp2.RequestHandler):
         return full_path == '/api/_login'
 
     def is_endpoint(self, full_path):
+        full_path = full_path.split('?')[0]
         return len(full_path.split('/')) <= 4 and len(full_path.split('/')) > 2
 
     def is_action(self, full_path):

@@ -1,7 +1,5 @@
 from ray.http import param_at, get_id, query_params_to_dict
-from ray.wsgi.wsgi import application
 from webapp2 import Request
-from tests.mock import MockResponse
 import unittest
 
 
