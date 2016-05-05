@@ -52,11 +52,10 @@ class ActionUser(ActionAPI):
     def enable_user(self, model_id):
         global any_number
         any_number = 'enabled'
-        return True
 
     @action('/enable_fail', protection=UserShield.protect_fail)
     def enable_fail(self, model_id):
-        return True
+        pass
 
 
 class TestAction(unittest.TestCase):

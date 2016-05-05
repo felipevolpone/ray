@@ -127,6 +127,30 @@ class PersonShield(Shield):
 This shield protects the GET method of /api/person. The parameter *info* in the get method on the shield, is the dictionary returned on your Authentication class. So, all Shields's methods receive this parameter. When you overwrite
 a method, Ray will assume that method is under that Shield protection.
 
+### Shields with Actions
+If you wanna to protect an action you can do this with Shield. To do this, you just need to implement a @classmethod method in your Shield, *that doesnt has one of these names: get, delete, post or put*.
+If this Action is not used by an authenticated user, the parameter info in your Shiled's method will be None.
+
+```python
+
+class UserShield(Shield):
+    __model__ = UserModel
+
+    @classmethod
+    def protect_enable(cls, info):
+        return info['profile'] == 'admin'
+
+
+class ActionUser(ActionAPI):
+    __model__ = UserModel
+
+    @action('/enable', protection=UserShield.protect_enable)
+    def enable_user(self, model_id):
+        user = session.get_user()
+        user.enabled = True
+        user.save()
+```
+
 ### Running server
 Ray runs a WSGI server to serve your application. Also, you can just run the command bellow and starting writing your business rules. The option *--wsgifile*, must be used to tell to Ray in which file it should find your *application* scope.
 
