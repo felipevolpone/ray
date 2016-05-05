@@ -152,7 +152,7 @@ class ActionUser(ActionAPI):
 ```
 
 ### Running server
-Ray runs a WSGI server to serve your application. Also, you can just run the command bellow and starting writing your business rules. The option *--wsgifile*, must be used to tell to Ray in which file it should find your *application* scope.
+Ray has a WSGI server to run your application. To use it, you just need to run the command bellow and start writing your business rules. The command parameter *--wsgifile*, must be used to tell to Ray in which file it should find your *application* scope.
 
 ```python
 # app.py file
@@ -181,7 +181,6 @@ py.test tests/
 ```
 
 **to do list**
-- [ ] Shields to Actions
 - [ ] Google App Engine Compability
 
 **middle priority**
