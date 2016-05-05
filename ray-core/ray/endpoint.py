@@ -103,13 +103,11 @@ class EndpointProcessor(object):
             raise exceptions.MethodNotFound()
         id_param = http.get_id(self.__request.upath_info)
 
-        # TODO implement find with params
-        # check test_api.py
-        # params = http.query_params_to_dict(self.__request.GET)
+        params = http.query_params_to_dict(self.__request.GET)
 
         try:
             if not id_param:
-                return [model.to_json() for model in self.__model().find()]
+                return [model.to_json() for model in self.__model().find(**params)]
 
             return self._find_database(id_param)
         except:

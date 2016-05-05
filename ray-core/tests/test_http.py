@@ -1,5 +1,7 @@
-from ray.http import param_at, get_id
+from ray.http import param_at, get_id, query_params_to_dict
+from ray.wsgi.wsgi import application
 from webapp2 import Request
+from tests.mock import MockResponse
 import unittest
 
 
@@ -20,3 +22,7 @@ class TestHttp(unittest.TestCase):
         self.assertEqual('fc19dfc03e8344db8058ebc44a2065c6', param_at(request.upath_info, 3))
 
         self.assertEqual('fc19dfc03e8344db8058ebc44a2065c6', get_id(request.upath_info))
+
+    def test_parse_params(self):
+        request = Request.blank('/api/user?name=felipe&age=23', method='GET')
+        self.assertEqual({'name': 'felipe', 'age': '23'}, query_params_to_dict(request.GET))

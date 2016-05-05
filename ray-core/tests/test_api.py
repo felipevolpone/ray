@@ -31,7 +31,4 @@ class TestWhereAtAPI(unittest.TestCase):
     # this test will just cover the parse of the query parameters to dict
     # and send it to the ModelInterface
 
-    def test_where(self):
-        request = Request.blank('/api/user?name=felipe', method='GET')
-        response = MockResponse(request.get_response(application))
-        self.assertEqual(200, response.status_int)
+    pass

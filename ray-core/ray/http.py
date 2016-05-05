@@ -36,14 +36,11 @@ def get_cookie_content(request):
 
 
 def query_params_to_dict(get):
-    # if key in self.request.GET:
-    #     value = self.request.GET[key]
-    # if isinstance(value, unicode):
-    #     value = value.encode('UTF-8')
-    #     return value
-
     params = {}
     for key, value in get.items():
+        if isinstance(value, unicode):
+            value = value.encode('UTF-8')
+
         params[key] = value
 
     return params
