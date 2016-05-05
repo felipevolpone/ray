@@ -69,21 +69,23 @@ class TestIntegrated(unittest.TestCase):
 
 class TestWhereAtAPI(unittest.TestCase):
 
-    # FIXME test if the params sent in the url are getting in the sqlalchemy.
-    # maybe is a good idea check this inside the ray-sqlalchemy module.
-    # this test will just cover the parse of the query parameters to dict
-    # and send it to the ModelInterface
-
     def _create(self, name=None, age=None):
         data = json.dumps({'age': age, 'name': name})
         return requests.post(build_url(), data=data)
 
     def test_query_params(self):
-        for name in 'felipe joao roberto'.split():
-            self._create(name=name)
+        for name, age in [('felipe', 35), ('joao', 23), ('roberto', 55)]:
+            self._create(name=name, age=age)
 
         resp = requests.get(build_url(params="?name=felipe"))
         self.assertEqual(200, resp.status_code)
         result = json.loads(resp.content)['result']
         self.assertEqual(1, len(result))
         self.assertEqual(result[0]['name'], 'felipe')
+        self.assertEqual(result[0]['age'], 35)
+
+        resp = requests.get(build_url(params="?age=23"))
+        self.assertEqual(200, resp.status_code)
+        result = json.loads(resp.content)['result']
+        self.assertEqual(1, len(result))
+        self.assertEqual(result[0]['name'], 'joao')
