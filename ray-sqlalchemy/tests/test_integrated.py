@@ -74,7 +74,7 @@ class TestWhereAtAPI(unittest.TestCase):
         return requests.post(build_url(), data=data)
 
     def test_query_params(self):
-        for name, age in [('felipe', 35), ('joao', 23), ('roberto', 55)]:
+        for name, age in [('felipe', 35), ('joao', 23), ('roberto', 55), ('roberto', 53)]:
             self._create(name=name, age=age)
 
         resp = requests.get(build_url(params="?name=felipe"))
@@ -89,3 +89,17 @@ class TestWhereAtAPI(unittest.TestCase):
         result = json.loads(resp.content)['result']
         self.assertEqual(1, len(result))
         self.assertEqual(result[0]['name'], 'joao')
+
+        resp = requests.get(build_url(params="?name=roberto"))
+        self.assertEqual(200, resp.status_code)
+        result = json.loads(resp.content)['result']
+        self.assertEqual(2, len(result))
+        self.assertEqual(result[0]['age'], 55)
+        self.assertEqual(result[1]['age'], 53)
+
+        resp = requests.get(build_url(params="?name=roberto&age=53"))
+        self.assertEqual(200, resp.status_code)
+        result = json.loads(resp.content)['result']
+        self.assertEqual(1, len(result))
+        self.assertEqual(result[0]['name'], 'roberto')
+        self.assertEqual(result[0]['age'], 53)
