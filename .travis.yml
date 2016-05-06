@@ -10,22 +10,15 @@ before_install:
 script:
     - cd ray-core
     - pip install -r requirements.txt
-    #- py.test tests/ --cov ray/
     - nosetests --tests=tests --with-coverage --cover-package=ray
-    # - pip install --editable .
-    # - cd ..
 
-    # - cd ray-sqlalchemy/
-    # - pip install --editable .
-    # - pip install requests
-    # - cd tests/
-    # - ray up --wsgifile app.py &
-    # - sleep 2
-    # - py.test test_integrated.py
+    - pip install .
+    - cd ..
+    - cd ray-sqlalchemy/
+    - pip install .
 
-    # - cd ../../ray-core
-    # - py.test -v tests/ --cov ray
-
+    - cd tests/
+    - ./run_tests.sh
 
 after_success:
   - coveralls --config_file=.coveragerc

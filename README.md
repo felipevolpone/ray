@@ -181,7 +181,10 @@ py.test tests/
 ```
 
 **to do list**
+**high priority**
+- [ ] One-file example application (using heroku)
 - [ ] Google App Engine Compability
+- [ ] Documentation at readthedocs
 
 **middle priority**
 - [ ] Admin panel (like django-admin)
