@@ -1,7 +1,8 @@
 
-import unittest, requests
-from .app import User
+import requests
+import unittest
 import json
+from .app import User
 
 
 def build_url(id_=None, params=None):
@@ -11,7 +12,6 @@ def build_url(id_=None, params=None):
     return base + '/' + id_ if id_ else base
 
 
-@unittest.skip('skp')
 class TestIntegrated(unittest.TestCase):
 
     def test_columns(self):

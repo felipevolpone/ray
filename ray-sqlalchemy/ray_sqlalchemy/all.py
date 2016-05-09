@@ -18,6 +18,8 @@ class AlchemyModel(Model):
         return sorted([column.key for column in class_mapper(cls).columns])
 
     def put(self):
+        super(AlchemyModel, self).put()
+
         if self.id:
             self._session.query(self.__class__).filter(self.__class__.id == self.id).update(self.to_json())
         else:
@@ -37,6 +39,8 @@ class AlchemyModel(Model):
         return query.all()
 
     def delete(self, *args, **kwargs):
+        super(AlchemyModel, self).delete()
+
         self._session.query(self.__class__).filter(self.__class__.id == self.id).delete()
         self._session.commit()
         return self
