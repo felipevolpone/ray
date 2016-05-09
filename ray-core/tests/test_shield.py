@@ -57,7 +57,7 @@ class TestShield(unittest.TestCase):
 
         req = Request.blank('/api/person/', method='GET')
         response = req.get_response(application)
-        self.assertEquals(500, response.status_int)
+        self.assertEquals(404, response.status_int)
 
         for http_method in ['POST', 'PUT', 'DELETE']:
             req = Request.blank('/api/person/', method=http_method)
