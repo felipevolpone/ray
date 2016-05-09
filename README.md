@@ -15,6 +15,9 @@ Ray is a framework that helps you to deliver well-designed software without been
 * uWSGI built-in server
 * Integration with SQLAlchemy
 
+### How to start
+The easiest way to start with Ray is check the examples/app.py file. Is a one-file example that cover almost all features that Ray has.
+
 ### Easy APIs
 Create a model and then decorated it with the endpoint decorator.
 ```python
@@ -182,9 +185,7 @@ py.test tests/
 
 **to do list**
 **high priority**
-- [ ] One-file example application (using heroku)
 - [ ] Google App Engine Compability
-- [ ] Documentation at readthedocs
 
 **middle priority**
 - [ ] Admin panel (like django-admin)
