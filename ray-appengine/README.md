@@ -4,7 +4,7 @@
 ## How to use
 
 ### CLI scaffold
-You can use this command to generate your app.yaml and appengine_config.py already configurated
+You can use this command to generate your app.yaml and appengine_config.py files already configurated
 to work with Ray.
 
 ```bash
