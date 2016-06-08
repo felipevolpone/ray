@@ -183,9 +183,11 @@ You can use all features of SQLAlchemy with Ray.
 py.test tests/
 ```
 
-**to do list**
+### to do list
+
 **high priority**
 - [ ] Google App Engine Compability
+- [ ] Add it to PyPI
 
 **middle priority**
 - [ ] Admin panel (like django-admin)
