@@ -10,9 +10,10 @@ class GAEModel(Model, AppEngineModel):
 
     nome = ndb.StringProperty()
 
-    def describe(self):
-        pass
-
     @classmethod
     def columns(cls):
         return sorted(cls._properties.keys())
+
+    def put(self):
+        super(GAEModel, self).put()
+        return AppEngineModel.put(self)

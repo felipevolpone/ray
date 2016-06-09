@@ -1,11 +1,14 @@
 
 import unittest
 from ray_appengine.all import *
-from pprint import pprint
+
 
 class TestApi(unittest.TestCase):
 
-	def test_api(self):
+	def test_columns(self):
 		m = GAEModel()
-		#pprint(dir(m))
 		self.assertEqual(m.columns(), ['nome'])
+
+	def test_put(self):
+		m = GAEModel(name="any")
+		self.assertIsNotNone(m.put())

@@ -11,9 +11,6 @@ class AlchemyModel(Model):
         super(AlchemyModel, self).__init__(self, *args, **kwargs)
         self._session = sessionmaker(bind=self.__engine__)()
 
-    def describe(self):
-        pass
-
     @classmethod
     def columns(cls):
         return sorted([column.key for column in class_mapper(cls).columns])
