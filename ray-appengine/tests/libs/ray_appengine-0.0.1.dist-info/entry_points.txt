@@ -1,0 +1,4 @@
+
+        [console_scripts]
+        ray=ray.commandline:interface
+    

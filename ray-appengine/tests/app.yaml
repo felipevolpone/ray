@@ -1,0 +1,15 @@
+application: app
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+
+- url: /api.*
+  script: app.application
+
+
+libraries:
+  - name: pycrypto
+    version: 2.6
+
