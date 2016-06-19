@@ -11,8 +11,9 @@ script:
     - cd ray-core
     - pip install -r requirements.txt
     - nosetests --tests=tests --with-coverage --cover-package=ray
-    -cd ..
+    - cd ..
 
+    - ls -la
     - pip install . # install ray-core
     - cd ray-appengine
     - pip install . # install ray-appengin
