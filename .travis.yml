@@ -15,7 +15,6 @@ script:
     - pip install . # install ray-core
     - cd ray-appengine
     - pip install . # install ray-appengin
-    - cd tests/
     - nosetests --tests=tests --with-coverage --cover-package=ray_appengine
     # - cd ..
     # - cd ray-sqlalchemy/
