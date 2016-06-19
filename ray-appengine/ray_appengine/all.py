@@ -16,3 +16,16 @@ class GAEModel(AppEngineModel, Model):
     def remove(self, *args, **kwargs):
         super(AppEngineModel, self).delete()
         return self.key.delete()
+
+    def find(self, *args, **kwargs):
+        if not kwargs:
+            return self.__class__.query().fetch()
+
+        query = self.__class__.query()
+        for field, value in kwargs.items():
+            query = query.filter(getattr(self.__class__, field) == value)
+
+        return query.fetch()
+
+    def get(self, *args, **kwargs):
+        return self.__class__.get_by_id(self.id)

@@ -9,21 +9,15 @@ before_install:
 
 script:
     - cd ray-core
+    - pip install . # install ray-core
     - pip install -r requirements.txt
     - nosetests --tests=tests --with-coverage --cover-package=ray
     - cd ..
 
     - ls -la
-    - pip install . # install ray-core
     - cd ray-appengine
-    - pip install . # install ray-appengin
+    - pip install . # install ray-appengine
     - nosetests --tests=tests --with-coverage --cover-package=ray_appengine
-    # - cd ..
-    # - cd ray-sqlalchemy/
-    # - pip install .
-    #
-    # - cd tests/
-    # - ./run_tests.sh
 
 after_success:
   - coveralls --config_file=.coveragerc
