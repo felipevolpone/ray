@@ -1,12 +1,9 @@
 
 from ray.model import Model
 from google.appengine.ext.ndb import Model as AppEngineModel
-from google.appengine.ext import ndb
 
 
 class GAEModel(AppEngineModel, Model):
-
-    nome = ndb.StringProperty()
 
     @classmethod
     def columns(cls):
@@ -15,3 +12,7 @@ class GAEModel(AppEngineModel, Model):
     def put(self):
         super(GAEModel, self).put()
         return AppEngineModel.put(self)
+
+    def delete(self, *args, **kwargs):
+        super(AlchemyModel, self).delete()
+        return self.key().delete()

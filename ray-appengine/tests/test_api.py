@@ -1,12 +1,7 @@
 
 import unittest, requests, unittest, json
-from ray_appengine.all import GAEModel
 from google.appengine.ext import ndb
-
-
-class User(GAEModel):
-    name = ndb.StringProperty()
-    age = ndb.IntegerProperty()
+from .app import User
 
 
 def build_url(id_=None, params=None):

@@ -16,10 +16,9 @@ setup(
     author_email="felipevolpone@gmail.com",
     description=description(),
     license="MIT",
-    keywords="python framework ray api rest",
+    keywords="appengine framework ray api rest google",
     url="http://github.com/felipevolpone/ray",
-    packages=find_packages(),
-    # install_requires=[],
+    packages=find_packages(exclude=['tests']),
     long_description="Check on github: http://github.com/felipevolpone/ray",
     classifiers=[
         "Development Status :: 3 - Alpha",

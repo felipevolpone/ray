@@ -18,7 +18,7 @@ setup(
     license="MIT",
     keywords="python framework ray api rest",
     url="http://github.com/felipevolpone/ray",
-    packages=find_packages(),
+    packages=find_packages(exclude=['tests']),
     install_requires=['webapp2', 'webob', 'click', 'uwsgi', 'pycrypto'],
     long_description="Check on github: http://github.com/felipevolpone/ray",
     classifiers=[
