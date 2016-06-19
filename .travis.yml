@@ -12,13 +12,17 @@ script:
     - pip install -r requirements.txt
     - nosetests --tests=tests --with-coverage --cover-package=ray
 
-    - pip install .
-    - cd ..
-    - cd ray-sqlalchemy/
-    - pip install .
-
+    - pip install . # install ray-core
+    - cd ray-appengine
+    - pip install . # install ray-appengin
     - cd tests/
-    - ./run_tests.sh
+    - nosetests --tests=tests --with-coverage --cover-package=ray_appengine
+    # - cd ..
+    # - cd ray-sqlalchemy/
+    # - pip install .
+    #
+    # - cd tests/
+    # - ./run_tests.sh
 
 after_success:
   - coveralls --config_file=.coveragerc
