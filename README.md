@@ -171,6 +171,14 @@ ray up --wsgifile=app.py
 ### SQLAlchemy
 You can use all features of SQLAlchemy with Ray.
 
+### Google App Engine
+You can use all features of Google App Engine with Ray. Besides, you can create a new project using the
+*new_gae_project* command, just like that:
+```bash
+ray new_gae_project
+```
+This will create the app.yaml and the appengine_config files already configured to you use Ray easily.
+
 
 ## FAQ
 **Is Ray a MVC framework?**

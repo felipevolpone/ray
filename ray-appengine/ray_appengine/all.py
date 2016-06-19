@@ -13,6 +13,6 @@ class GAEModel(AppEngineModel, Model):
         super(GAEModel, self).put()
         return AppEngineModel.put(self)
 
-    def delete(self, *args, **kwargs):
-        super(AlchemyModel, self).delete()
-        return self.key().delete()
+    def remove(self, *args, **kwargs):
+        super(AppEngineModel, self).delete()
+        return self.key.delete()
