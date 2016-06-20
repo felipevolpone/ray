@@ -41,4 +41,31 @@ class TestIntegrated(TestCreateEnviroment):
         self.assertEqual(0, len(all_users))
 
     def test_find(self):
-        pass
+        # setup
+        for name, age in [('john', 30), ('maria', 40), ('some', 50), ('felipe', 40)]:
+            User(name=name, age=age).put()
+
+        # testing one param
+        result = User.find(name='maria')
+        self.assertEqual(result, [{'age': 40, 'name': u'maria'}])
+
+        # testing select all
+        result = User.find()
+        self.assertEqual(result, [{'age': 30, 'name': u'john'}, {'age': 40, 'name': u'maria'},
+                                  {'age': 50, 'name': u'some'}, {'name': 'felipe', 'age': 40}])
+
+        # testing one param with more than one result
+        result = User.find(age=40)
+        self.assertEqual(result, [{'age': 40, 'name': u'maria'}, {'name': 'felipe', 'age': 40}])
+
+        # testing two param with more than one result
+        result = User.find(age=40, name='maria')
+        self.assertEqual(result, [{'age': 40, 'name': u'maria'}])
+
+    def test_get(self):
+        ids = []
+        for name, age in [('john', 30), ('maria', 40), ('some', 50), ('felipe', 40)]:
+            ids.append(User(name=name, age=age).put().id())
+
+        user = User.get(ids[0])
+        self.assertEqual('john', user.name)

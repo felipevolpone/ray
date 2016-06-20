@@ -17,15 +17,18 @@ class GAEModel(AppEngineModel, Model):
         super(AppEngineModel, self).delete()
         return self.key.delete()
 
-    def find(self, *args, **kwargs):
+    @classmethod
+    def find(cls, *args, **kwargs):
+        query = cls.query()
+
         if not kwargs:
-            return self.__class__.query().fetch()
+            return [entity.to_dict() for entity in query.fetch()]
 
-        query = self.__class__.query()
         for field, value in kwargs.items():
-            query = query.filter(getattr(self.__class__, field) == value)
+            query = query.filter(getattr(cls, field) == value)
 
-        return query.fetch()
+        return [entity.to_dict() for entity in query.fetch()]
 
-    def get(self, *args, **kwargs):
-        return self.__class__.get_by_id(self.id)
+    @classmethod
+    def get(cls, id=None):
+        return cls.get_by_id(id)

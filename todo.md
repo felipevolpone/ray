@@ -1,4 +1,8 @@
 
+ARRUMAR find e get PARA RETORNAR JSON
+COLOCAR GOOGLE APP ENGINE NO travis-ci
+
+
 Para fazer
     - pensar em como fazer os testes do appengine
     - refatorar o endpoint.py

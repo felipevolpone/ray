@@ -123,7 +123,7 @@ class EndpointProcessor(object):
             raise exceptions.ModelNotFound()
 
     def _find_database(self, id_param):
-        model = self.__model(id=id_param).get()
+        model = self.__model.__class__.get(id=id_param)
         if not model:
             raise exceptions.ModelNotFound()
 

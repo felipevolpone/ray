@@ -26,13 +26,14 @@ class AlchemyModel(Model):
         self._session.commit()
         return self
 
-    def find(self, *args, **kwargs):
+    @classmethod
+    def find(cls, *args, **kwargs):
         if not kwargs:
-            return self._session.query(self.__class__).all()
+            return self._session.query(cls).all()
 
-        query = self._session.query(self.__class__)
+        query = self._session.query(cls)
         for field, value in kwargs.items():
-            query = query.filter(getattr(self.__class__, field) == value)
+            query = query.filter(getattr(cls, field) == value)
 
         return query.all()
 
@@ -43,5 +44,6 @@ class AlchemyModel(Model):
         self._session.commit()
         return self
 
-    def get(self, *args, **kwargs):
-        return self._session.query(self.__class__).filter(self.__class__.id == self.id).one()
+    @classmethod
+    def get(cls, id=None):
+        return self._session.query(cls).filter(cls.id == id).one()
