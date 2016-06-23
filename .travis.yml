@@ -12,12 +12,12 @@ script:
     - pip install . # install ray-core
     - pip install -r requirements.txt
     - nosetests --tests=tests --with-coverage --cover-package=ray
-    - cd ..
+    # - cd ..
 
-    - ls -la
-    - cd ray-appengine
-    - pip install . # install ray-appengine
-    - nosetests --tests=tests --with-coverage --cover-package=ray_appengine
+    # - ls -la
+    # - cd ray-appengine
+    # - pip install . # install ray-appengine
+    # - nosetests --tests=tests --with-coverage --cover-package=ray_appengine
 
 after_success:
   - coveralls --config_file=.coveragerc
