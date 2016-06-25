@@ -4,4 +4,4 @@
 *.todo
 .ropeproject
 env
-todo.*
+*todo*
