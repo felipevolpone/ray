@@ -47,19 +47,23 @@ class TestIntegrated(TestCreateEnviroment):
 
         # testing one param
         result = User.find(name='maria')
+        result = [u.to_json() for u in result]
         self.assertEqual(result, [{'age': 40, 'name': u'maria'}])
 
         # testing select all
         result = User.find()
+        result = [u.to_json() for u in result]
         self.assertEqual(result, [{'age': 30, 'name': u'john'}, {'age': 40, 'name': u'maria'},
                                   {'age': 50, 'name': u'some'}, {'name': 'felipe', 'age': 40}])
 
         # testing one param with more than one result
         result = User.find(age=40)
+        result = [u.to_json() for u in result]
         self.assertEqual(result, [{'age': 40, 'name': u'maria'}, {'name': 'felipe', 'age': 40}])
 
         # testing two param with more than one result
         result = User.find(age=40, name='maria')
+        result = [u.to_json() for u in result]
         self.assertEqual(result, [{'age': 40, 'name': u'maria'}])
 
     def test_get(self):
@@ -69,3 +73,6 @@ class TestIntegrated(TestCreateEnviroment):
 
         user = User.get(ids[0])
         self.assertEqual('john', user.name)
+
+        user = User.get(ids[-1])
+        self.assertEqual('felipe', user.name)

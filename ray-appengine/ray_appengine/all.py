@@ -17,17 +17,20 @@ class GAEModel(AppEngineModel, Model):
         super(AppEngineModel, self).delete()
         return self.key.delete()
 
+    def to_json(self):
+        return self.to_dict()
+
     @classmethod
     def find(cls, *args, **kwargs):
         query = cls.query()
 
         if not kwargs:
-            return [entity.to_dict() for entity in query.fetch()]
+            return query.fetch()
 
         for field, value in kwargs.items():
             query = query.filter(getattr(cls, field) == value)
 
-        return [entity.to_dict() for entity in query.fetch()]
+        return query.fetch()
 
     @classmethod
     def get(cls, id=None):
