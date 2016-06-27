@@ -21,10 +21,11 @@ class GAEModel(AppEngineModel, Model):
                 keys[name] = property_type._kind
 
         for field_name in json_attributes.keys():
+            value = json_attributes[field_name]
             if field_name in keys:
-                setattr(instance, field_name, ndb.Key(keys[field_name], json_attributes[field_name]))
-            else:
-                setattr(instance, field_name, json_attributes[field_name])
+                value = ndb.Key(keys[field_name], json_attributes[field_name])
+
+            setattr(instance, field_name, value)
 
         return instance
 
