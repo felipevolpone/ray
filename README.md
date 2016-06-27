@@ -16,6 +16,7 @@ Ray is a framework that helps you to deliver well-designed software without been
 * Integration with SQLAlchemy
 
 ### How to start
+**Do you want to see Ray in action? Check the [examples](https://github.com/felipevolpone/ray/tree/master/examples) directory.**
 The easiest way to start with Ray is check the examples/app.py file. Is a one-file example that cover almost all features that Ray has.
 
 ### Easy APIs
