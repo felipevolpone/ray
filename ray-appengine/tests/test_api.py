@@ -14,6 +14,13 @@ class User(GAEModel):
     age = ndb.IntegerProperty()
 
 
+@endpoint('/post')
+class Post(GAEModel):
+    title = ndb.StringProperty(required=False)
+    text = ndb.StringProperty(required=True)
+    owner = ndb.KeyProperty(kind=User)
+
+
 class TestIntegrated(TestCreateEnviroment):
 
     def test_columns(self):
@@ -24,6 +31,15 @@ class TestIntegrated(TestCreateEnviroment):
         User(name='john', age=25).put()
         all_users = User.query().fetch()
         self.assertEqual(1, len(all_users))
+
+    def test_put_foreign_key(self):
+        owner = User(name='john', age=25).put()
+        new_post = Post.to_instance({'text': 'any', 'owner': owner.to_json()['id']})
+        self.assertTrue(new_post.put())
+
+        posts = Post.query().fetch()
+        self.assertEqual(1, len(posts))
+        self.assertEqual(owner.to_json()['id'], posts[0].owner.id())
 
     def test_to_json(self):
         u = User(name='felipe', age=33).put()

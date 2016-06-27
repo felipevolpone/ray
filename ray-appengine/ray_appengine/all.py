@@ -1,6 +1,7 @@
 
 from ray.model import Model
 from google.appengine.ext.ndb import Model as AppEngineModel
+from google.appengine.ext import ndb
 
 
 class GAEModel(AppEngineModel, Model):
@@ -8,6 +9,24 @@ class GAEModel(AppEngineModel, Model):
     @classmethod
     def columns(cls):
         return sorted(cls._properties.keys())
+
+    @classmethod
+    def to_instance(cls, json_attributes):
+        # instance = cls(**json_attributes)
+        instance = cls()
+
+        keys = {}
+        for name, property_type in instance._properties.items():
+            if isinstance(property_type, ndb.KeyProperty):
+                keys[name] = property_type._kind
+
+        for field_name in json_attributes.keys():
+            if field_name in keys:
+                setattr(instance, field_name, ndb.Key(keys[field_name], json_attributes[field_name]))
+            else:
+                setattr(instance, field_name, json_attributes[field_name])
+
+        return instance
 
     def put(self):
         can_save = Model.put(self)
@@ -25,7 +44,7 @@ class GAEModel(AppEngineModel, Model):
         r = self.to_dict()
         if self.key:
             r['id'] = self.key.id()
-            
+
         return r
 
     @classmethod

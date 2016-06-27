@@ -5,7 +5,6 @@ from ray.wsgi.wsgi import application
 
 from ray_appengine.all import GAEModel
 from google.appengine.ext import ndb
-from google.appengine.ext.ndb import Model
 
 
 RaySettings.ENDPOINT_MODULES.append('src.models')
@@ -31,5 +30,5 @@ class Post(GAEModel):
 @endpoint('/comment')
 class Comments(GAEModel):
     title = ndb.StringProperty(required=False)
-    textg = ndb.StringProperty(required=True)
+    text = ndb.StringProperty(required=True)
     post_key = ndb.KeyProperty(kind=Post)
