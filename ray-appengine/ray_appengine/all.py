@@ -10,13 +10,16 @@ class GAEModel(AppEngineModel, Model):
         return sorted(cls._properties.keys())
 
     def put(self):
-        super(GAEModel, self).put()
-        AppEngineModel.put(self)
-        return self
+        can_save = Model.put(self)
+        if can_save:
+            AppEngineModel.put(self)
+            return self
 
     def remove(self, *args, **kwargs):
-        super(AppEngineModel, self).delete()
-        return self.key.delete()
+        can_delete = Model.delete(self)
+        if can_delete:
+            super(AppEngineModel, self).delete()
+            return self.key.delete()
 
     def to_json(self):
         return self.to_dict()
