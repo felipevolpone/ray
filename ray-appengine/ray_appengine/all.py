@@ -11,7 +11,8 @@ class GAEModel(AppEngineModel, Model):
 
     def put(self):
         super(GAEModel, self).put()
-        return AppEngineModel.put(self)
+        AppEngineModel.put(self)
+        return self
 
     def remove(self, *args, **kwargs):
         super(AppEngineModel, self).delete()

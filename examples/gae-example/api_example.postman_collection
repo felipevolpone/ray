@@ -1,0 +1,45 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Ray",
+		"_postman_id": "9111dd26-2430-bcf0-cde3-07ec510a15e2",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List Posts",
+			"request": {
+				"url": "http://localhost:8080/api/post",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create a new post",
+			"request": {
+				"url": "http://localhost:8080/api/post",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"About the ray framework\",\n    \"text\": \"Some text here bla bla bla\",\n    \"author\": \"Felipe Volpone\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
