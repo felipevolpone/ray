@@ -22,7 +22,11 @@ class GAEModel(AppEngineModel, Model):
             return self.key.delete()
 
     def to_json(self):
-        return self.to_dict()
+        r = self.to_dict()
+        if self.key:
+            r['id'] = self.key.id()
+            
+        return r
 
     @classmethod
     def find(cls, *args, **kwargs):

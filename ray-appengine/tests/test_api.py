@@ -1,6 +1,4 @@
 
-from webapp2 import Request, Response
-import requests, unittest, json
 from google.appengine.ext import ndb
 from ray_appengine.all import GAEModel
 from .gae_test import TestCreateEnviroment
@@ -23,10 +21,14 @@ class TestIntegrated(TestCreateEnviroment):
         self.assertEqual(['age', 'name'], columns)
 
     def test_put(self):
-        new_user = User(name='john', age=25).put()
-
+        User(name='john', age=25).put()
         all_users = User.query().fetch()
         self.assertEqual(1, len(all_users))
+
+    def test_to_json(self):
+        u = User(name='felipe', age=33).put()
+        expected = {'name': 'felipe', 'age': 33, 'id': 1}
+        self.assertEqual(expected, u.to_json())
 
     def test_delete(self):
         # setup
@@ -48,28 +50,28 @@ class TestIntegrated(TestCreateEnviroment):
         # testing one param
         result = User.find(name='maria')
         result = [u.to_json() for u in result]
-        self.assertEqual(result, [{'age': 40, 'name': u'maria'}])
+        self.assertEqual(result, [{'age': 40, 'name': u'maria', 'id': 2}])
 
         # testing select all
         result = User.find()
         result = [u.to_json() for u in result]
-        self.assertEqual(result, [{'age': 30, 'name': u'john'}, {'age': 40, 'name': u'maria'},
-                                  {'age': 50, 'name': u'some'}, {'name': 'felipe', 'age': 40}])
+        self.assertEqual(result, [{'age': 30, 'name': u'john', 'id': 1}, {'age': 40, 'name': u'maria', 'id': 2},
+                                  {'age': 50, 'name': u'some', 'id': 3}, {'name': 'felipe', 'age': 40, 'id': 4}])
 
         # testing one param with more than one result
         result = User.find(age=40)
         result = [u.to_json() for u in result]
-        self.assertEqual(result, [{'age': 40, 'name': u'maria'}, {'name': 'felipe', 'age': 40}])
+        self.assertEqual(result, [{'age': 40, 'name': u'maria', 'id': 2}, {'name': 'felipe', 'age': 40, 'id': 4}])
 
         # testing two param with more than one result
         result = User.find(age=40, name='maria')
         result = [u.to_json() for u in result]
-        self.assertEqual(result, [{'age': 40, 'name': u'maria'}])
+        self.assertEqual(result, [{'age': 40, 'name': u'maria', 'id': 2}])
 
     def test_get(self):
         ids = []
         for name, age in [('john', 30), ('maria', 40), ('some', 50), ('felipe', 40)]:
-            ids.append(User(name=name, age=age).put().id())
+            ids.append(User(name=name, age=age).put().key.id())
 
         user = User.get(ids[0])
         self.assertEqual('john', user.name)

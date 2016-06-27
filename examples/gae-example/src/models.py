@@ -26,4 +26,10 @@ class Post(GAEModel):
     title = ndb.StringProperty(required=True)
     text = ndb.StringProperty(required=True)
     author = ndb.StringProperty(required=False)
-    # created_at = ndb.IntegerProperty(required=True)
+
+
+@endpoint('/comment')
+class Comments(GAEModel):
+    title = ndb.StringProperty(required=False)
+    textg = ndb.StringProperty(required=True)
+    post_key = ndb.KeyProperty(kind=Post)
