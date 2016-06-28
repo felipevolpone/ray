@@ -9,7 +9,9 @@ before_install:
 
     - wget https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.38.zip
     - unzip -q google_appengine_1.9.38.zip
-    - mv google_appengine /opt/
+    - pwd
+    - ls -la
+    # - mv google_appengine /opt/
     - export PATH=$PATH:/opt/google_appengine/
     - export PYTHONPATH="$PYTHONPATH:/opt/google_appengine/"
 
