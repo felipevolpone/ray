@@ -7,16 +7,22 @@ before_install:
     - pip install python-coveralls
     - pip install nose
 
+    - wget https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.38.zip
+    - unzip -q google_appengine_1.9.38.zip
+    - mv google_appengine_1.9.38 /opt/
+    - export PATH=$PATH:/opt/google_appengine_1.9.38/
+    - export PYTHONPATH="$PYTHONPATH:/opt/google_appengine_1.9.38/"
+
 script:
     - cd ray-core
     - pip install . # install ray-core
     - pip install -r requirements.txt
     - nosetests --tests=tests --with-coverage --cover-package=ray
 
-    # - cd ..
-    # - cd ray-appengine
-    # - pip install . # install ray-appengine
-    # - nosetests --tests=tests --with-coverage --cover-package=ray_appengine
+    - cd ..
+    - cd ray-appengine
+    - pip install . # install ray-appengine
+    - nosetests --tests=tests --with-coverage --cover-package=ray_appengine
 
 after_success:
   - coveralls --config_file=.coveragerc
