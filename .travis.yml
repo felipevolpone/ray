@@ -24,6 +24,7 @@ script:
     - nosetests --tests=tests --with-coverage --cover-package=ray_appengine
 
 after_success:
+  - pwd
   - coveralls --config_file=.coveragerc
 
 notifications:
