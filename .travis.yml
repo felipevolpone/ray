@@ -9,11 +9,8 @@ before_install:
 
     - wget https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.38.zip
     - unzip -q google_appengine_1.9.38.zip
-    - pwd
-    - ls -la
-    # - mv google_appengine /opt/
-    - export PATH=$PATH:/opt/google_appengine/
-    - export PYTHONPATH="$PYTHONPATH:/opt/google_appengine/"
+    - export PATH=$PATH:/home/travis/build/felipevolpone/ray/google_appengine/
+    - export PYTHONPATH="$PYTHONPATH:/home/travis/build/felipevolpone/ray/google_appengine/"
 
 script:
     - cd ray-core
