@@ -2,6 +2,8 @@
 
 Ray is a framework that helps you to deliver well-designed software without been stuck in your framework. Ray it's a ready to production framework that contains a uWSGI server ready to be used on production environment.
 
+Are you using Google App Engine? Great! Ray is compatible with it.
+
 [![Build Status](https://travis-ci.org/felipevolpone/ray.svg?branch=master)](https://travis-ci.org/felipevolpone/ray)
 [![Coverage Status](https://coveralls.io/repos/felipevolpone/ray/badge.svg?branch=master&service=github)](https://coveralls.io/github/felipevolpone/ray?branch=master)
 [![Code Climate](https://codeclimate.com/github/felipevolpone/ray/badges/gpa.svg)](https://codeclimate.com/github/felipevolpone/ray)
@@ -195,11 +197,11 @@ py.test tests/
 ### to do list
 
 **high priority**
-- [ ] Google App Engine Compability
 - [ ] Add it to PyPI
 
 **middle priority**
 - [ ] Admin panel (like django-admin)
+- [ ] Peewee compatibility
 - [ ] Decorators to return Content-Type: html and csv.
 - [ ] HTTP Task Queue
 - [ ] HTTP Mail Service

@@ -30,10 +30,12 @@ class ApiHandler(webapp2.RequestHandler):
 
         try:
             return self.process(url)
-        except (exceptions.ModelNotFound, exceptions.MethodNotFound, exceptions.ActionDoNotHaveModel):
+        except (exceptions.MethodNotFound, exceptions.ActionDoNotHaveModel):
             self.response.status = 404
         except (exceptions.Forbidden, exceptions.NotAuthorized):
             self.response.status = 403
+        except (exceptions.ModelNotFound):
+            self.response.status = 502
         else:
             self.response.status = 500
 

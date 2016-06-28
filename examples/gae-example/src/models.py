@@ -13,8 +13,8 @@ RaySettings.ENDPOINT_MODULES.append('src.models')
 class PostHook(Hook):
 
     def before_save(self, post):
-        if len(post.text) < 140:
-            raise Exception('The post text cannot be a tweet')
+        if len(post.text) < 10:
+            raise Exception('The post text cannot so short')
         return True
 
 

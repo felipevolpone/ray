@@ -46,16 +46,14 @@ class EndpointHandler(object):
 
     def __is_protected(self):
         try:
-            return (hasattr(self.__endpoint_class, '_authentication_class')
-                    and
+            return (hasattr(self.__endpoint_class, '_authentication_class') and
                     self.__endpoint_class._authentication_class is not None)
         except:
             return False
 
     def __allowed(self):
         try:
-            cookie = (self.__request
-                          .cookies.get(authentication_helper._COOKIE_NAME))
+            cookie = (self.__request.cookies.get(authentication_helper._COOKIE_NAME))
             return self.__endpoint_class._authentication_class.is_loged(cookie)
         except:
             return False
@@ -123,7 +121,7 @@ class EndpointProcessor(object):
             raise exceptions.ModelNotFound()
 
     def _find_database(self, id_param):
-        model = self.__model.__class__.get(id=id_param)
+        model = self.__model.get(id=id_param)
         if not model:
             raise exceptions.ModelNotFound()
 
