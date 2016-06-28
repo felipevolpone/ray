@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-virtualenv env --python=python2;
+virtualenv env;
 source env/bin/activate && pip install --editable ../ray-core;
 source env/bin/activate && pip install --editable ../ray-appengine;
 source env/bin/activate && pip install --editable ../ray-sqlalchemy;
