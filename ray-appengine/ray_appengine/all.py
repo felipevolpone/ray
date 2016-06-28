@@ -32,7 +32,6 @@ class GAEModel(AppEngineModel, Model):
             return self
 
     def delete(self, id=None):
-        import pdb; pdb.set_trace()
         can_delete = Model.delete(self)
         exists = self.__class__.get_by_id(int(id))
         if can_delete and exists:

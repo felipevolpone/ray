@@ -112,8 +112,6 @@ class EndpointProcessor(object):
             raise exceptions.ModelNotFound()
 
     def __process_delete(self):
-        import pdb
-        pdb.set_trace()
         if not self.__shield_class.delete(self.__shield_class.info):
             raise exceptions.MethodNotFound()
 
