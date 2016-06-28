@@ -54,7 +54,7 @@ class GAEModel(AppEngineModel, Model):
         for field in fields_arent_keys:
             query = query.filter(getattr(cls, field) == kwargs[field])
 
-        if bool(fields_to_filter & keys):  # there are keys in the fields to filter
+        if bool(fields_to_filter & keys):  # check if there are keys in the fields to filter
             keys_and_kinds = cls._get_keys_and_kinds()
             for key, kind in keys_and_kinds.items():
                 query = query.filter(getattr(cls, key) == ndb.Key(kind, kwargs[key]))

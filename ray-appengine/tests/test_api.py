@@ -67,11 +67,18 @@ class TestIntegrated(TestCreateEnviroment):
     def test_find_using_keys(self):
         for name, age in [('john', 30), ('maria', 40), ('some', 50), ('felipe', 40)]:
             u = User(name=name, age=age).put()
-            Post(owner=u.key, text='any').put()
+            Post(owner=u.key, text='any_' + name).put()
 
         result = Post.find(owner=1)
         result = [p.to_json() for p in result]
-        self.assertEqual(result, [{'title': None, 'text': 'any', 'id': 2, 'owner': 1}])
+        self.assertEqual(result, [{'title': None, 'text': 'any_john', 'id': 2, 'owner': 1}])
+
+        result = Post.find(owner=1, text='any_john')
+        result = [p.to_json() for p in result]
+        self.assertEqual(result, [{'title': None, 'text': 'any_john', 'id': 2, 'owner': 1}])
+
+        result = Post.find(owner=1, text='any_felipe')
+        self.assertEqual(0, len([p.to_json() for p in result]))
 
     def test_find(self):
         # setup
