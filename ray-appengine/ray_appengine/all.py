@@ -31,11 +31,13 @@ class GAEModel(AppEngineModel, Model):
             AppEngineModel.put(self)
             return self
 
-    def remove(self, *args, **kwargs):
+    def delete(self, id=None):
+        import pdb; pdb.set_trace()
         can_delete = Model.delete(self)
-        if can_delete:
-            super(AppEngineModel, self).delete()
-            return self.key.delete()
+        exists = self.__class__.get_by_id(int(id))
+        if can_delete and exists:
+            exists.key.delete()
+            return self
 
     def to_json(self):
         return self.__model_to_json()

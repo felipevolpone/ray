@@ -60,7 +60,7 @@ class TestIntegrated(TestCreateEnviroment):
         self.assertEqual(1, len(all_users))
 
         # delete
-        new_user.remove()
+        new_user.delete()
         all_users = User.query().fetch()
         self.assertEqual(0, len(all_users))
 

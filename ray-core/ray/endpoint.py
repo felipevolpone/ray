@@ -112,12 +112,14 @@ class EndpointProcessor(object):
             raise exceptions.ModelNotFound()
 
     def __process_delete(self):
+        import pdb
+        pdb.set_trace()
         if not self.__shield_class.delete(self.__shield_class.info):
             raise exceptions.MethodNotFound()
 
         id_param = http.get_id(self.__request.upath_info)
         try:
-            return self.__model(id=id_param).delete().to_json()
+            return self.__model(id=id_param).delete(id=id_param).to_json()
         except:
             raise exceptions.ModelNotFound()
 
