@@ -1,4 +1,4 @@
-import webapp2
+import webapp2, urlparse
 
 from . import authentication_helper
 
@@ -35,12 +35,15 @@ def get_cookie_content(request):
     return authentication_helper.cookie_content(cookie_text)
 
 
-def query_params_to_dict(get):
+def query_params_to_dict(request):
+    params_with_array = urlparse.parse_qs(request.query_string)
     params = {}
-    for key, value in get.items():
-        if isinstance(value, unicode):
-            value = value.encode('UTF-8')
-
+    for key, values in params_with_array.items():
+        value = values[0]
+        try:
+            value = int(values[0])
+        except:
+            pass
         params[key] = value
 
     return params

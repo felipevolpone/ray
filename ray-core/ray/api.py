@@ -35,7 +35,7 @@ class ApiHandler(webapp2.RequestHandler):
         except (exceptions.Forbidden, exceptions.NotAuthorized):
             self.response.status = 403
         except (exceptions.ModelNotFound):
-            self.response.status = 502
+            self.response.status = 200
         else:
             self.response.status = 500
 

@@ -23,4 +23,4 @@ class TestHttp(unittest.TestCase):
 
     def test_parse_params(self):
         request = Request.blank('/api/user?name=felipe&age=23', method='GET')
-        self.assertEqual({'name': 'felipe', 'age': '23'}, query_params_to_dict(request.GET))
+        self.assertEqual({'name': 'felipe', 'age': 23}, query_params_to_dict(request))

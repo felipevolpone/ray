@@ -15,18 +15,14 @@ class GAEModel(AppEngineModel, Model):
     def to_instance(cls, json_attributes):
         instance = cls()
 
-        keys = {}
-        for name, property_type in instance._properties.items():
-            if isinstance(property_type, ndb.KeyProperty):
-                keys[name] = property_type._kind
+        keys_and_kinds = cls._get_keys_and_kinds()
 
         for field_name in json_attributes.keys():
             value = json_attributes[field_name]
-            if field_name in keys:
-                value = ndb.Key(keys[field_name], json_attributes[field_name])
+            if field_name in keys_and_kinds:
+                value = ndb.Key(keys_and_kinds[field_name], json_attributes[field_name])
 
             setattr(instance, field_name, value)
-
         return instance
 
     def put(self):
@@ -51,14 +47,33 @@ class GAEModel(AppEngineModel, Model):
         if not kwargs:
             return query.fetch()
 
-        for field, value in kwargs.items():
-            query = query.filter(getattr(cls, field) == value)
+        fields_to_filter = set(kwargs.keys())
+        keys = set(cls._get_keys_and_kinds().keys())
+        fields_arent_keys = fields_to_filter - keys
+
+        for field in fields_arent_keys:
+            query = query.filter(getattr(cls, field) == kwargs[field])
+
+        if bool(fields_to_filter & keys):  # there are keys in the fields to filter
+            keys_and_kinds = cls._get_keys_and_kinds()
+            for key, kind in keys_and_kinds.items():
+                query = query.filter(getattr(cls, key) == ndb.Key(kind, kwargs[key]))
 
         return query.fetch()
 
     @classmethod
     def get(cls, id=None):
         return cls.get_by_id(int(id))
+
+    @classmethod
+    def _get_keys_and_kinds(cls):
+        keys = {}
+        for name, property_type in cls._properties.items():
+            if isinstance(property_type, ndb.KeyProperty):
+                keys[name] = property_type._kind
+
+        # keys['id'] = cls.__name__
+        return keys
 
     def __model_to_json(self):
         model_json = {}

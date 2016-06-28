@@ -21,6 +21,12 @@ class Post(GAEModel):
     owner = ndb.KeyProperty(kind=User)
 
 
+class TestInnerMethods(TestCreateEnviroment):
+
+    def test_get_keys(self):
+        self.assertEqual(Post._get_keys_and_kinds(), {'owner': 'User'})
+
+
 class TestIntegrated(TestCreateEnviroment):
 
     def test_columns(self):
@@ -57,6 +63,15 @@ class TestIntegrated(TestCreateEnviroment):
         new_user.remove()
         all_users = User.query().fetch()
         self.assertEqual(0, len(all_users))
+
+    def test_find_using_keys(self):
+        for name, age in [('john', 30), ('maria', 40), ('some', 50), ('felipe', 40)]:
+            u = User(name=name, age=age).put()
+            Post(owner=u.key, text='any').put()
+
+        result = Post.find(owner=1)
+        result = [p.to_json() for p in result]
+        self.assertEqual(result, [{'title': None, 'text': 'any', 'id': 2, 'owner': 1}])
 
     def test_find(self):
         # setup

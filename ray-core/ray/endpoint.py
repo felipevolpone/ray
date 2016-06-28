@@ -101,7 +101,8 @@ class EndpointProcessor(object):
             raise exceptions.MethodNotFound()
 
         id_param = http.get_id(self.__request.upath_info)
-        params = http.query_params_to_dict(self.__request.GET)
+        params = http.query_params_to_dict(self.__request)
+
         try:
             if not id_param:
                 return [model.to_json() for model in self.__model().find(**params)]
