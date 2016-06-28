@@ -33,9 +33,13 @@ class GAEModel(AppEngineModel, Model):
 
     def delete(self, id=None):
         can_delete = Model.delete(self)
-        exists = self.__class__.get_by_id(int(id))
-        if can_delete and exists:
-            exists.key.delete()
+        if not id:
+            my_key = self
+        else:
+            my_key = self.__class__.get_by_id(int(id))
+
+        if can_delete and my_key:
+            my_key.key.delete()
             return self
 
     def to_json(self):
