@@ -94,7 +94,9 @@ class EndpointProcessor(object):
         if not self.__shield_class.post(self.__shield_class.info):
             raise exceptions.MethodNotFound()
 
-        return self.__update_entity()
+        entity_json = json.loads(self.__request.body)
+        entity = self.__model.to_instance({})
+        return entity.put(entity_json).to_json()
 
     def __process_get(self):
         if not self.__shield_class.get(self.__shield_class.info):

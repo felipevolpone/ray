@@ -29,7 +29,13 @@ class Model(object):
     def _hasnt_hooks(self):
         return not hasattr(self, 'hooks')
 
+    def update(self, dict_fields_to_update):
+        return self.__save()
+
     def put(self):
+        return self.__save()
+
+    def __save(self):
         if self._hasnt_hooks():
             return True
 

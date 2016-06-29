@@ -22,6 +22,8 @@ class UserModel(ModelInterface):
     def describe(cls):
         return {'name': str, 'age': int}
 
+# FIXME implementar no model os metodos put e update só chamando o super e retornando self
+# para o to_json funcionar
 
 class TestEndpoint(unittest.TestCase):
 
