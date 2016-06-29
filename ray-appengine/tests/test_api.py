@@ -50,8 +50,10 @@ class TestIntegrated(TestCreateEnviroment):
     def test_update(self):
         self.assertEqual(0, len(User.query().fetch()))
         user = User(name='john', age=25).put()
+
         to_update = {'name': 'felipe', 'id': user.key.id()}
         User.update(to_update)
+
         self.assertEqual(1, len(User.query().fetch()))
         user = User.query().fetch()[0]
         self.assertEqual('felipe', user.name)
