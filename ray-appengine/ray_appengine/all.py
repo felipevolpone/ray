@@ -71,6 +71,21 @@ class GAEModel(AppEngineModel, Model):
         return cls.get_by_id(int(id))
 
     @classmethod
+    def update(cls, fields_to_update):
+        if 'id' not in fields_to_update:
+            raise Exception('eh necessario passar o id no json')
+
+        entity = ndb.Key(cls.__name__, fields_to_update['id']).get()
+
+        for key, value in fields_to_update.items():
+            if key in entity._properties:
+                value = cls.from_raw_to_type(cls._properties[key], value)
+                setattr(entity, key, value)
+
+        entity.put()
+        return entity
+
+    @classmethod
     def _get_keys_and_kinds(cls):
         keys = {}
         for name, property_type in cls._properties.items():
@@ -164,15 +179,3 @@ class GAEModel(AppEngineModel, Model):
         if isinstance(value, unicode):
             return value.encode('utf-8')
         return value
-
-    @classmethod
-    def update(cls, old_entity, json):
-        if 'id' in json:
-            del json['id']
-
-        for k, v in json.items():
-            if k in old_entity._properties:
-                value = cls.from_raw_to_type(old_entity._properties[k], v)
-                setattr(old_entity, k, value)
-
-        return old_entity

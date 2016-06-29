@@ -47,6 +47,16 @@ class TestIntegrated(TestCreateEnviroment):
         self.assertEqual(1, len(posts))
         self.assertEqual(owner.to_json()['id'], posts[0].owner.id())
 
+    def test_update(self):
+        self.assertEqual(0, len(User.query().fetch()))
+        user = User(name='john', age=25).put()
+        to_update = {'name': 'felipe', 'id': user.key.id()}
+        User.update(to_update)
+        self.assertEqual(1, len(User.query().fetch()))
+        user = User.query().fetch()[0]
+        self.assertEqual('felipe', user.name)
+        self.assertEqual(25, user.age)
+
     def test_to_json(self):
         u = User(name='felipe', age=33).put()
         expected = {'name': 'felipe', 'age': 33, 'id': 1}

@@ -81,8 +81,8 @@ class EndpointProcessor(object):
         if id_param:
             entity_json['id'] = id_param
 
-        entity = self.__model.to_instance(entity_json)
-        return entity.put().to_json()
+        entity = self.__model.to_instance({})
+        return entity.update(entity_json).to_json()
 
     def __process_put(self):
         if not self.__shield_class.put(self.__shield_class.info):
