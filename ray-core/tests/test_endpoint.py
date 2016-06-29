@@ -22,8 +22,18 @@ class UserModel(ModelInterface):
     def describe(cls):
         return {'name': str, 'age': int}
 
-# FIXME implementar no model os metodos put e update só chamando o super e retornando self
-# para o to_json funcionar
+    def put(self, entity_json):
+        super(UserModel, self).put()
+        return self.__class__.to_instance(entity_json)
+
+    def delete(self, id=None):
+        super(UserModel, self).delete()
+        return self
+
+    @classmethod
+    def update(cls, *args, **kwargs):
+        return cls()
+
 
 class TestEndpoint(unittest.TestCase):
 
