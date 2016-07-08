@@ -17,8 +17,7 @@ def endpoint(url=None, authentication=None):
 
 class EndpointHandler(object):
 
-    def __init__(self, request, response, fullpath):
-        self.__response = response
+    def __init__(self, request, fullpath):
         self.__request = request
         self.__url = fullpath
         self.__endpoint_class = self._get_endpoint_class()
@@ -28,7 +27,6 @@ class EndpointHandler(object):
             raise exceptions.MethodNotFound()
 
         return EndpointProcessor(self.__request,
-                                 self.__response,
                                  self.__endpoint_class).process()
 
     def _get_endpoint_class(self):
@@ -61,9 +59,8 @@ class EndpointHandler(object):
 
 class EndpointProcessor(object):
 
-    def __init__(self, request, response, model):
+    def __init__(self, request, model):
         self.__request = request
-        self.__response = response
         self.__model = model
 
         cookie_content = http.get_cookie_content(self.__request)

@@ -26,7 +26,9 @@ class ApiHandler(webapp2.RequestHandler):
 
     @to_json
     def dispatch(self):
-        url = self.__fix_url(self.request.path)
+        url = self.request.path
+        if url[-1] == '/':
+            url = url[:-1]
 
         try:
             return self.process(url)
@@ -44,7 +46,7 @@ class ApiHandler(webapp2.RequestHandler):
             return LoginHandler(self.request, self.response, fullpath).process()
 
         elif self.is_endpoint(fullpath):
-            return EndpointHandler(self.request, self.response, fullpath).process()
+            return EndpointHandler(self.request, fullpath).process()
 
         elif self.is_action(fullpath):
             return self.__handle_action(fullpath)
@@ -52,13 +54,10 @@ class ApiHandler(webapp2.RequestHandler):
         else:
             self.response.status = 404
 
-    def __fix_url(self, url):
-        if url[-1] == '/':
-            return url[:-1]
-        return url
-
     def __handle_action(self, url):
         # url e.g: /api/user/123/action
+        # TODO FIXME today a url like /api/user/123/action
+        # will not be considered like an action
 
         action_url = http.param_at(url, -1)
         model_name = http.param_at(url, 2)
