@@ -1,16 +1,15 @@
-import json, http, importlib
+import json, http
 from . import exceptions, authentication_helper
 from .shield import ShieldHandler
-
-
-class RaySettings(object):
-    ENDPOINT_MODULES = []
+from .application import ray_conf
 
 
 def endpoint(url=None, authentication=None):
     def decorator(clazz):
-        clazz._endpoint_url = url.replace('/', '')
-        clazz._authentication_class = authentication
+        endpoint_url = url.replace('/', '')
+        clazz._endpoint_url = endpoint_url
+        ray_conf[endpoint_url] = {'model': clazz, 'authentication': authentication}
+
         return clazz
     return decorator
 
@@ -23,38 +22,31 @@ class EndpointHandler(object):
         self.__endpoint_class = self._get_endpoint_class()
 
     def process(self):
-        if self.__is_protected() and not self.__allowed():
-            raise exceptions.MethodNotFound()
+        # if self.__is_protected() and not self.__allowed():
+        #     raise exceptions.MethodNotFound()
 
         return EndpointProcessor(self.__request,
                                  self.__endpoint_class).process()
 
     def _get_endpoint_class(self):
         full_path = self.__url.split('/')
-        url_asked = full_path[-1] if len(full_path) == 3 else full_path[-2]
+        model_url = full_path[-1] if len(full_path) == 3 else full_path[-2]
 
-        for module_name in RaySettings.ENDPOINT_MODULES:
-            module = importlib.import_module(module_name)
+        return ray_conf[model_url]['model']
 
-            for clazz_name in dir(module):
-                model_clazz = getattr(module, clazz_name)
-
-                if (hasattr(model_clazz, '_endpoint_url') and model_clazz._endpoint_url == url_asked):
-                    return model_clazz
-
-    def __is_protected(self):
-        try:
-            return (hasattr(self.__endpoint_class, '_authentication_class') and
-                    self.__endpoint_class._authentication_class is not None)
-        except:
-            return False
-
-    def __allowed(self):
-        try:
-            cookie = (self.__request.cookies.get(authentication_helper._COOKIE_NAME))
-            return self.__endpoint_class._authentication_class.is_loged(cookie)
-        except:
-            return False
+    # def __is_protected(self):
+    #     try:
+    #         return (hasattr(self.__endpoint_class, '_authentication_class') and
+    #                 self.__endpoint_class._authentication_class is not None)
+    #     except:
+    #         return False
+    #
+    # def __allowed(self):
+    #     try:
+    #         cookie = (self.__request.cookies.get(authentication_helper._COOKIE_NAME))
+    #         return self.__endpoint_class._authentication_class.is_loged(cookie)
+    #     except:
+    #         return False
 
 
 class EndpointProcessor(object):

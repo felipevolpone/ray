@@ -2,10 +2,7 @@
 from google.appengine.ext import ndb
 from ray_appengine.all import GAEModel
 from .gae_test import TestCreateEnviroment
-from ray.endpoint import endpoint, RaySettings
-
-
-RaySettings.ENDPOINT_MODULES.append('test_api')
+from ray.endpoint import endpoint
 
 
 @endpoint('/post')

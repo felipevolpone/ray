@@ -4,7 +4,7 @@ from ray.hooks import Hook
 from ray.actions import ActionAPI, action
 from ray.authentication import Authentication
 from ray.wsgi.wsgi import application
-from ray.endpoint import endpoint, RaySettings
+from ray.endpoint import endpoint
 from ray_sqlalchemy.all import AlchemyModel
 
 from sqlalchemy import Column, Integer, String, create_engine
@@ -15,8 +15,6 @@ from sqlalchemy.orm import sessionmaker
 Base = declarative_base()
 engine = create_engine('sqlite:///example_blog.db')
 Session = sessionmaker(bind=engine)
-
-RaySettings.ENDPOINT_MODULES.append('app')
 
 
 class PostHook(Hook):

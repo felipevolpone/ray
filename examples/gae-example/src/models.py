@@ -1,13 +1,10 @@
 
 from ray.hooks import Hook
-from ray.endpoint import endpoint, RaySettings
+from ray.endpoint import endpoint
 from ray.wsgi.wsgi import application
 
 from ray_appengine.all import GAEModel
 from google.appengine.ext import ndb
-
-
-RaySettings.ENDPOINT_MODULES.append('src.models')
 
 
 class PostHook(Hook):

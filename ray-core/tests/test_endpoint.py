@@ -2,7 +2,6 @@ import unittest
 
 from webapp2 import Request
 
-from ray.endpoint import RaySettings
 from ray.wsgi.wsgi import application
 from ray.endpoint import endpoint
 
@@ -36,9 +35,6 @@ class UserModel(ModelInterface):
 
 
 class TestEndpoint(unittest.TestCase):
-
-    def setUp(self):
-        RaySettings.ENDPOINT_MODULES.append('tests.test_endpoint')
 
     def test_404(self):
         request = Request.blank('/api/', method='GET')

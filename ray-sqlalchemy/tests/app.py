@@ -1,6 +1,6 @@
 
 from ray.wsgi.wsgi import application
-from ray.endpoint import endpoint, RaySettings
+from ray.endpoint import endpoint
 from ray_sqlalchemy.all import AlchemyModel
 from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -8,9 +8,6 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 engine = create_engine('sqlite:///example.db')
-
-
-RaySettings.ENDPOINT_MODULES.append('app')
 
 
 @endpoint('/user')
