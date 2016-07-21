@@ -32,5 +32,7 @@ class UserAction(ActionAPI):
 class TestActionMapping(unittest.TestCase):
 
     def test(self):
-        ac = UserAction()
-        self.assertEqual(ray_conf['action'], {'user/activate', ac.activate})
+        ac = UserAction('/user/activate')
+
+        self.assertTrue('user/activate' in ray_conf['action'])
+        self.assertEqual(ac.activate.__name__, ray_conf['action']['user/activate'].__name__)

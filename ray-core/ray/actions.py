@@ -20,15 +20,15 @@ def action(url, protection=None):
 class RegisterActions(type):
 
     def __new__(cls, name, bases, methods):
-        print name
-        print methods
-        print bases
+
+        if '__model__' not in methods:  # to pass the ActionAPI class
+            return type.__new__(cls, name, bases, methods)
 
         model_class = methods['__model__']
         for method_name, method in methods.items():
             if not method_name.startswith('__'):
                 url = model_class._endpoint_url + '/' + method._action_url
-                ray_conf[url] = method
+                ray_conf['action'][url] = method
 
         return type.__new__(cls, name, bases, methods)
 
