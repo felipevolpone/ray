@@ -20,6 +20,11 @@ def action(url, protection=None):
 class RegisterActions(type):
 
     def __new__(cls, name, bases, methods):
+        print cls
+        print name
+        print bases
+        print methods
+        print '\n'
 
         if '__model__' not in methods:  # to pass the ActionAPI class
             return type.__new__(cls, name, bases, methods)
@@ -28,7 +33,7 @@ class RegisterActions(type):
         for method_name, method in methods.items():
             if not method_name.startswith('__'):
                 url = model_class._endpoint_url + '/' + method._action_url
-                ray_conf['action'][url] = method
+                ray_conf['action'][url] = {'method': method, 'class_name': name}
 
         return type.__new__(cls, name, bases, methods)
 
@@ -37,32 +42,39 @@ class ActionAPI(object):
     __metaclass__ = RegisterActions
 
     def __init__(self, url):
-        # url e.g: /api/user/123/action
+        # url e.g: /api/user/123/action_name # TODO implement this case
+        # url e.g: /api/user/action_name
 
         # action_url = http.param_at(url, -1)
         # model_id = http.param_at(url, 3)
-        model_url = http.param_at(url, 2)
+
+        self.action_url = http.param_at(url, 1) + '/' + http.param_at(url, -1)
         self.__entire_url = url
-        self.model_url = model_url
+        self.model_url = http.param_at(url, 2)
 
     def process_action(self, action_url, model_id):
         action_class = None
+
+        method = ray_conf['action'][self.action_url]['method']
+        action_class_name = ray_conf['action'][self.action_url]['class_name']
 
         for clazz in ActionAPI.__subclasses__():
             if not hasattr(clazz, '__model__'):
                 raise exceptions.ActionDoNotHaveModel()
 
-            if clazz.__model__._endpoint_url == self.model_name:
+            if clazz.__name__ == action_class_name:
                 action_class = clazz
                 break
 
-        if not action_class:
-            raise exceptions.MethodNotFound()
+        return method(action_class(self.__entire_url), model_id)
 
-        for methodname in action_class.__dict__:
-            method = getattr(clazz(), methodname)
-
-            if hasattr(method, '_action_url') and action_url == method._action_url:
+        # if not action_class:
+        #     raise exceptions.MethodNotFound()
+        #
+        # for methodname in action_class.__dict__:
+        #     method = getattr(clazz(), methodname)
+        #
+        #     if hasattr(method, '_action_url') and action_url == method._action_url:
                 # if hasattr(method, '_protection_shield_method') and self.__request:
                 #     shield_method = method._protection_shield_method
                 #
@@ -70,6 +82,6 @@ class ActionAPI(object):
                 #     if not shield_method(cookie_content):
                 #         raise exceptions.NotAuthorized()
 
-                return method(model_id)
-
+                # return method(model_id)
+#
         raise exceptions.MethodNotFound()
