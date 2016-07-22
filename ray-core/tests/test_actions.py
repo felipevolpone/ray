@@ -96,25 +96,23 @@ class TestAction(unittest.TestCase):
         response = request.get_response(application)
         self.assertEqual(403, response.status_int)
 
-    # @unittest.skip('skip')
     def test_action_url_404(self):
         request = Request.blank('/api/user/123/dontexists', method='POST')
         response = request.get_response(application)
         self.assertEqual(404, response.status_int)
 
 
-# @endpoint('/any')
-# class AnyModel(ModelInterface):
-#     pass
+@endpoint('/any')
+class AnyModel(ModelInterface):
+    pass
 
-# class ActionWrong(ActionAPI):
-#
-#     @action("/activate")
-#     def activate(self, model_id):
-#         return False
+class ActionWrong(ActionAPI):
+
+    @action("/activate")
+    def activate(self):
+        return False
 
 
-@unittest.skip('skip')
 class TestWrongCases(unittest.TestCase):
 
     def test_action_without_model(self):
