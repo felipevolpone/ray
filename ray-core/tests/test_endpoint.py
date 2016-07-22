@@ -34,6 +34,7 @@ class UserModel(ModelInterface):
         return cls()
 
 
+@unittest.skip('skip')
 class TestEndpoint(unittest.TestCase):
 
     def test_404(self):
