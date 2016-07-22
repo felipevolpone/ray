@@ -62,7 +62,12 @@ class ActionAPI(object):
     def process_action(self):
         action_class = None
 
-        method = ray_conf['action'][self.action_url]['method']
+        method = None
+        try:
+            method = ray_conf['action'][self.action_url]['method']
+        except:
+            raise exceptions.MethodNotFound()
+
         action_class_name = ray_conf['action'][self.action_url]['class_name']
 
         for clazz in ActionAPI.__subclasses__():

@@ -71,7 +71,6 @@ class TestAction(unittest.TestCase):
         self.assertEqual('activate_user', ActionAPI('/user/activate', None).process_action())
         # self.assertEqual('activate_user', ActionAPI('/user/123/activate', '123').process_action())
 
-    # @unittest.skip('skip')
     def test_action(self):
         user_id = '12312'
 
@@ -97,7 +96,7 @@ class TestAction(unittest.TestCase):
         response = request.get_response(application)
         self.assertEqual(403, response.status_int)
 
-    @unittest.skip('skip')
+    # @unittest.skip('skip')
     def test_action_url_404(self):
         request = Request.blank('/api/user/123/dontexists', method='POST')
         response = request.get_response(application)
