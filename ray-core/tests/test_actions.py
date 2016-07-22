@@ -52,7 +52,7 @@ class ActionUser(ActionAPI):
         # just to make sure that this method was called
         global any_number
         any_number = model_id
-        return 'activate_user'
+        return 'activate_user_with_id'
 
     # to test Shileds with Actions
     @action('/enable', protection=UserShield.protect_enable)
@@ -69,7 +69,7 @@ class TestAction(unittest.TestCase):
 
     def test_get_action(self):
         self.assertEqual('activate_user', ActionAPI('/user/activate', None).process_action())
-        # self.assertEqual('activate_user', ActionAPI('/user/123/activate', '123').process_action())
+        self.assertEqual('activate_user_with_id', ActionAPI('api/user/123/activate_with_id', '123').process_action())
 
     def test_action(self):
         user_id = '12312'
