@@ -72,7 +72,6 @@ class TestEndpoint(unittest.TestCase):
         response = request.get_response(application)
         self.assertEqual(200, response.status_int)
 
-    # @unittest.skip('skip')
     def test_delete(self):
         uuid_created = 'h12u3189adjs'
         request = Request.blank('/api/user/' + uuid_created, method='DELETE')
