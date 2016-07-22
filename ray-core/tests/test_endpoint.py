@@ -34,7 +34,6 @@ class UserModel(ModelInterface):
         return cls()
 
 
-@unittest.skip('skip')
 class TestEndpoint(unittest.TestCase):
 
     def test_404(self):
@@ -53,6 +52,7 @@ class TestEndpoint(unittest.TestCase):
         self.assertEqual('felipe', result['result']['name'])
         self.assertEqual(200, resp.status_int)
 
+    @unittest.skip('skip')
     def test_get_all(self):
         self.__create()
 
@@ -60,12 +60,14 @@ class TestEndpoint(unittest.TestCase):
         response = MockResponse(request.get_response(application))
         self.assertEqual(200, response.status_int)
 
+    @unittest.skip('skip')
     def test_get(self):
         uuid_created = 'h12u3189adjs'
         request = Request.blank('/api/user/' + uuid_created, method='GET')
         response = MockResponse(request.get_response(application))
         self.assertEqual(200, response.status_int)
 
+    @unittest.skip('skip')
     def test_put(self):
         uuid_created = 'h12u3189adjs'
         request = Request.blank('/api/user/' + uuid_created, method='PUT')
@@ -73,6 +75,7 @@ class TestEndpoint(unittest.TestCase):
         response = request.get_response(application)
         self.assertEqual(200, response.status_int)
 
+    @unittest.skip('skip')
     def test_delete(self):
         uuid_created = 'h12u3189adjs'
         request = Request.blank('/api/user/' + uuid_created, method='DELETE')

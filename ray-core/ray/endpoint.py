@@ -32,7 +32,7 @@ class EndpointHandler(object):
         full_path = self.__url.split('/')
         model_url = full_path[-1] if len(full_path) == 3 else full_path[-2]
 
-        return ray_conf[model_url]['model']
+        return ray_conf['endpoint'][model_url]['model']
 
     # def __is_protected(self):
     #     try:
