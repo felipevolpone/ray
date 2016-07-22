@@ -59,7 +59,11 @@ class ApiHandler(webapp2.RequestHandler):
         # TODO FIXME today a url like /api/user/123/action
         # will not be considered like an action
 
-        return ActionAPI(url).process_action()
+        arg = None
+        if len(url.split('/')) >= 5:  # indicatest that has an id between endpoint and action_name
+            arg = http.param_at(url, -2)
+
+        return ActionAPI(url, arg).process_action()
 
     def is_login(self, full_path):
         return full_path == '/api/_login'
