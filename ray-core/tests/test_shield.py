@@ -19,7 +19,7 @@ class MyAuth(Authentication):
             return {'username': 'felipe'}
 
 
-@endpoint('/person')
+@endpoint('/person', authentication=MyAuth)
 class PersonModel(ModelInterface):
 
     def __init__(self, *a, **k):
@@ -38,7 +38,6 @@ class PersonShield(Shield):
         return info['username'] == 'felipe'
 
 
-@unittest.skip('skip')
 class TestShield(unittest.TestCase):
 
     def test(self):

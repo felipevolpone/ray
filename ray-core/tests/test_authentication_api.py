@@ -48,7 +48,7 @@ class TestProctedEndpoint(unittest.TestCase):
         response = req.get_response(application)
         self.assertEqual(404, response.status_int)
 
-        req = Request.blank('/api/person/', method='GET')
+        req = Request.blank('/api/gamer/', method='GET')
         req.headers['Cookie'] = cookie
         response = req.get_response(application)
         self.assertEqual(200, response.status_int)
