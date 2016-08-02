@@ -16,13 +16,14 @@ class ShieldHandler(object):
             if clazz.__model__ == model_class:
                 return clazz(self.content)
 
-        return Shield(self.content)
+        return Shield(self.content)  # here an empty Shield is returned to avoid if is not None at the endpoint
 
 
 class Shield(object):
     """
-        The Shiled must be inherited if you want to protect some url in some cases. Each method
-        represents a http call, so just inherit that http verb you wanna protect.
+        The Shiled must be inherited if you want to protect some endpoint. Each method
+        represents a http method (get, post, delete, etc), so just inherit that http
+        method you wanna protect.
 
         See this example:
         class PersonShield(Shield):

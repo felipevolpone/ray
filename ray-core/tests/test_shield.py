@@ -38,7 +38,7 @@ class PersonShield(Shield):
         return info['username'] == 'felipe'
 
 
-@unittest.skip('refactoring Ray structures')
+@unittest.skip('skip')
 class TestShield(unittest.TestCase):
 
     def test(self):

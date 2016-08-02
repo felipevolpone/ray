@@ -87,13 +87,11 @@ class ActionAPI(object):
         #     method = getattr(clazz(), methodname)
         #
         #     if hasattr(method, '_action_url') and action_url == method._action_url:
-                # if hasattr(method, '_protection_shield_method') and self.__request:
-                #     shield_method = method._protection_shield_method
-                #
-                #     cookie_content = http.get_cookie_content(self.__request)
-                #     if not shield_method(cookie_content):
-                #         raise exceptions.NotAuthorized()
-
-                # return method(model_id)
-#
+        #          if hasattr(method, '_protection_shield_method') and self.__request:
+        #              shield_method = method._protection_shield_method
+        #
+        #              cookie_content = http.get_cookie_content(self.__request)
+        #              if not shield_method(cookie_content):
+        #                  raise exceptions.NotAuthorized()
+        #         # return method(model_id)
         # raise exceptions.MethodNotFound()

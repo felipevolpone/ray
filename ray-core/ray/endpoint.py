@@ -19,34 +19,30 @@ class EndpointHandler(object):
     def __init__(self, request, fullpath):
         self.__request = request
         self.__url = fullpath
-        self.__endpoint_class = self._get_endpoint_class()
+        self.__endpoint_data = self._get_endpoint_data()
 
     def process(self):
-        # if self.__is_protected() and not self.__allowed():
-        #     raise exceptions.MethodNotFound()
+        if self.__is_protected() and not self.__allowed():
+            raise exceptions.MethodNotFound()
 
         return EndpointProcessor(self.__request,
-                                 self.__endpoint_class).process()
+                                 self.__endpoint_data['model']).process()
 
-    def _get_endpoint_class(self):
+    def _get_endpoint_data(self):
         full_path = self.__url.split('/')
         model_url = full_path[-1] if len(full_path) == 3 else full_path[-2]
 
-        return ray_conf['endpoint'][model_url]['model']
+        return ray_conf['endpoint'][model_url]
 
-    # def __is_protected(self):
-    #     try:
-    #         return (hasattr(self.__endpoint_class, '_authentication_class') and
-    #                 self.__endpoint_class._authentication_class is not None)
-    #     except:
-    #         return False
-    #
-    # def __allowed(self):
-    #     try:
-    #         cookie = (self.__request.cookies.get(authentication_helper._COOKIE_NAME))
-    #         return self.__endpoint_class._authentication_class.is_loged(cookie)
-    #     except:
-    #         return False
+    def __is_protected(self):
+        return self._get_endpoint_data()['authentication'] is not None
+
+    def __allowed(self):
+        try:
+            cookie = (self.__request.cookies.get(authentication_helper._COOKIE_NAME))
+            return self.__endpoint_data['authentication'].is_loged(cookie)
+        except:
+            return False
 
 
 class EndpointProcessor(object):
