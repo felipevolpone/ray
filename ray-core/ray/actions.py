@@ -48,13 +48,13 @@ class ActionAPI(object):
     __metaclass__ = RegisterActions
 
     def __init__(self, url, model_arg):
-        # url e.g: /api/user/123/action_name # TODO implement this case
+        # url e.g: /api/user/123/action_name
         # url e.g: /api/user/action_name
 
         if not model_arg:
             self.action_url = http.param_at(url, 1) + '/' + http.param_at(url, -1)  # e.g: 'user/action_name'
         else:
-            self.action_url = http.param_at(url, 2) + '/#arg/' + http.param_at(url, -1)  # e.g: 'user/123/action_name'
+            self.action_url = http.param_at(url, 1) + '/#arg/' + http.param_at(url, -1)  # e.g: 'user/123/action_name'
 
         self.__model_arg = model_arg
         self.__entire_url = url

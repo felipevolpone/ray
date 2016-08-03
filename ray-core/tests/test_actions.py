@@ -44,7 +44,7 @@ class ActionUser(ActionAPI):
     def activate_user(self, model_id):
         # just to make sure that this method was called
         global any_number
-        any_number = model_id
+        any_number = 'ACTIVATE_USER'
         return 'activate_user'
 
     @action("/<id>/activate_with_id")
@@ -67,13 +67,14 @@ class ActionUser(ActionAPI):
 
 class TestAction(unittest.TestCase):
 
-    def test_get_action(self):
-        self.assertEqual('activate_user', ActionAPI('/user/activate', None).process_action())
-        self.assertEqual('activate_user_with_id', ActionAPI('api/user/123/activate_with_id', '123').process_action())
-
     def test_action(self):
-        user_id = '12312'
+        request = Request.blank('/api/user/activate', method='POST')
+        response = request.get_response(application)
+        self.assertEqual(200, response.status_int)
+        global any_number
+        self.assertEqual('ACTIVATE_USER', any_number)
 
+        user_id = '12312'
         request = Request.blank('/api/user/' + user_id + '/activate_with_id', method='POST')
         response = request.get_response(application)
         self.assertEqual(200, response.status_int)

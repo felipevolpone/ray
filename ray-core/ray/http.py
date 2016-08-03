@@ -13,14 +13,21 @@ class Response(webapp2.Response):
 def param_at(url, index):
     """
         index starts after the word after api.
-        Example: /api/user/123, index 3 returns 123
-        Example: /api/user/foo/123, index 1 returns api, index 3 returns foo
+        Example: /api/user/123, index 2 returns 123
+        Example: /api/user/foo/123, index 1 returns user, index 2 returns foo
     """
-    if url and url[0] != '/':
-        url = '/' + url
+    if url and url[0] == '/':
+        url = url[1:]
+
+    url = url.replace('api/', '')
+
+    if index > 0:
+        index -= 1
+    elif index == 0:
+        return None
 
     params = url.split('/')
-    if len(params) > index and index != 0:
+    if len(params) > index:
         return params[index]
 
     return None

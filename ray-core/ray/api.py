@@ -42,6 +42,7 @@ class ApiHandler(webapp2.RequestHandler):
             self.response.status = 500
 
     def process(self, fullpath):
+        print 'fullpath', fullpath
         if self.is_login(fullpath):
             return LoginHandler(self.request, self.response, fullpath).process()
 
@@ -56,8 +57,6 @@ class ApiHandler(webapp2.RequestHandler):
 
     def __handle_action(self, url):
         # url e.g: /api/user/123/action
-        # TODO FIXME today a url like /api/user/123/action
-        # will not be considered like an action
 
         arg = None
         if len(url.split('/')) >= 5:  # indicatest that has an id between endpoint and action_name
@@ -70,7 +69,23 @@ class ApiHandler(webapp2.RequestHandler):
 
     def is_endpoint(self, full_path):
         full_path = full_path.split('?')[0]
+        if len(full_path.split('/')) == 4:
+            try:
+                int(full_path.split('/')[-1])
+                return True
+            except:
+                return False
+
         return len(full_path.split('/')) <= 4 and len(full_path.split('/')) > 2
 
     def is_action(self, full_path):
+        # full_path e.g: /api/user/123/action
+        # full_path e.g: /api/user/action
+
+        if len(full_path.split('/')) >= 4:
+            try:
+                int(full_path.split('/')[-1])
+            except:
+                return True
+
         return len(full_path.split('/')) == 5

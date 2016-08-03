@@ -60,20 +60,20 @@ class TestEndpoint(unittest.TestCase):
         self.assertEqual(200, response.status_int)
 
     def test_get(self):
-        uuid_created = 'h12u3189adjs'
+        uuid_created = '1245'
         request = Request.blank('/api/user/' + uuid_created, method='GET')
         response = MockResponse(request.get_response(application))
         self.assertEqual(200, response.status_int)
 
     def test_put(self):
-        uuid_created = 'h12u3189adjs'
+        uuid_created = '1245'
         request = Request.blank('/api/user/' + uuid_created, method='PUT')
         request.json = {"name": "ray", 'uuid': uuid_created}
         response = request.get_response(application)
         self.assertEqual(200, response.status_int)
 
     def test_delete(self):
-        uuid_created = 'h12u3189adjs'
+        uuid_created = '1245'
         request = Request.blank('/api/user/' + uuid_created, method='DELETE')
         response = request.get_response(application)
         self.assertEqual(200, response.status_int)
