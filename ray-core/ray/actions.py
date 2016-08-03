@@ -11,7 +11,7 @@ def action(url, protection=None):
             func._protection_shield_method = protection
 
         edit_url = url
-        if edit_url.startswith('/'):  # remote the first /
+        if edit_url.startswith('/'):  # remove the first /
             edit_url = edit_url[1:]
 
         pattern = re.search(r'\<(.*?)\>', url)
