@@ -47,9 +47,11 @@ class RegisterActions(type):
 class ActionAPI(object):
     __metaclass__ = RegisterActions
 
-    def __init__(self, url, model_arg):
+    def __init__(self, url=None, model_arg=None, request=None):
         # url e.g: /api/user/123/action_name
         # url e.g: /api/user/action_name
+
+        self.__request = request
 
         if not model_arg:
             self.action_url = http.param_at(url, 1) + '/' + http.param_at(url, -1)  # e.g: 'user/action_name'
@@ -78,20 +80,12 @@ class ActionAPI(object):
                 action_class = clazz
                 break
 
-        return method(action_class(self.__entire_url, None), self.__model_arg)
+        if hasattr(method, '_protection_shield_method'):
+            shield_method = method._protection_shield_method
 
-        # if not action_class:
-        #     raise exceptions.MethodNotFound()
-        #
-        # for methodname in action_class.__dict__:
-        #     method = getattr(clazz(), methodname)
-        #
-        #     if hasattr(method, '_action_url') and action_url == method._action_url:
-        #          if hasattr(method, '_protection_shield_method') and self.__request:
-        #              shield_method = method._protection_shield_method
-        #
-        #              cookie_content = http.get_cookie_content(self.__request)
-        #              if not shield_method(cookie_content):
-        #                  raise exceptions.NotAuthorized()
-        #         # return method(model_id)
-        # raise exceptions.MethodNotFound()
+            cookie_content = http.get_cookie_content(self.__request)
+
+            if not shield_method(cookie_content):  # shield returned False
+                raise exceptions.NotAuthorized()
+
+        return method(action_class(self.__entire_url, None, self.__request), self.__model_arg)

@@ -28,12 +28,12 @@ any_number = 10
 class UserShield(Shield):
     __model__ = UserModel
 
-    @classmethod
-    def protect_enable(cls, info):
+    @staticmethod
+    def protect_enable(info):
         return True
 
-    @classmethod
-    def protect_fail(cls, info):
+    @staticmethod
+    def protect_fail(info):
         return False
 
 
@@ -82,18 +82,15 @@ class TestAction(unittest.TestCase):
         global any_number
         self.assertEqual(user_id, any_number)
 
-    @unittest.skip('skip')
     def test_action_with_shields(self):
-        user_id = '123'
-        request = Request.blank('/api/user/' + user_id + '/enable', method='POST')
+        request = Request.blank('/api/user/enable', method='POST')
         response = request.get_response(application)
         self.assertEqual(200, response.status_int)
 
         global any_number
         self.assertEqual('enabled', any_number)
 
-        user_id = '123'
-        request = Request.blank('/api/user/' + user_id + '/enable_fail', method='POST')
+        request = Request.blank('/api/user/enable_fail', method='POST')
         response = request.get_response(application)
         self.assertEqual(403, response.status_int)
 
@@ -106,6 +103,7 @@ class TestAction(unittest.TestCase):
 @endpoint('/any')
 class AnyModel(ModelInterface):
     pass
+
 
 class ActionWrong(ActionAPI):
 

@@ -42,7 +42,6 @@ class ApiHandler(webapp2.RequestHandler):
             self.response.status = 500
 
     def process(self, fullpath):
-        print 'fullpath', fullpath
         if self.is_login(fullpath):
             return LoginHandler(self.request, self.response, fullpath).process()
 
@@ -62,7 +61,7 @@ class ApiHandler(webapp2.RequestHandler):
         if len(url.split('/')) >= 5:  # indicatest that has an id between endpoint and action_name
             arg = http.param_at(url, -2)
 
-        return ActionAPI(url, arg).process_action()
+        return ActionAPI(url, arg, self.request).process_action()
 
     def is_login(self, full_path):
         return full_path == '/api/_login'
