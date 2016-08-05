@@ -60,49 +60,49 @@ class EndpointProcessor(object):
         http_verb = self.__request.method.lower()
         return methods[http_verb]()
 
-    def __update_entity(self):
+    def __process_put(self):
+        if not self.__shield_class.put(self.__shield_class.info):
+            raise exceptions.MethodNotFound()
+
         id_param = http.get_id(self.__request.upath_info)
         entity_json = json.loads(self.__request.body)
         if id_param:
             entity_json['id'] = id_param
 
-        entity = self.__model.to_instance({})
+        entity = self.__model.to_instance(entity_json)
         return entity.update(entity_json).to_json()
-
-    def __process_put(self):
-        if not self.__shield_class.put(self.__shield_class.info):
-            raise exceptions.MethodNotFound()
-
-        return self.__update_entity()
 
     def __process_post(self):
         if not self.__shield_class.post(self.__shield_class.info):
             raise exceptions.MethodNotFound()
 
         entity_json = json.loads(self.__request.body)
-        entity = self.__model.to_instance({})
-        return entity.put(entity_json).to_json()
+        entity = self.__model.to_instance(entity_json)
+        return entity.put().to_json()
 
     def __process_get(self):
         if not self.__shield_class.get(self.__shield_class.info):
+            print 'nao entrou aqui'
             raise exceptions.MethodNotFound()
 
-        id_param = http.get_id(self.__request.upath_info)
+        id_param = http.get_id(self.__request.path)
         params = http.query_params_to_dict(self.__request)
 
         try:
             if not id_param:
-                return [model.to_json() for model in self.__model().find(**params)]
+                print self.__model.find()
+                return [model.to_json() for model in self.__model.find(**params)]
 
             return self._find_database(id_param)
-        except:
+        except Exception as e:
+            print e
             raise exceptions.ModelNotFound()
 
     def __process_delete(self):
         if not self.__shield_class.delete(self.__shield_class.info):
             raise exceptions.MethodNotFound()
 
-        id_param = http.get_id(self.__request.upath_info)
+        id_param = http.get_id(self.__request.path)
         try:
             return self.__model(id=id_param).delete(id=id_param).to_json()
         except:

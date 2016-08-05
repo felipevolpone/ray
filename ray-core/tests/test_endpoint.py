@@ -21,10 +21,6 @@ class UserModel(ModelInterface):
     def describe(cls):
         return {'name': str, 'age': int}
 
-    def put(self, entity_json):
-        super(UserModel, self).put()
-        return self.__class__.to_instance(entity_json)
-
     def delete(self, id=None):
         super(UserModel, self).delete()
         return self

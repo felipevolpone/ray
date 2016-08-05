@@ -34,7 +34,7 @@ def param_at(url, index):
 
 
 def get_id(url):
-    return param_at(url, 3)
+    return param_at(url, 2)
 
 
 def get_cookie_content(request):

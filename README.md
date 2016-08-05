@@ -195,17 +195,11 @@ py.test tests/
 ```
 
 ### to do list
-
-**high priority**
-- [ ] Add it to PyPI
-
-**middle priority**
-- [ ] Admin panel (like django-admin)
 - [ ] Peewee compatibility
 - [ ] Decorators to return Content-Type: html and csv.
 - [ ] HTTP Task Queue
 - [ ] HTTP Mail Service
+- [ ] Admin panel (like django-admin)
 
-**low priority**
 - [ ] Request Middleware (like Django)
 - [ ] API versions

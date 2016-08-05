@@ -23,8 +23,5 @@ class ModelInterface(Model):
     def get(self, *args, **kwargs):
         return self
 
-    def find(self, *args, **kwargs):
-        return [self]
-
     def delete(self, *args, **kwargs):
         return self

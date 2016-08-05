@@ -17,19 +17,23 @@ class AlchemyModel(Model):
 
     def put(self):
         super(AlchemyModel, self).put()
+        self._session.add(self)
+        self._session.commit()
+        return self
 
-        if self.id:
-            self._session.query(self.__class__).filter(self.__class__.id == self.id).update(self.to_json())
-        else:
-            self._session.add(self)
+    def update(self, fields_to_update):
+        super(AlchemyModel, self).update(fields_to_update)
 
+        self._session.query(self.__class__).filter(self.__class__.id == self.id).update(fields_to_update)
         self._session.commit()
         return self
 
     @classmethod
     def find(cls, *args, **kwargs):
+        _session = sessionmaker(bind=cls.__engine__)()
+
         if not kwargs:
-            return self._session.query(cls).all()
+            return _session.query(cls).all()
 
         query = self._session.query(cls)
         for field, value in kwargs.items():
@@ -40,10 +44,14 @@ class AlchemyModel(Model):
     def delete(self, *args, **kwargs):
         super(AlchemyModel, self).delete()
 
-        self._session.query(self.__class__).filter(self.__class__.id == self.id).delete()
+        entity = self._session.query(self.__class__).filter(self.__class__.id == self.id).delete()
         self._session.commit()
         return self
 
     @classmethod
     def get(cls, id=None):
-        return self._session.query(cls).filter(cls.id == id).one()
+        try:
+            _session = sessionmaker(bind=cls.__engine__)()
+            return _session.query(cls).get(id)
+        except:
+            return None

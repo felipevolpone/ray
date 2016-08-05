@@ -27,8 +27,8 @@ dev_appserver.py .
 # at the ray-core directory
 pip install --editable .
 
-cd ../ray-sqlalchemy/
-pip install --editable .
+cd ../ray-appengine/
+pip install --editable
 
 cd tests/
 ./run_tests.sh

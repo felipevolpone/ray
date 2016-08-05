@@ -1,7 +1,5 @@
-from ray.wsgi.wsgi import application
 from ray.actions import ActionAPI, action
 from ray.endpoint import endpoint
-from ray.shield import Shield
 from ray.application import ray_conf
 
 from tests.model_interface import ModelInterface
@@ -32,6 +30,4 @@ class UserAction(ActionAPI):
 class TestActionMapping(unittest.TestCase):
 
     def test(self):
-        # FIXME
-        UserAction('/user/activate', None)
         self.assertTrue('user/activate' in ray_conf['action'])
