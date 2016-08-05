@@ -23,5 +23,9 @@ class ModelInterface(Model):
     def get(self, *args, **kwargs):
         return self
 
+    @classmethod
+    def find(cls, *args, **kwargs):
+        return [cls()]
+
     def delete(self, *args, **kwargs):
         return self

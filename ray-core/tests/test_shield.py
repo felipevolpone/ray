@@ -38,7 +38,6 @@ class PersonShield(Shield):
         return info['username'] == 'felipe'
 
 
-@unittest.skip('its necessary mock the ModelInterface database')
 class TestShield(unittest.TestCase):
 
     def test(self):
