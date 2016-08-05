@@ -6,12 +6,6 @@ class Model(object):
             if k in dir(self):
                 setattr(self, k, value)
 
-    def describe(self):
-        raise NotImplementedError
-
-    def columns(self):
-        raise NotImplementedError
-
     @classmethod
     def to_instance(cls, json):
         return cls(**json)
@@ -26,8 +20,20 @@ class Model(object):
 
         return return_json
 
-    def _hasnt_hooks(self):
-        return not hasattr(self, 'hooks')
+    def describe(self):
+        raise NotImplementedError
+
+    @classmethod
+    def columns(cls):
+        raise NotImplementedError
+
+    @classmethod
+    def find(cls, *args, **kwargs):
+        raise NotImplementedError
+
+    @classmethod
+    def get(cls, id=None):
+        raise NotImplementedError
 
     def update(self, dict_fields_to_update):
         return self.__save()
@@ -70,3 +76,6 @@ class Model(object):
                 continue
 
         return True
+
+    def _hasnt_hooks(self):
+        return not hasattr(self, 'hooks')

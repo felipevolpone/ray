@@ -202,6 +202,5 @@ py.test tests/
 - [ ] HTTP Task Queue
 - [ ] HTTP Mail Service
 - [ ] Admin panel (like django-admin)
-
 - [ ] Request Middleware (like Django)
 - [ ] API versions

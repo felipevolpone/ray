@@ -6,6 +6,7 @@ source env/bin/activate && pip install --editable ../ray-appengine;
 # to fix the appengine bug
 source env/bin/activate && pip install PyYAML
 source env/bin/activate && pip install --editable ../ray-sqlalchemy;
+source env/bin/activate && pip install --editable ../ray-peewee;
 
 # to test enviroment
 source env/bin/activate && pip install pytest;

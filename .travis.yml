@@ -24,7 +24,7 @@ script:
     - nosetests --tests=tests --with-coverage --cover-package=ray_appengine
 
     - cd ..
-    - cd ray-sqlalchemy
+    - cd ray-sqlalchemy  # install ray-sqlalchemy
     - pip install .
     - nosetests --tests=tests --with-coverage --cover-package=ray_sqlalchemy
 
