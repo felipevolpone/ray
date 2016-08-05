@@ -1,0 +1,13 @@
+Metadata-Version: 1.1
+Name: ray-peewee
+Version: 0.0.1
+Summary: UNKNOWN
+Home-page: http://github.com/felipevolpone/ray
+Author: Felipe Volpone
+Author-email: felipevolpone@gmail.com
+License: MIT
+Description: Check on github: http://github.com/felipevolpone/ray
+Keywords: peewee framework ray api rest
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Topic :: Utilities
