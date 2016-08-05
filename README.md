@@ -16,6 +16,8 @@ Are you using Google App Engine? Great! Ray is compatible with it.
 * Protecting API
 * uWSGI built-in server
 * Integration with SQLAlchemy
+* Integration with Google App Engine
+
 
 ### How to start
 **Do you want to see Ray in action? Check the [examples](https://github.com/felipevolpone/ray/tree/master/examples) directory.**
@@ -39,11 +41,11 @@ Now, you have the http methods to interact with your model using the urls:
 
 |HTTP Verb | Path | Description          |
 |--------- | ---- | -------------------- |
-|  GET     | /user| List all users       |
-|  GET     | /user/{id} | Get one user   |
-|  POST    | /user| Create an user       |
-|  PUT     | /user/{id} | Update an user |
-|  DELETE  | /user/{id} | Delete an user |
+|  GET     | /api/user| List all users       |
+|  GET     | /api/user/{id} | Get one user   |
+|  POST    | /api/user| Create an user       |
+|  PUT     | /api/user/{id} | Update an user |
+|  DELETE  | /api/user/{id} | Delete an user |
 
 
 ### Hooks
