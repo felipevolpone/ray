@@ -28,6 +28,11 @@ script:
     - pip install .
     - nosetests --tests=tests --with-coverage --cover-package=ray_sqlalchemy
 
+    - cd ..
+    - cd ray-peewee  # install ray-peewee
+    - pip install .
+    - nosetests --tests=tests --with-coverage --cover-package=ray_peewee
+
 after_success:
   - coveralls
   - cd ../ray-core
