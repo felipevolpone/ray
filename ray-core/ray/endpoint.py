@@ -102,7 +102,7 @@ class EndpointProcessor(object):
 
         id_param = http.get_id(self.__request.path)
         try:
-            return self.__model(id=id_param).delete(model_id=id_param).to_json()
+            return self.__model(id=id_param).delete(id=id_param).to_json()
         except:
             raise exceptions.ModelNotFound()
 

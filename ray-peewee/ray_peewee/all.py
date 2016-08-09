@@ -49,8 +49,8 @@ class PeeweeModel(PeeweeNativeModel, BaseModel):
         self.save()
         return self
 
-    def delete(self, model_id=None):
-        query = super(PeeweeModel, self).delete().where(self.__class__.id == model_id)
+    def delete(self, id=None):
+        query = super(PeeweeModel, self).delete().where(self.__class__.id == id)
         query.execute()
         return self
 

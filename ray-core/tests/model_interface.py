@@ -20,8 +20,9 @@ class ModelInterface(Model):
         self.uuid = gen_uuid()
         return self
 
-    def get(self, *args, **kwargs):
-        return self
+    @classmethod
+    def get(cls, id=None):
+        return cls()
 
     @classmethod
     def find(cls, *args, **kwargs):
