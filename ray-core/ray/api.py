@@ -8,7 +8,6 @@ from . import exceptions, http
 def to_json(fnc):
     def inner(*args, **kwargs):
         response = args[0].response
-        response.status = 200
         response.headers['Content-Type'] = 'application/json'
         from_func = fnc(*args, **kwargs)
 
@@ -30,16 +29,30 @@ class ApiHandler(webapp2.RequestHandler):
         if url[-1] == '/':
             url = url[:-1]
 
+        response_code = 200
+
+        # FIXME each exception should contain there http response code
+        # to do this create an class httpexception and all httpexception like this
+        # bellow will inherit from it
+
         try:
             return self.process(url)
         except (exceptions.MethodNotFound, exceptions.ActionDoNotHaveModel, exceptions.ModelNotFound) as e:
-            self.response.status = 404
+            response_code = 404
+            print e
+        except exceptions.BadRequest as e:
+            response_code = 502
+            print e
         except (exceptions.Forbidden, exceptions.NotAuthorized) as e:
-            self.response.status = 403
+            response_code = 403
+            print e
         except Exception as e:
             raise e
         else:
-            self.response.status = 500
+            response_code = 500
+        finally:
+            if response_code != 200:
+                self.abort(response_code)
 
     def process(self, fullpath):
         if self.is_login(fullpath):

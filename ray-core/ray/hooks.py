@@ -13,3 +13,6 @@ class Hook(object):
 
     def before_delete(self, entity):
         raise NotImplementedError
+
+    def after_save(self, entity):  # FIXME
+        raise NotImplementedError

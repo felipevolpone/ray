@@ -48,7 +48,7 @@ class Model(object):
         for hook in self.hooks:
             instance = hook()
 
-            # this is to make AND with the result of all hoks
+            # this is to make AND with the result of all hooks
             # the flow just continue if the result of all hoks is true
 
             try:

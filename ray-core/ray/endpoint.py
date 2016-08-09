@@ -66,9 +66,10 @@ class EndpointProcessor(object):
 
         id_param = http.get_id(self.__request.upath_info)
         entity_json = json.loads(self.__request.body)
-        if id_param:
-            entity_json['id'] = id_param
+        if not id_param:
+            exceptions.PutRequiresIdOnJson()
 
+        entity_json['id'] = id_param
         entity = self.__model.to_instance(entity_json)
         return entity.update(entity_json).to_json()
 
@@ -82,7 +83,6 @@ class EndpointProcessor(object):
 
     def __process_get(self):
         if not self.__shield_class.get(self.__shield_class.info):
-            print 'nao entrou aqui'
             raise exceptions.MethodNotFound()
 
         id_param = http.get_id(self.__request.path)
@@ -90,12 +90,10 @@ class EndpointProcessor(object):
 
         try:
             if not id_param:
-                print self.__model.find()
                 return [model.to_json() for model in self.__model.find(**params)]
 
             return self._find_database(id_param)
-        except Exception as e:
-            print e
+        except:
             raise exceptions.ModelNotFound()
 
     def __process_delete(self):
@@ -104,7 +102,7 @@ class EndpointProcessor(object):
 
         id_param = http.get_id(self.__request.path)
         try:
-            return self.__model(id=id_param).delete(id=id_param).to_json()
+            return self.__model(id=id_param).delete(model_id=id_param).to_json()
         except:
             raise exceptions.ModelNotFound()
 

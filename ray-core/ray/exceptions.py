@@ -21,3 +21,11 @@ class NotAuthorized(Exception):
 
 class ShieldDoNotHaveModel(Exception):
     pass
+
+
+class PutRequiresIdOnJson(Exception):
+    pass
+
+
+class BadRequest(Exception):
+    pass
