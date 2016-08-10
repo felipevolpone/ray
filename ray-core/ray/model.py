@@ -80,7 +80,7 @@ class Model(object):
                 continue
 
             except Exception:
-                raise HookException()
+                raise HookException('The hook %s.before_delete didnt return True' % (instance.__class__.__name__,))
 
         return True
 
