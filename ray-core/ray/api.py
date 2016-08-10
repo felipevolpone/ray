@@ -39,13 +39,14 @@ class ApiHandler(webapp2.RequestHandler):
             return self.process(url)
         except (exceptions.MethodNotFound, exceptions.ActionDoNotHaveModel, exceptions.ModelNotFound) as e:
             response_code = 404
-            print e
         except exceptions.BadRequest as e:
             response_code = 502
             print e
         except (exceptions.Forbidden, exceptions.NotAuthorized) as e:
             response_code = 403
             print e
+        except exceptions.HookException:
+            response_code = 502  # FIXME bad request
         except Exception as e:
             raise e
         else:

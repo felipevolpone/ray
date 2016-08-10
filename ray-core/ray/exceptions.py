@@ -29,3 +29,7 @@ class PutRequiresIdOnJson(Exception):
 
 class BadRequest(Exception):
     pass
+
+
+class HookException(Exception):
+    pass

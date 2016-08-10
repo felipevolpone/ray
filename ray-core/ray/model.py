@@ -1,4 +1,7 @@
 
+from ray.exceptions import HookException
+
+
 class Model(object):
 
     def __init__(self, *args, **kwargs):
@@ -72,8 +75,12 @@ class Model(object):
             try:
                 if not instance.before_delete(self):
                     raise Exception('The hook %s.before_delete didnt return True' % (instance.__class__.__name__,))
+
             except NotImplementedError:
                 continue
+
+            except Exception:
+                raise HookException()
 
         return True
 

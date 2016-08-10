@@ -92,7 +92,7 @@ class EndpointProcessor(object):
             if not id_param:
                 return [model.to_json() for model in self.__model.find(**params)]
 
-            return self._find_database(id_param)
+            return self._find_database(id_param).to_json()
         except:
             raise exceptions.ModelNotFound()
 
@@ -102,7 +102,10 @@ class EndpointProcessor(object):
 
         id_param = http.get_id(self.__request.path)
         try:
-            return self.__model(id=id_param).delete(id=id_param).to_json()
+            return self._find_database(id_param).delete(id=id_param).to_json()
+
+        except exceptions.HookException:
+            raise exceptions.HookException()
         except:
             raise exceptions.ModelNotFound()
 
@@ -111,4 +114,4 @@ class EndpointProcessor(object):
         if not model:
             raise exceptions.ModelNotFound()
 
-        return model.to_json()
+        return model

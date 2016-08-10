@@ -8,7 +8,7 @@ from ray import exceptions
 class PeeweeModel(PeeweeNativeModel, BaseModel):
 
     def describe(self):
-        raise NotImplementedErrorls
+        raise NotImplementedError
 
     @classmethod
     def columns(cls):
@@ -45,12 +45,17 @@ class PeeweeModel(PeeweeNativeModel, BaseModel):
         return self
 
     def put(self):
-        super(PeeweeModel, self).put()
-        self.save()
-        return self
+        can_save = BaseModel.put(self)
+        if can_save:
+            self.save()
+            return self
 
     def delete(self, id=None):
-        query = super(PeeweeModel, self).delete().where(self.__class__.id == id)
-        query.execute()
-        return self
+        can_delete = BaseModel.delete(self)
+        print 'can_delete', can_delete
+
+        if can_delete:
+            query = super(PeeweeModel, self).delete().where(self.__class__.id == id)
+            query.execute()
+            return self
 
