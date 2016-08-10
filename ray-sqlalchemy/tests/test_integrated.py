@@ -26,7 +26,6 @@ class MockResponse(Response):
         return result
 
 
-
 def build_url(id_=None, params=None):
     base = 'http://localhost:8080/api/user'
     if params:
@@ -86,7 +85,7 @@ class TestIntegrated(unittest.TestCase):
 
         # test delete
         req = Request.blank(build_url(id_created), method='DELETE')
-        resp = MockResponse(req.get_response(application))
+        resp = req.get_response(application)
         self.assertEqual(200, resp.status_code)
 
         # test get

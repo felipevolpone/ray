@@ -42,16 +42,21 @@ class AlchemyModel(Model):
         return query.all()
 
     def delete(self, *args, **kwargs):
-        super(AlchemyModel, self).delete()
-
-        entity = self._session.query(self.__class__).filter(self.__class__.id == self.id).delete()
-        self._session.commit()
-        return self
+        can_delete = Model.delete(self)
+        if can_delete:
+            try:
+                self._session.query(self.__class__).filter(self.__class__.id == self.id).delete()
+                self._session.commit()
+                return self
+            except Exception as e:
+                print e
 
     @classmethod
     def get(cls, id=None):
         try:
             _session = sessionmaker(bind=cls.__engine__)()
-            return _session.query(cls).get(id)
+            entity = _session.query(cls).get(id)
+            entity._session = _session
+            return entity
         except:
             return None

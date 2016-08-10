@@ -23,10 +23,10 @@ script:
     - pip install . # install ray-appengine
     - nosetests --tests=tests --with-coverage --cover-package=ray_appengine
 
-    # - cd ..
-    # - cd ray-sqlalchemy  # install ray-sqlalchemy
-    # - pip install .
-    # - nosetests --tests=tests --with-coverage --cover-package=ray_sqlalchemy
+    - cd ..
+    - cd ray-sqlalchemy  # install ray-sqlalchemy
+    - pip install .
+    - nosetests --tests=tests --with-coverage --cover-package=ray_sqlalchemy
 
     - cd ..
     - cd ray-peewee  # install ray-peewee
