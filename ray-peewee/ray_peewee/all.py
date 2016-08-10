@@ -1,11 +1,9 @@
 
-import peewee
 from peewee import Model as PeeweeNativeModel
-from ray.model import Model as BaseModel
-from ray import exceptions
+from ray.model import Model as RayModel
 
 
-class PeeweeModel(PeeweeNativeModel, BaseModel):
+class PeeweeModel(PeeweeNativeModel, RayModel):
 
     def describe(self):
         raise NotImplementedError
@@ -45,15 +43,14 @@ class PeeweeModel(PeeweeNativeModel, BaseModel):
         return self
 
     def put(self):
-        can_save = BaseModel.put(self)
+        super(PeeweeModel, self).put()
+        can_save = RayModel.put(self)
         if can_save:
             self.save()
             return self
 
     def delete(self, id=None):
-        can_delete = BaseModel.delete(self)
-        print 'can_delete', can_delete
-
+        can_delete = RayModel.delete(self)
         if can_delete:
             query = super(PeeweeModel, self).delete().where(self.__class__.id == id)
             query.execute()

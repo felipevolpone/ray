@@ -8,6 +8,8 @@ from ray.wsgi.wsgi import application
 from ray.endpoint import endpoint
 from ray_peewee.all import PeeweeModel
 
+from datetime import datetime
+
 
 database = peewee.SqliteDatabase('example.db')
 
@@ -22,7 +24,6 @@ class PostHook(Hook):
 
     def before_delete(self, post):
         if post.title:
-            print 'veio lancar a excecao'
             raise Exception('You cannot delete a post that has title')
 
         return True
@@ -33,7 +34,15 @@ class DBModel(PeeweeModel):
         database = database
 
 
-@endpoint('/post')
+class MyAuth(Authentication):
+
+    @classmethod
+    def authenticate(cls, username, password):
+        if username == 'ray' and password == 'charles':
+            return {'username': 'ray'}
+
+
+@endpoint('/post', authentication=MyAuth)
 class Post(DBModel):
     hooks = [PostHook]
 
@@ -44,28 +53,21 @@ class Post(DBModel):
 database.create_tables([Post], safe=True)
 
 
-# class PostShield(Shield):
-#     __model__ = Post
+class PostShield(Shield):
+    __model__ = Post
 
-#     def put(self, info):
-#         return info['username'] == 'felipe'
-
-
-# class MyAuth(Authentication):
-
-#     @classmethod
-#     def authenticate(cls, username, password):
-#         if username == 'felipe' and password == '123':
-#             return {'username': 'felipe'}
+    def put(self, info):
+        return info['username'] == 'ray'
 
 
 class ActionPost(ActionAPI):
     __model__ = Post
 
-    @action("/upper")
+    @action("/<id>/upper")
     def upper_case(self, model_id):
-        pass
-        # post = s.query(Post).filter(Post.id == model_id).all()[0]
-        # post.title = post.title.upper()
-        # s.add(post)
-        # s.commit()
+        post = Post.get(id=model_id)
+        post.update({'title': post.title.upper(), 'id': model_id})
+
+    @action("/now")
+    def now_action(self, model_id):
+        return datetime.now().strftime('%d/%m/%y')

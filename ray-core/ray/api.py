@@ -46,7 +46,7 @@ class ApiHandler(webapp2.RequestHandler):
             response_code = 403
             print e
         except exceptions.HookException:
-            response_code = 502  # FIXME bad request
+            response_code = 400
         except Exception as e:
             raise e
         else:
