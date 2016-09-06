@@ -24,4 +24,4 @@ Are you using Google App Engine? Great! Ray is compatible with it.
 
 ## How to start
 
-Ray has a great getting started documentatio, [you check it here](https://rayframework.github.io/site/getting_started/).
+Ray has a great getting started documentation, [you can check it here](https://rayframework.github.io/site/getting_started/).
