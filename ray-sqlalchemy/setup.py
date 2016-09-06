@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="ray-sqlalchemy",
+    name="ray_sqlalchemy",
     version="0.0.1",
     author="Felipe Volpone",
     author_email="felipevolpone@gmail.com",
