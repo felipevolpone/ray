@@ -64,10 +64,10 @@ class ActionPost(ActionAPI):
     __model__ = Post
 
     @action("/<id>/upper")
-    def upper_case(self, model_id):
+    def upper_case(self, model_id, request_parameters):
         post = Post.get(id=model_id)
         post.update({'title': post.title.upper(), 'id': model_id})
 
     @action("/now")
-    def now_action(self, model_id):
+    def now_action(self, model_id, request_parameters):
         return datetime.now().strftime('%d/%m/%y')

@@ -23,7 +23,7 @@ class UserAction(ActionAPI):
     __model__ = UserModel
 
     @action('activate')
-    def activate(self):
+    def activate(self, parameters):
         pass
 
 

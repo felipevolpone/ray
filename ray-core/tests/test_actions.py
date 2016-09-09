@@ -23,6 +23,7 @@ class UserModel(ModelInterface):
 
 
 any_number = 10
+any_data = None
 
 
 class UserShield(Shield):
@@ -41,14 +42,14 @@ class ActionUser(ActionAPI):
     __model__ = UserModel
 
     @action("/activate")
-    def activate_user(self, model_id):
+    def activate_user(self, model_id, parameters):
         # just to make sure that this method was called
         global any_number
         any_number = 'ACTIVATE_USER'
         return 'activate_user'
 
     @action("/<id>/activate_with_id")
-    def activate_user_with_id(self, model_id):
+    def activate_user_with_id(self, model_id, parameters):
         # just to make sure that this method was called
         global any_number
         any_number = model_id
@@ -56,13 +57,18 @@ class ActionUser(ActionAPI):
 
     # to test Shileds with Actions
     @action('/enable', protection=UserShield.protect_enable)
-    def enable_user(self, model_id):
+    def enable_user(self, model_id, parameters):
         global any_number
         any_number = 'enabled'
 
     @action('/enable_fail', protection=UserShield.protect_fail)
-    def enable_fail(self, model_id):
+    def enable_fail(self, model_id, parameters):
         pass
+
+    @action('/test_parameters')
+    def test_parameters(self, model_id, parameters):
+        global any_data
+        any_data = parameters
 
 
 class TestAction(unittest.TestCase):
@@ -99,6 +105,21 @@ class TestAction(unittest.TestCase):
         response = request.get_response(application)
         self.assertEqual(404, response.status_int)
 
+    def test_action_parameters(self):
+        params = 'user_id=10&age=3&name=felipe'
+        request = Request.blank('/api/user/test_parameters?' + params, method='GET')
+        response = request.get_response(application)
+        self.assertEqual(200, response.status_int)
+        global any_data
+        self.assertEqual({'user_id': '10', 'age': '3', 'name': 'felipe'}, any_data)
+
+        request = Request.blank('/api/user/test_parameters', method='POST')
+        request.json = {'user_id': '10', 'age': '3', 'name': 'felipe'}
+        response = request.get_response(application)
+        self.assertEqual(200, response.status_int)
+        global any_data
+        self.assertEqual({'user_id': '10', 'age': '3', 'name': 'felipe'}, any_data)
+
 
 @endpoint('/any')
 class AnyModel(ModelInterface):
@@ -108,7 +129,7 @@ class AnyModel(ModelInterface):
 class ActionWrong(ActionAPI):
 
     @action("/activate")
-    def activate(self):
+    def activate(self, parameters):
         return False
 
 

@@ -1,7 +1,7 @@
 from functools import wraps
 from . import exceptions, http
 from .application import ray_conf
-import re
+import re, json
 
 
 def action(url, protection=None):
@@ -88,4 +88,13 @@ class ActionAPI(object):
             if not shield_method(cookie_content):  # shield returned False
                 raise exceptions.NotAuthorized()
 
-        return method(action_class(self.__entire_url, None, self.__request), self.__model_arg)
+        request_parameters = self.__get_parameter(self.__request)
+        return method(action_class(self.__entire_url, None, self.__request), self.__model_arg, request_parameters)
+
+    def __get_parameter(self, request):
+        if request.method.lower() == 'get':
+            return request.params
+
+        elif request.method.lower() == 'post':
+            if request.body:
+                return json.loads(request.body)
