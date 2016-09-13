@@ -21,6 +21,11 @@ class UserHookFalse(Hook):
         return False
 
 
+class UserHookFalse2(Hook):
+    def before_save(self, user):
+        return False
+
+
 class UserHookTrue(Hook):
     def before_save(self, user):
         return True
@@ -34,7 +39,7 @@ class User(Model):
 
 
 class UserWithTwoHooks(Model):
-    hooks = [UserHookTrue, UserHookFalse]
+    hooks = [UserHookFalse2, UserHookTrue, UserHookFalse]
 
 
 class TestHookBeforeSave(unittest.TestCase):
@@ -49,7 +54,7 @@ class TestHookBeforeSave(unittest.TestCase):
         user = UserWithTwoHooks()
         with self.assertRaises(Exception) as e:
             user.put()
-        self.assertEqual(str(e.exception), 'The hook(s) UserHookFalse.before_save didnt return True')
+        self.assertEqual(str(e.exception), 'The hook(s) UserHookFalse2, UserHookFalse.before_save didnt return True')
 
     def test_hook_before_save_not_implemented(self):
         user = UserWithUselessHook()
