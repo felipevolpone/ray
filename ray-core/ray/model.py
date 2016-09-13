@@ -48,18 +48,21 @@ class Model(object):
         if self._hasnt_hooks():
             return True
 
+        all_passed = True
+        hooks_didnt_passed = []
+
         for hook in self.hooks:
             instance = hook()
 
             # this is to make AND with the result of all hooks
             # the flow just continue if the result of all hoks is true
 
-            try:
-                if not instance.before_save(self):
-                    raise Exception('The hook %s.before_save didnt return True' % (instance.__class__.__name__,))
+            if not instance.before_save(self):
+                all_passed = False
+                hooks_didnt_passed.append(instance.__class__.__name__)
 
-            except NotImplementedError:
-                continue
+        if not all_passed:
+            raise Exception("The hook(s) %s.before_save didnt return True" % ", ".join(hooks_didnt_passed))
 
         return True
 

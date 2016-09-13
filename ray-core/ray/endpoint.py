@@ -6,9 +6,9 @@ from .application import ray_conf
 
 def endpoint(url=None, authentication=None):
     def decorator(clazz):
-        endpoint_url = url.replace('/', '')
-        clazz._endpoint_url = endpoint_url
-        ray_conf['endpoint'][endpoint_url] = {'model': clazz, 'authentication': authentication}
+        bla = url.replace('/', '')
+        clazz._endpoint_url = bla
+        ray_conf['endpoint'][bla] = {'model': clazz, 'authentication': authentication}
 
         return clazz
     return decorator
