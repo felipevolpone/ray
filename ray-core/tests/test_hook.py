@@ -21,6 +21,11 @@ class UserHookFalse(Hook):
         return False
 
 
+class UserHookFalse2(Hook):
+    def before_save(self, user):
+        return False
+
+
 class UserHookTrue(Hook):
     def before_save(self, user):
         return True
@@ -34,7 +39,7 @@ class User(Model):
 
 
 class UserWithTwoHooks(Model):
-    hooks = [UserHookTrue, UserHookFalse]
+    hooks = [UserHookFalse2, UserHookTrue, UserHookFalse]
 
 
 class TestHookBeforeSave(unittest.TestCase):
@@ -49,11 +54,12 @@ class TestHookBeforeSave(unittest.TestCase):
         user = UserWithTwoHooks()
         with self.assertRaises(Exception) as e:
             user.put()
-        self.assertEqual(str(e.exception), 'The hook UserHookFalse.before_save didnt return True')
+        self.assertEqual(str(e.exception), 'The hook(s) UserHookFalse2, UserHookFalse.before_save didnt return True')
 
     def test_hook_before_save_not_implemented(self):
         user = UserWithUselessHook()
-        self.assertTrue(user.put())
+        with self.assertRaises(NotImplementedError) as e:
+            user.put()
 
 
 class UserDeleteHookTrue(Hook):
@@ -61,8 +67,20 @@ class UserDeleteHookTrue(Hook):
         return bool(user.name)
 
 
+class UserDeleteHookFalse(Hook):
+    def before_delete(self, user):
+        return False
+
+
 class UserDelete(Model):
     hooks = [UserDeleteHookTrue]
+
+    def __init__(self, name=None):
+        self.name = name
+
+
+class UserDeleteFailing(Model):
+    hooks = [UserDeleteHookTrue, UserDeleteHookFalse]
 
     def __init__(self, name=None):
         self.name = name
@@ -74,11 +92,18 @@ class TestHookBeforeDelete(unittest.TestCase):
         u = UserDelete()
         with self.assertRaises(Exception) as e:
             u.delete()
-        self.assertEqual(str(e.exception), 'The hook UserDeleteHookTrue.before_delete didnt return True')
+        self.assertEqual(str(e.exception), 'The hook(s) UserDeleteHookTrue.before_delete didnt return True')
 
     def test_before_delete(self):
         u = UserDelete(name="ray")
         self.assertTrue(u.delete())
+
+    def test_before_delete_fail(self):
+        u = UserDeleteFailing()
+        with self.assertRaises(Exception) as e:
+            u.delete()
+
+        self.assertEqual(str(e.exception), 'The hook(s) UserDeleteHookTrue, UserDeleteHookFalse.before_delete didnt return True')
 
     def test_before_delete_not_implemented(self):
         class UserDeleteHookTrue(Hook):
@@ -88,4 +113,5 @@ class TestHookBeforeDelete(unittest.TestCase):
             hooks = [UserDeleteHookTrue]
 
         u = UserDelete()
-        self.assertTrue(u.delete())
+        with self.assertRaises(NotImplementedError) as e:
+            u.delete()
