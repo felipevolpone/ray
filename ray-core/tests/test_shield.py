@@ -14,8 +14,8 @@ from tests.model_interface import ModelInterface
 class MyAuth(Authentication):
 
     @classmethod
-    def authenticate(cls, username, password):
-        if username == 'felipe' and password == '123':
+    def authenticate(cls, login_data):
+        if login_data['username'] == 'felipe' and login_data['password'] == '123':
             return {'username': 'felipe'}
 
 
@@ -42,7 +42,7 @@ class TestShield(unittest.TestCase):
 
     def test(self):
         req = Request.blank('/api/_login', method='POST')
-        req.json = {"username": "felipe", "password": '123'}
+        req.json = {'username': 'felipe', 'password': '123'}
         response = req.get_response(application)
         cookie = response.headers['Set-Cookie']
         self.assertEqual(200, response.status_int)
