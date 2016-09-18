@@ -1,5 +1,5 @@
 
-import base64
+import base64, jwt
 from . import authentication_helper
 from exceptions import NotAuthorized
 
@@ -9,8 +9,12 @@ class Authentication(object):
     @classmethod
     def login(cls, login_data):
         user_json = cls.authenticate(login_data)
+        
+        if not hasattr(cls, 'salt_key'):
+            raise NotImplementedError    
+
         if user_json:
-            return user_json
+            return {'token': jwt.encode(user_json, cls.salt_key, algorithm='HS256')}
 
         raise NotAuthorized
 
@@ -24,10 +28,12 @@ class Authentication(object):
         raise NotImplementedError
 
     @classmethod
-    def sign_cookie(cls, user_json):
-        cookie_name, cookie_value = authentication_helper.sign_cookie(user_json)
-        return cookie_name, base64.b64encode(cookie_value)
+    def unpack_jwt(cls, token):
+        if not hasattr(cls, 'salt_key'):
+            raise NotImplementedError
+
+        return jwt.decode(token, cls.salt_key, algorithms=['HS256']);
 
     @classmethod
-    def is_loged(cls, cookie_value):
-        return authentication_helper._validate(cookie_value)
+    def is_loged(cls, token):
+        return token;

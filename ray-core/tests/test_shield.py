@@ -13,6 +13,8 @@ from tests.model_interface import ModelInterface
 
 class MyAuth(Authentication):
 
+    salt_key = 'ray_salt_key'
+
     @classmethod
     def authenticate(cls, login_data):
         if login_data['username'] == 'felipe' and login_data['password'] == '123':
@@ -44,11 +46,9 @@ class TestShield(unittest.TestCase):
         req = Request.blank('/api/_login', method='POST')
         req.json = {'username': 'felipe', 'password': '123'}
         response = req.get_response(application)
-        cookie = response.headers['Set-Cookie']
         self.assertEqual(200, response.status_int)
 
         req = Request.blank('/api/person/', method='GET')
-        req.headers['Cookie'] = cookie
         response = req.get_response(application)
         self.assertEqual(200, response.status_int)
 
