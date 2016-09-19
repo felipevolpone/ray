@@ -1,5 +1,5 @@
 
-import unittest
+import unittest, json
 
 from webapp2 import Request
 
@@ -38,6 +38,8 @@ class TestProctedEndpoint(unittest.TestCase):
         req = Request.blank('/api/_login', method='POST')
         req.json = {'username': 'felipe', 'password': '123'}
         response = req.get_response(application)
+        response.charset = 'utf8'
+        token = json.loads(response.text)['result']['token']
         self.assertEqual(200, response.status_int)
 
         req = Request.blank('/api/_login', method='POST')
@@ -49,24 +51,6 @@ class TestProctedEndpoint(unittest.TestCase):
         response = req.get_response(application)
         self.assertEqual(404, response.status_int)
 
-        req = Request.blank('/api/gamer/', method='GET')
+        req = Request.blank('/api/gamer/', method='GET', headers={'Authentication': token})
         response = req.get_response(application)
         self.assertEqual(200, response.status_int)
-
-    def test_logout(self):
-        req = Request.blank('/api/_login', method='POST')
-        req.json = {'username': 'felipe', 'password': '123'}
-        response = req.get_response(application)
-        self.assertEqual(200, response.status_int)
-
-        req = Request.blank('/api/gamer/', method='GET')
-        response = req.get_response(application)
-        self.assertEqual(200, response.status_int)
-
-        req = Request.blank('/api/_logout', method='GET')
-        response = req.get_response(application)
-        self.assertEqual(200, response.status_int)
-
-        req = Request.blank('/api/gamer/', method='GET')
-        response = req.get_response(application)
-        self.assertEqual(404, response.status_int)

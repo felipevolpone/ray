@@ -1,6 +1,6 @@
 import webapp2, json
 from endpoint import EndpointHandler
-from login import LoginHandler, LogoutHandler
+from login import LoginHandler
 from actions import ActionAPI
 from . import exceptions, http
 
@@ -59,9 +59,6 @@ class ApiHandler(webapp2.RequestHandler):
         if self.is_login(fullpath):
             return LoginHandler(self.request, self.response, fullpath).process()
 
-        if self.is_logout(fullpath):
-            return LogoutHandler(self.response).logout()
-
         elif self.is_endpoint(fullpath):
             return EndpointHandler(self.request, fullpath).process()
 
@@ -82,9 +79,6 @@ class ApiHandler(webapp2.RequestHandler):
 
     def is_login(self, full_path):
         return full_path == '/api/_login'
-
-    def is_logout(self, full_path):
-        return full_path == '/api/_logout'
 
     def is_endpoint(self, full_path):
         full_path = full_path.split('?')[0]

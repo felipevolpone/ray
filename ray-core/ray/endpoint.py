@@ -26,7 +26,8 @@ class EndpointHandler(object):
             raise exceptions.MethodNotFound()
 
         return EndpointProcessor(self.__request,
-                                 self.__endpoint_data['model']).process()
+                                 self.__endpoint_data['model'],
+                                 self.__user_data()).process()
 
     def _get_endpoint_data(self):
         full_path = self.__url.split('/')
@@ -38,21 +39,21 @@ class EndpointHandler(object):
         return self._get_endpoint_data()['authentication'] is not None
 
     def __allowed(self):
-        try:
-            cookie = (self.__request.cookies.get(authentication_helper._COOKIE_NAME))
-            return self.__endpoint_data['authentication'].is_loged(cookie)
-        except:
+        if not 'Authentication' in self.__request.headers:
             return False
+        return self.__endpoint_data['authentication'].is_loged(self.__request.headers['Authentication'])
+
+    def __user_data(self):
+        return self.__endpoint_data['authentication'].unpack_jwt(self.__request.headers['Authentication'])
 
 
 class EndpointProcessor(object):
 
-    def __init__(self, request, model):
+    def __init__(self, request, model, user_info):
         self.__request = request
         self.__model = model
 
-        cookie_content = http.get_cookie_content(self.__request)
-        self.__shield_class = ShieldHandler(cookie_content).get_shield(model)
+        self.__shield_class = ShieldHandler(user_info).get_shield(model)
 
     def process(self):
         methods = {'post': self.__process_post, 'get': self.__process_get,

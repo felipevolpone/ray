@@ -1,5 +1,5 @@
 
-import unittest
+import unittest, json
 
 from webapp2 import Request
 
@@ -46,11 +46,17 @@ class TestShield(unittest.TestCase):
         req = Request.blank('/api/_login', method='POST')
         req.json = {'username': 'felipe', 'password': '123'}
         response = req.get_response(application)
+        response.charset = 'utf8'
+        token = json.loads(response.text)['result']['token']
         self.assertEqual(200, response.status_int)
 
-        req = Request.blank('/api/person/', method='GET')
+        req = Request.blank('/api/person/', method='GET', headers={'Authentication': token})
         response = req.get_response(application)
         self.assertEqual(200, response.status_int)
+
+        req = Request.blank('/api/person/', method='GET', headers={'Authentication': 'random-token'})
+        response = req.get_response(application)
+        self.assertEquals(404, response.status_int)
 
         req = Request.blank('/api/person/', method='GET')
         response = req.get_response(application)

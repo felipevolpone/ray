@@ -32,8 +32,12 @@ class Authentication(object):
         if not hasattr(cls, 'salt_key'):
             raise NotImplementedError
 
-        return jwt.decode(token, cls.salt_key, algorithms=['HS256']);
+        return jwt.decode(token, cls.salt_key, algorithms=['HS256'])
 
     @classmethod
     def is_loged(cls, token):
-        return token;
+        try:
+            cls.unpack_jwt(token)
+            return True
+        except:
+            return False
