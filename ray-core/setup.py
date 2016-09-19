@@ -19,7 +19,7 @@ setup(
     keywords="python framework ray api rest",
     url="http://github.com/felipevolpone/ray",
     packages=find_packages(exclude=['tests']),
-    install_requires=['webapp2', 'webob', 'click', 'uwsgi', 'pycrypto'],
+    install_requires=['webapp2', 'webob', 'click', 'uwsgi', 'pycrypto', 'jwt'],
     long_description="Check on github: http://github.com/felipevolpone/ray",
     classifiers=[
         "Development Status :: 3 - Alpha",
