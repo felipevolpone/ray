@@ -39,11 +39,18 @@ class EndpointHandler(object):
         return self._get_endpoint_data()['authentication'] is not None
 
     def __allowed(self):
+        if not self.__is_protected():
+            return True
+
         if not 'Authentication' in self.__request.headers:
             return False
+
         return self.__endpoint_data['authentication'].is_loged(self.__request.headers['Authentication'])
 
     def __user_data(self):
+        if not self.__is_protected():
+            return {}
+
         return self.__endpoint_data['authentication'].unpack_jwt(self.__request.headers['Authentication'])
 
 
