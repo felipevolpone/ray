@@ -8,6 +8,7 @@ from ray.endpoint import endpoint
 from tests.mock import MockResponse
 from tests.model_interface import ModelInterface
 
+
 @endpoint('/user')
 class UserModel(ModelInterface):
 
