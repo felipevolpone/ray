@@ -1,4 +1,4 @@
-import webapp2
-from ray.api import ApiHandler
+from ray.api import application
 
-application = webapp2.WSGIApplication([('/api/.*', ApiHandler)], debug=True)
+if __name__ == '__main__':
+    application.run(debug=True)

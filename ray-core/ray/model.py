@@ -64,6 +64,7 @@ class Model(object):
         if not all_passed:
             raise Exception("The hook(s) %s.before_save didnt return True" % ", ".join(hooks_didnt_passed))
 
+        print('hueheu')
         return True
 
     def delete(self):

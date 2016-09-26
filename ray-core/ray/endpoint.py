@@ -65,7 +65,7 @@ class EndpointProcessor(object):
             raise exceptions.MethodNotFound()
 
         id_param = http.get_id(self.__request.upath_info)
-        entity_json = json.loads(self.__request.body)
+        entity_json = self.__request.json
         if not id_param:
             exceptions.PutRequiresIdOnJson()
 
@@ -77,8 +77,7 @@ class EndpointProcessor(object):
         if not self.__shield_class.post(self.__shield_class.info):
             raise exceptions.MethodNotFound()
 
-        entity_json = json.loads(self.__request.body)
-        entity = self.__model.to_instance(entity_json)
+        entity = self.__model.to_instance(self.__request.json)
         return entity.put().to_json()
 
     def __process_get(self):

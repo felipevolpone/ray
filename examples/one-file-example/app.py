@@ -42,7 +42,7 @@ class MyAuth(Authentication):
             return {'username': 'ray'}
 
 
-@endpoint('/post', authentication=MyAuth)
+@endpoint('/post')
 class Post(DBModel):
     hooks = [PostHook]
 

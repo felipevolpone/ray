@@ -1,8 +1,12 @@
-import webapp2, json
+import json, traceback, bottle
+from bottle import request as bottle_req, response as bottle_resp
 from endpoint import EndpointHandler
 from login import LoginHandler, LogoutHandler
 from actions import ActionAPI
 from . import exceptions, http
+
+
+application = bottle.Bottle()
 
 
 def to_json(fnc):
@@ -17,94 +21,92 @@ def to_json(fnc):
     return inner
 
 
-class ApiHandler(webapp2.RequestHandler):
+@to_json
+@application.route('/<url:re:.+>', method=['GET', 'POST', 'PUT', 'DELETE'])
+def dispatch(url):
     """
         This class is the beginning of all entrypoint in the Ray API. Here, each url
         will be redirect to the right handler: ActionHandler, LoginHandler or EndpointHandler.
     """
+    url = bottle_req.path
 
-    @to_json
-    def dispatch(self):
-        url = self.request.path
-        if url[-1] == '/':
-            url = url[:-1]
+    if url[-1] == '/':
+        url = url[:-1]
 
-        response_code = 200
+    response_code = 200
 
-        # FIXME each exception should contain there http response code
-        # to do this create an class httpexception and all httpexception like this
-        # bellow will inherit from it
+    # FIXME each exception should contain there http response code
+    # to do this create an class httpexception and all httpexception like this
+    # bellow will inherit from it
 
+    try:
+        return process(url, bottle_req, bottle_resp)
+    except (exceptions.MethodNotFound, exceptions.ActionDoNotHaveModel, exceptions.ModelNotFound) as e:
+        response_code = 404
+    except exceptions.BadRequest as e:
+        response_code = 502
+    except (exceptions.Forbidden, exceptions.NotAuthorized) as e:
+        response_code = 403
+    except exceptions.HookException:
+        response_code = 400
+    except Exception as e:
+        print e
+        response_code = 500
+        traceback.print_exc()
+    finally:
+        if response_code != 200:
+            abort(response_code)
+
+def process(fullpath, request, response):
+    if is_login(fullpath):
+        return LoginHandler(request, response, fullpath).process()
+
+    if is_logout(fullpath):
+        return LogoutHandler(response).logout()
+
+    elif is_endpoint(fullpath):
+        return EndpointHandler(request, fullpath).process()
+
+    elif is_action(fullpath):
+        return __handle_action(fullpath)
+
+    else:
+        response.status = 404
+
+def __handle_action( url):
+    # url e.g: /api/user/123/action
+
+    arg = None
+    if len(url.split('/')) >= 5:  # indicatest that has an id between endpoint and action_name
+        arg = http.param_at(url, -2)
+
+    return ActionAPI(url, arg, request).process_action()
+
+def is_login( full_path):
+    return full_path == '/api/_login'
+
+def is_logout(full_path):
+    return full_path == '/api/_logout'
+
+def is_endpoint( full_path):
+    full_path = full_path.split('?')[0]
+    if len(full_path.split('/')) == 4:
         try:
-            return self.process(url)
-        except (exceptions.MethodNotFound, exceptions.ActionDoNotHaveModel, exceptions.ModelNotFound) as e:
-            response_code = 404
-        except exceptions.BadRequest as e:
-            response_code = 502
-            print e
-        except (exceptions.Forbidden, exceptions.NotAuthorized) as e:
-            response_code = 403
-            print e
-        except exceptions.HookException:
-            response_code = 400
-        except Exception as e:
-            raise e
-        else:
-            response_code = 500
-        finally:
-            if response_code != 200:
-                self.abort(response_code)
+            int(full_path.split('/')[-1])
+            return True
+        except:
+            return False
 
-    def process(self, fullpath):
-        if self.is_login(fullpath):
-            return LoginHandler(self.request, self.response, fullpath).process()
+    return len(full_path.split('/')) <= 4 and len(full_path.split('/')) > 2
 
-        if self.is_logout(fullpath):
-            return LogoutHandler(self.response).logout()
+def is_action( full_path):
+    # full_path e.g: /api/user/123/action
+    # full_path e.g: /api/user/action
 
-        elif self.is_endpoint(fullpath):
-            return EndpointHandler(self.request, fullpath).process()
+    if len(full_path.split('/')) >= 4:
+        try:
+            int(full_path.split('/')[-1])
+        except:
+            return True
 
-        elif self.is_action(fullpath):
-            return self.__handle_action(fullpath)
-
-        else:
-            self.response.status = 404
-
-    def __handle_action(self, url):
-        # url e.g: /api/user/123/action
-
-        arg = None
-        if len(url.split('/')) >= 5:  # indicatest that has an id between endpoint and action_name
-            arg = http.param_at(url, -2)
-
-        return ActionAPI(url, arg, self.request).process_action()
-
-    def is_login(self, full_path):
-        return full_path == '/api/_login'
-
-    def is_logout(self, full_path):
-        return full_path == '/api/_logout'
-
-    def is_endpoint(self, full_path):
-        full_path = full_path.split('?')[0]
-        if len(full_path.split('/')) == 4:
-            try:
-                int(full_path.split('/')[-1])
-                return True
-            except:
-                return False
-
-        return len(full_path.split('/')) <= 4 and len(full_path.split('/')) > 2
-
-    def is_action(self, full_path):
-        # full_path e.g: /api/user/123/action
-        # full_path e.g: /api/user/action
-
-        if len(full_path.split('/')) >= 4:
-            try:
-                int(full_path.split('/')[-1])
-            except:
-                return True
-
-        return len(full_path.split('/')) == 5
+    return len(full_path.split('/')) == 5

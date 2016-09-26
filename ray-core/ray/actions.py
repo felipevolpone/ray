@@ -96,5 +96,5 @@ class ActionAPI(object):
             return request.params
 
         elif request.method.lower() == 'post':
-            if request.body:
-                return json.loads(request.body)
+            if request.json:
+                return request.json

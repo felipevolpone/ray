@@ -1,9 +1,9 @@
 from ray.model import Model
-import uuid
+import random
 
 
 def gen_uuid():
-    return str(uuid.uuid4())
+    return random.randint(0, 1000000)
 
 
 class ModelInterface(Model):
@@ -14,10 +14,12 @@ class ModelInterface(Model):
 
     @classmethod
     def columns(cls):
-        return cls.describe().keys()
+        c = cls.describe().keys()
+        c.append('id')
+        return c
 
     def put(self, *args, **kwargs):
-        self.uuid = gen_uuid()
+        self.id = gen_uuid()
         return self
 
     @classmethod
