@@ -32,3 +32,6 @@ class ModelInterface(Model):
 
     def delete(self, *args, **kwargs):
         return self
+
+    def update(self, *args, **kwargs):
+        return self

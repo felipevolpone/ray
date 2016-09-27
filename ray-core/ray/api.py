@@ -4,25 +4,21 @@ from endpoint import EndpointHandler
 from login import LoginHandler, LogoutHandler
 from actions import ActionAPI
 from . import exceptions, http
-
+from functools import wraps
 
 application = bottle.Bottle()
 
 
 def to_json(fnc):
+    @wraps(fnc)
     def inner(*args, **kwargs):
-        response = args[0].response
-        response.headers['Content-Type'] = 'application/json'
+        bottle_resp.headers['Content-Type'] = 'application/json'
         from_func = fnc(*args, **kwargs)
-
-        result = json.dumps({'result': from_func})
-        return response.out.write(result)
-
+        return json.dumps({'result': from_func})
     return inner
 
 
-@to_json
-@application.route('/<url:re:.+>', method=['GET', 'POST', 'PUT', 'DELETE'])
+@application.route('/<url:re:.+>', method=['GET', 'POST', 'PUT', 'DELETE'], apply=to_json)
 def dispatch(url):
     """
         This class is the beginning of all entrypoint in the Ray API. Here, each url
@@ -50,7 +46,6 @@ def dispatch(url):
     except exceptions.HookException:
         response_code = 400
     except Exception as e:
-        print e
         response_code = 500
         traceback.print_exc()
     finally:

@@ -64,7 +64,7 @@ class EndpointProcessor(object):
         if not self.__shield_class.put(self.__shield_class.info):
             raise exceptions.MethodNotFound()
 
-        id_param = http.get_id(self.__request.upath_info)
+        id_param = http.get_id(self.__request.path)
         entity_json = self.__request.json
         if not id_param:
             exceptions.PutRequiresIdOnJson()
@@ -85,7 +85,10 @@ class EndpointProcessor(object):
             raise exceptions.MethodNotFound()
 
         id_param = http.get_id(self.__request.path)
+        print id_param
+        print self.__request.path
         params = http.query_params_to_dict(self.__request)
+        print params
 
         try:
             if not id_param:
