@@ -49,8 +49,8 @@ def dispatch(url):
         response_code = 500
         traceback.print_exc()
     finally:
-        if response_code != 200:
-            abort(response_code)
+        bottle_resp.status = response_code
+
 
 def process(fullpath, request, response):
     if is_login(fullpath):
@@ -75,7 +75,7 @@ def __handle_action( url):
     if len(url.split('/')) >= 5:  # indicatest that has an id between endpoint and action_name
         arg = http.param_at(url, -2)
 
-    return ActionAPI(url, arg, request).process_action()
+    return ActionAPI(url, arg, bottle_req).process_action()
 
 def is_login( full_path):
     return full_path == '/api/_login'
