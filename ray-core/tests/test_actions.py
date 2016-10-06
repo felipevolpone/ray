@@ -1,13 +1,14 @@
 import unittest
 
 from webapp2 import Request
+from webtest import TestApp
 
 from ray.wsgi.wsgi import application
 from ray.actions import ActionAPI, action
 from ray.endpoint import endpoint
 from ray.shield import Shield
 
-from tests.model_interface import ModelInterface
+from model_interface import ModelInterface
 
 
 @endpoint('/user')
@@ -73,49 +74,44 @@ class ActionUser(ActionAPI):
 
 class TestAction(unittest.TestCase):
 
+    def setUp(self):
+        self.app = TestApp(application)
+
     def test_action(self):
-        request = Request.blank('/api/user/activate', method='POST')
-        response = request.get_response(application)
+        response = self.app.post('/api/user/activate')
         self.assertEqual(200, response.status_int)
         global any_number
         self.assertEqual('ACTIVATE_USER', any_number)
 
         user_id = '12312'
-        request = Request.blank('/api/user/' + user_id + '/activate_with_id', method='POST')
-        response = request.get_response(application)
-        self.assertEqual(200, response.status_int)
+        resp = self.app.post('/api/user/' + user_id + '/activate_with_id')
+        self.assertEqual(200, resp.status_int)
 
         global any_number
         self.assertEqual(user_id, any_number)
 
     def test_action_with_shields(self):
-        request = Request.blank('/api/user/enable', method='POST')
-        response = request.get_response(application)
+        response = self.app.post('/api/user/enable')
         self.assertEqual(200, response.status_int)
 
         global any_number
         self.assertEqual('enabled', any_number)
 
-        request = Request.blank('/api/user/enable_fail', method='POST')
-        response = request.get_response(application)
+        response = self.app.post('/api/user/enable_fail', expect_errors=True)
         self.assertEqual(403, response.status_int)
 
     def test_action_url_404(self):
-        request = Request.blank('/api/user/123/dontexists', method='POST')
-        response = request.get_response(application)
+        response = self.app.get('/api/user/123/dontexists', expect_errors=True)
         self.assertEqual(404, response.status_int)
 
     def test_action_parameters(self):
         params = 'user_id=10&age=3&name=felipe'
-        request = Request.blank('/api/user/test_parameters?' + params, method='GET')
-        response = request.get_response(application)
+        response = self.app.get('/api/user/test_parameters?' + params)
         self.assertEqual(200, response.status_int)
         global any_data
         self.assertEqual({'user_id': '10', 'age': '3', 'name': 'felipe'}, any_data)
 
-        request = Request.blank('/api/user/test_parameters', method='POST')
-        request.json = {'user_id': '10', 'age': '3', 'name': 'felipe'}
-        response = request.get_response(application)
+        resp = self.app.post_json('/api/user/test_parameters', {'user_id': '10', 'age': '3', 'name': 'felipe'})
         self.assertEqual(200, response.status_int)
         global any_data
         self.assertEqual({'user_id': '10', 'age': '3', 'name': 'felipe'}, any_data)
@@ -135,7 +131,9 @@ class ActionWrong(ActionAPI):
 
 class TestWrongCases(unittest.TestCase):
 
+    def setUp(self):
+        self.app = TestApp(application)
+
     def test_action_without_model(self):
-        request = Request.blank('/api/any/123/activate', method='POST')
-        response = request.get_response(application)
+        response = self.app.post('/api/any/123/activate', expect_errors=True)
         self.assertEqual(404, response.status_int)

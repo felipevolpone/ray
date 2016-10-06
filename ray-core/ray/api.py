@@ -72,7 +72,7 @@ def __handle_action( url):
     # url e.g: /api/user/123/action
 
     arg = None
-    if len(url.split('/')) >= 5:  # indicatest that has an id between endpoint and action_name
+    if len(url.split('/')) >= 5:  # indicate that has an id between endpoint and action_name
         arg = http.param_at(url, -2)
 
     return ActionAPI(url, arg, bottle_req).process_action()
