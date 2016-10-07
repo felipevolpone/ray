@@ -101,12 +101,10 @@ class TestAction(unittest.TestCase):
         response = self.app.post('/api/user/enable_fail', expect_errors=True)
         self.assertEqual(403, response.status_int)
 
-    # @unittest.skip('skip')
     def test_action_url_404(self):
         response = self.app.get('/api/user/123/dontexists', expect_errors=True)
         self.assertEqual(404, response.status_int)
 
-    # @unittest.skip('skip')
     def test_action_parameters(self):
         params = 'user_id=10&age=3&name=felipe'
         response = self.app.get('/api/user/test_parameters?' + params)
@@ -132,7 +130,6 @@ class ActionWrong(ActionAPI):
         return False
 
 
-# @unittest.skip('skip')
 class TestWrongCases(unittest.TestCase):
 
     def setUp(self):
