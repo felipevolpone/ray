@@ -7,7 +7,7 @@ from ray.actions import ActionAPI, action
 from ray.endpoint import endpoint
 from ray.shield import Shield
 
-from model_interface import ModelInterface
+from .model_interface import ModelInterface
 
 
 @endpoint('/user')
