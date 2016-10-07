@@ -27,5 +27,5 @@ class LogoutHandler(object):
         self.__response = response
 
     def logout(self):
-        self.__response.set_cookie(authentication_helper._COOKIE_NAME, None, path='/')
+        self.__response.set_cookie(authentication_helper._COOKIE_NAME, None, path='/', secret='any')
         return True
