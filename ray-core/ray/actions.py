@@ -1,7 +1,7 @@
 from functools import wraps
 from . import exceptions, http
 from .application import ray_conf
-import re, json
+import re
 
 
 def action(url, protection=None):
@@ -44,8 +44,7 @@ class RegisterActions(type):
         return type.__new__(cls, name, bases, methods)
 
 
-class ActionAPI(object):
-    __metaclass__ = RegisterActions
+class ActionAPI(metaclass=RegisterActions):
 
     def __init__(self, url=None, model_arg=None, request=None):
         # url e.g: /api/user/123/action_name

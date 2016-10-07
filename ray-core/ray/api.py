@@ -37,15 +37,15 @@ def dispatch(url):
 
     try:
         return process(url, bottle_req, bottle_resp)
-    except (exceptions.MethodNotFound, exceptions.ActionDoNotHaveModel, exceptions.ModelNotFound) as e:
+    except (exceptions.MethodNotFound, exceptions.ActionDoNotHaveModel, exceptions.ModelNotFound):
         response_code = 404
-    except exceptions.BadRequest as e:
+    except exceptions.BadRequest:
         response_code = 502
-    except (exceptions.Forbidden, exceptions.NotAuthorized) as e:
+    except (exceptions.Forbidden, exceptions.NotAuthorized):
         response_code = 403
     except exceptions.HookException:
         response_code = 400
-    except Exception as e:
+    except Exception:
         response_code = 500
         traceback.print_exc()
     finally:
