@@ -10,12 +10,9 @@ class TestHttp(unittest.TestCase):
         self.app = TestApp(application)
 
     def test_request_param_at(self):
-        request = self.app.get('/api/user/123/foo?name=bar')
-        self.assertEqual('123', param_at(request.path, 2))
-        self.assertEqual('foo', param_at(request.path, 3))
-        self.assertEqual('bar', request.params['name'])
-        self.assertEqual('foo', param_at(request.path, -1))
+        url = '/api/user/123/foo?name=bar'
+        self.assertEqual('123', param_at(url, 2))
 
-        request = self.app.get('/api/user')
-        self.assertEqual(None, param_at(request.path, 0))
-        self.assertEqual('user', param_at(request.path, 1))
+        url = '/api/user'
+        self.assertEqual(None, param_at(url, 0))
+        self.assertEqual('user', param_at(url, 1))
