@@ -1,0 +1,4 @@
+webtest
+pytest
+nose
+python-coveralls
