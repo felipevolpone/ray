@@ -1,7 +1,7 @@
 language: python
 
 python:
-  - 2.7
+  - 3.5
 
 before_install:
     - pip install python-coveralls
@@ -16,22 +16,23 @@ script:
     - pip install -r venv/requirements_tests.txt
     - cd ray-core
     - pip install . # install ray-core
-    - nosetests --tests=tests --with-coverage --cover-package=ray
+    - python3 -m pytest tests/
+    # - nosetests --tests=tests --with-coverage --cover-package=ray
 
-    - cd ..
-    - cd ray-appengine
-    - pip install . # install ray-appengine
-    - nosetests --tests=tests --with-coverage --cover-package=ray_appengine
+    # - cd ..
+    # - cd ray-appengine
+    # - pip install . # install ray-appengine
+    # - nosetests --tests=tests --with-coverage --cover-package=ray_appengine
 
-    - cd ..
-    - cd ray-sqlalchemy  # install ray-sqlalchemy
-    - pip install .
-    - nosetests --tests=tests --with-coverage --cover-package=ray_sqlalchemy
+    # - cd ..
+    # - cd ray-sqlalchemy  # install ray-sqlalchemy
+    # - pip install .
+    # - nosetests --tests=tests --with-coverage --cover-package=ray_sqlalchemy
 
-    - cd ..
-    - cd ray-peewee  # install ray-peewee
-    - pip install .
-    - nosetests --tests=tests --with-coverage --cover-package=ray_peewee
+    # - cd ..
+    # - cd ray-peewee  # install ray-peewee
+    # - pip install .
+    # - nosetests --tests=tests --with-coverage --cover-package=ray_peewee
 
 after_success:
   - coveralls
