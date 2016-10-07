@@ -60,13 +60,14 @@ def process(fullpath, request, response):
         return LogoutHandler(response).logout()
 
     elif is_endpoint(fullpath):
+        print '2'
         return EndpointHandler(request, fullpath).process()
 
     elif is_action(fullpath):
         return __handle_action(fullpath)
 
     else:
-        response.status = 404
+        raise exceptions.BadRequest()
 
 
 def __handle_action(url):

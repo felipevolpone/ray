@@ -26,7 +26,7 @@ class TestEndpoint(unittest.TestCase):
 
     def test_404(self):
         response = self.app.get('/api/', expect_errors=True)
-        self.assertEqual(404, response.status_int)
+        self.assertEqual(502, response.status_int)
 
     def __create(self):
         return self.app.post_json('/api/user', {"name": "felipe", "age": 22})
