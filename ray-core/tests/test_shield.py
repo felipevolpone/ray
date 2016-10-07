@@ -1,7 +1,6 @@
 
 import unittest
-
-from webapp2 import Request
+from webtest import TestApp
 
 from ray.endpoint import endpoint
 from ray.wsgi.wsgi import application
@@ -40,23 +39,26 @@ class PersonShield(Shield):
 
 class TestShield(unittest.TestCase):
 
+    def setUp(self):
+        self.app = TestApp(application)
+
     def test(self):
-        req = Request.blank('/api/_login', method='POST')
-        req.json = {"username": "felipe", "password": '123'}
-        response = req.get_response(application)
+        response = self.app.post_json('/api/_login', {"username": "felipe", "password": '123'})
         cookie = response.headers['Set-Cookie']
         self.assertEqual(200, response.status_int)
 
-        req = Request.blank('/api/person/', method='GET')
-        req.headers['Cookie'] = cookie
-        response = req.get_response(application)
+        response = self.app.get('/api/person/', headers={'RayAuth': cookie})
         self.assertEqual(200, response.status_int)
 
-        req = Request.blank('/api/person/', method='GET')
-        response = req.get_response(application)
+        self.app = TestApp(application)
+        response = self.app.get('/api/person', expect_errors=True)
         self.assertEquals(404, response.status_int)
 
-        for http_method in ['POST', 'PUT', 'DELETE']:
-            req = Request.blank('/api/person/', method=http_method)
-            response = req.get_response(application)
-            self.assertIsNot(404, response.status_int)
+        response = self.app.post('/api/person/', expect_errors=True)
+        self.assertIsNot(404, response.status_int)
+
+        response = self.app.put('/api/person/', expect_errors=True)
+        self.assertIsNot(404, response.status_int)
+
+        response = self.app.delete('/api/person/', expect_errors=True)
+        self.assertIsNot(404, response.status_int)

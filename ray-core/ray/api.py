@@ -68,7 +68,8 @@ def process(fullpath, request, response):
     else:
         response.status = 404
 
-def __handle_action( url):
+
+def __handle_action(url):
     # url e.g: /api/user/123/action
 
     arg = None
@@ -77,13 +78,16 @@ def __handle_action( url):
 
     return ActionAPI(url, arg, bottle_req).process_action()
 
-def is_login( full_path):
+
+def is_login(full_path):
     return full_path == '/api/_login'
+
 
 def is_logout(full_path):
     return full_path == '/api/_logout'
 
-def is_endpoint( full_path):
+
+def is_endpoint(full_path):
     full_path = full_path.split('?')[0]
     if len(full_path.split('/')) == 4:
         try:
@@ -94,7 +98,8 @@ def is_endpoint( full_path):
 
     return len(full_path.split('/')) <= 4 and len(full_path.split('/')) > 2
 
-def is_action( full_path):
+
+def is_action(full_path):
     # full_path e.g: /api/user/123/action
     # full_path e.g: /api/user/action
 
