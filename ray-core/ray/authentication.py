@@ -1,7 +1,7 @@
 
 import base64
 from . import authentication_helper
-from exceptions import NotAuthorized
+from .exceptions import NotAuthorized
 
 
 class Authentication(object):

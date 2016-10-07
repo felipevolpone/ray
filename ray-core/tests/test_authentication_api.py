@@ -2,7 +2,6 @@
 import unittest
 
 from webtest import TestApp
-from webapp2 import Request
 
 from ray.wsgi.wsgi import application
 from ray.endpoint import endpoint

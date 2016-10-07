@@ -1,8 +1,8 @@
 import json, traceback, bottle
 from bottle import request as bottle_req, response as bottle_resp
-from endpoint import EndpointHandler
-from login import LoginHandler, LogoutHandler
-from actions import ActionAPI
+from .endpoint import EndpointHandler
+from .login import LoginHandler, LogoutHandler
+from .actions import ActionAPI
 from . import exceptions, http
 from functools import wraps
 
@@ -60,7 +60,6 @@ def process(fullpath, request, response):
         return LogoutHandler(response).logout()
 
     elif is_endpoint(fullpath):
-        print '2'
         return EndpointHandler(request, fullpath).process()
 
     elif is_action(fullpath):

@@ -1,13 +1,6 @@
-import webapp2, urlparse
+from urllib import parse
 
 from . import authentication_helper
-
-
-class Response(webapp2.Response):
-
-    def __init__(self, json):
-        self._json = json
-        webapp2.Response.__init__(self)
 
 
 def param_at(url, index):
@@ -43,7 +36,7 @@ def get_cookie_content(request):
 
 
 def query_params_to_dict(request):
-    params_with_array = urlparse.parse_qs(request.query_string)
+    params_with_array = parse.parse_qs(request.query_string)
     params = {}
     for key, values in params_with_array.items():
         value = values[0]

@@ -1,11 +1,8 @@
 
-import unittest, peewee
+import unittest, peewee, json
 from ray_peewee.all import PeeweeModel
 
-import unittest
-import json
-from webapp2 import Request
-from ray.http import Response
+from webtest import TestApp
 from ray.wsgi.wsgi import application
 from ray.endpoint import endpoint
 
@@ -24,25 +21,6 @@ class User(DBModel):
     age = peewee.IntegerField()
 
 
-class MockResponse(Response):
-
-    def __init__(self, instance):
-        Response.__init__(self, instance.json)
-
-    def to_json(self):
-        result = {}
-        if not self._json:
-            return {}
-
-        for key, value in self._json.items():
-            key = key.encode('utf-8')
-            if type(value) is unicode:
-                value = value.encode('utf-8')
-
-            result[key] = value
-        return result
-
-
 def build_url(id_=None, params=None):
     base = 'http://localhost:8080/api/user'
     if params:
@@ -56,6 +34,8 @@ class TestRayPeeweeAPI(unittest.TestCase):
         database.drop_tables([User], safe=True)
         database.create_tables([User])
 
+        self.app = TestApp(application)
+
     def test_columns(self):
         self.assertEqual(['age', 'id', 'name'], User.columns())
 
@@ -65,17 +45,15 @@ class TestRayPeeweeAPI(unittest.TestCase):
         self.assertEqual('Frank Sinatra', new_user.name)
 
     def test_database_methods(self):
-        user = User.create(name='felipe', age=100)
+        User.create(name='felipe', age=100)
 
     def _create(self, name=None, age=None):
-        request = Request.blank(build_url(), method='POST')
-        request.json = {'age': age, 'name': name}
-        return MockResponse(request.get_response(application))
+        return self.app.post_json(build_url(), {'age': age, 'name': name})
 
     def test_api(self):
         # test post create
         resp = self._create(name='felipe', age=22)
-        result = resp.to_json()['result']
+        result = resp.json['result']
         self.assertEqual(result['name'], 'felipe')
         self.assertEqual(result['age'], 22)
         self.assertIsNotNone(result['id'])
@@ -84,7 +62,7 @@ class TestRayPeeweeAPI(unittest.TestCase):
         self._create(name='john', age=26)
 
         # test get all
-        req = Request.blank(build_url(), method='GET')
+        req = self.app.get(build_url())
         resp = MockResponse(req.get_response(application))
         result = resp.to_json()['result']
         self.assertEqual(result[0]['name'], 'felipe')

@@ -1,5 +1,0 @@
-webapp2
-webob
-click
-uwsgi
-pycrypto

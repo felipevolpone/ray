@@ -1,5 +1,4 @@
-import json, http
-from . import exceptions, authentication_helper
+from . import exceptions, authentication_helper, http
 from .shield import ShieldHandler
 from .application import ray_conf
 

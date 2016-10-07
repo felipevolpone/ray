@@ -1,6 +1,5 @@
 import unittest
 
-from webapp2 import Request
 from webtest import TestApp
 
 from ray.wsgi.wsgi import application

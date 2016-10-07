@@ -14,7 +14,7 @@ class ModelInterface(Model):
 
     @classmethod
     def columns(cls):
-        c = cls.describe().keys()
+        c = list(cls.describe().keys())
         c.append('id')
         return c
 

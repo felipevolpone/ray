@@ -13,9 +13,9 @@ before_install:
     - export PYTHONPATH="$PYTHONPATH:/home/travis/build/felipevolpone/ray/google_appengine/"
 
 script:
+    - pip install -r venv/requirements_tests.txt
     - cd ray-core
     - pip install . # install ray-core
-    - pip install -r requirements.txt
     - nosetests --tests=tests --with-coverage --cover-package=ray
 
     - cd ..
