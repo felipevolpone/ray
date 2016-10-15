@@ -83,6 +83,7 @@ class ActionAPI(object):
         if hasattr(method, '_protection_shield_method'):
             shield_method = method._protection_shield_method
 
+            print(self)
             cookie_content = http.get_cookie_content(self.__request)
 
             if not shield_method(cookie_content):  # shield returned False

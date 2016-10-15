@@ -31,7 +31,7 @@ user_data = {'username': 'admin', 'password': 'admin'};
 
 class TestAuthentication(unittest.TestCase):
 
-    def test_login(self):
+    def test_login_fail(self):
         user_json = MyAuth.login(user_data)
         self.assertEqual(dict, type(user_json))
         self.assertTrue(user_json['token'])
@@ -45,13 +45,24 @@ class TestAuthentication(unittest.TestCase):
         with self.assertRaises(Exception):
             MyAuthWithoutSalt.login(user_data)
 
-    def test_jwt_infos_sign(self):
+        with self.assertRaises(Exception):
+            MyAuthWithoutSalt.login(user_data)
+
+    def test_parse_infos_sign(self):
         token_obj = MyAuth.login(user_data)
-        parsed_user_data = jwt.decode(token_obj['token'], 'ray_salt_key', algorithms=['HS256'])
+        parsed_user_data = MyAuth.unpack_jwt(token_obj['token'])
         self.assertEqual(dict, type(parsed_user_data))
         self.assertEqual(user_data, parsed_user_data)
 
-    def test_jwt_infos_sign_wrong_salt_key(self):
+    def test_parse_infos_sign_invalid_generated_token(self):
         token_obj = MyAuth.login(user_data)
         with self.assertRaises(Exception):
-            jwt.decode(token_obj['token'], 'wrong_salt_key', algorithms=['HS256'])
+            MyAuth.unpack_jwt('my_invalid_token')
+
+    def test_user_loged(self):
+        token_obj = MyAuth.login(user_data)
+        self.assertTrue(MyAuth.is_loged(token_obj['token']))
+
+    def test_user_not_loged(self):
+        self.assertFalse(MyAuth.is_loged(''))
+        self.assertFalse(MyAuth.is_loged(None))
