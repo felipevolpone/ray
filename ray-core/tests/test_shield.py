@@ -12,9 +12,11 @@ from tests.model_interface import ModelInterface
 
 class MyAuth(Authentication):
 
+    salt_key = 'ray_salt_key'
+
     @classmethod
-    def authenticate(cls, username, password):
-        if username == 'felipe' and password == '123':
+    def authenticate(cls, login_data):
+        if login_data['username'] == 'felipe' and login_data['password'] == '123':
             return {'username': 'felipe'}
 
 
@@ -53,6 +55,7 @@ class TestShield(unittest.TestCase):
 
         self.app = TestApp(application)
         response = self.app.get('/api/person', expect_errors=True)
+
         self.assertEquals(404, response.status_int)
 
         response = self.app.post('/api/person/', expect_errors=True)

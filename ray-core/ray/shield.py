@@ -4,8 +4,8 @@ from . import exceptions
 
 class ShieldHandler(object):
 
-    def __init__(self, cookie_content):
-        self.content = cookie_content
+    def __init__(self, user_info):
+        self.user_info = user_info
 
     def get_shield(self, model_class):
 
@@ -14,9 +14,9 @@ class ShieldHandler(object):
                 raise exceptions.ShieldDoNotHaveModel()
 
             if clazz.__model__ == model_class:
-                return clazz(self.content)
+                return clazz(self.user_info)
 
-        return Shield(self.content)  # here an empty Shield is returned to avoid if is not None at the endpoint
+        return Shield(self.user_info)  # here an empty Shield is returned to avoid if is not None at the endpoint
 
 
 class Shield(object):

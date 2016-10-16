@@ -21,37 +21,45 @@ class EndpointHandler(object):
         self.__endpoint_data = self._get_endpoint_data()
 
     def process(self):
-        if self.__is_protected() and not self.__allowed():
-            raise exceptions.MethodNotFound()
-
         return EndpointProcessor(self.__request,
-                                 self.__endpoint_data['model']).process()
+                                 self.__endpoint_data['model'],
+                                 self.__user_data()).process()
 
-    def _get_endpoint_data(self):
+    def get_endpoint_data(self):
         full_path = self.__url.split('/')
         model_url = full_path[-1] if len(full_path) == 3 else full_path[-2]
 
         return ray_conf['endpoint'][model_url]
 
-    def __is_protected(self):
-        return self._get_endpoint_data()['authentication'] is not None
+    def is_protected(self):
+        return self.get_endpoint_data()['authentication'] is not None
+
+    def endpoint_authentication(self):
+        return self.get_endpoint_data()['authentication']
 
     def __allowed(self):
-        try:
-            cookie = (self.__request.cookies.get(authentication_helper._COOKIE_NAME))
-            return self.__endpoint_data['authentication'].is_loged(cookie)
-        except:
+        if not self.is_protected():
+            return True
+
+        if not 'Authentication' in self.__request.headers:
             return False
+
+        return self.__endpoint_data['authentication'].is_loged(self.__request.headers['Authentication'])
+
+    def __user_data(self):
+        if not self.is_protected():
+            return {}
+
+        return self.__endpoint_data['authentication'].unpack_jwt(self.__request.headers['Authentication'])
 
 
 class EndpointProcessor(object):
 
-    def __init__(self, request, model):
+    def __init__(self, request, model, user_info):
         self.__request = request
         self.__model = model
 
-        cookie_content = http.get_cookie_content(self.__request)
-        self.__shield_class = ShieldHandler(cookie_content).get_shield(model)
+        self.__shield_class = ShieldHandler(user_info).get_shield(model)
 
     def process(self):
         methods = {'post': self.__process_post, 'get': self.__process_get,
@@ -60,7 +68,7 @@ class EndpointProcessor(object):
         return methods[http_verb]()
 
     def __process_put(self):
-        if not self.__shield_class.put(self.__shield_class.info):
+        if not self.__shield_class.put(self.__request.logged_user):
             raise exceptions.MethodNotFound()
 
         id_param = http.get_id(self.__request.path)

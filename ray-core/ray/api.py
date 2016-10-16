@@ -60,7 +60,16 @@ def process(fullpath, request, response):
         return LogoutHandler(response).logout()
 
     elif is_endpoint(fullpath):
-        return EndpointHandler(request, fullpath).process()
+        endpoint_handler = EndpointHandler(request, fullpath)
+        if endpoint_handler.is_protected():
+            try:
+                request.logged_user = (endpoint_handler.endpoint_authentication()
+                                                       .unpack_jwt(request.headers['Authentication']))
+                return endpoint_handler.process()
+            except:
+                response.status = 401
+        else:
+            return endpoint_handler.process()
 
     elif is_action(fullpath):
         return __handle_action(fullpath)

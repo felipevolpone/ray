@@ -13,12 +13,9 @@ class LoginHandler(object):
 
     def process(self):
         auth_class = Authentication.__subclasses__()[-1]
-
-        login_json = self.__request.json
-        user_json = auth_class.login(**login_json)
-        cookie_name, cookie_value = auth_class.sign_cookie(user_json)
-        self.__response.set_cookie(cookie_name, cookie_value, path='/')
-        return True
+        login_json = json.loads(self.__request.body)
+        user_token = auth_class.login(login_json)
+        return user_token
 
 
 class LogoutHandler(object):
