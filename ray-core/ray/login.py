@@ -1,7 +1,6 @@
 
 import json
 from .authentication import Authentication
-from . import authentication_helper
 
 
 class LoginHandler(object):
@@ -24,5 +23,5 @@ class LogoutHandler(object):
         self.__response = response
 
     def logout(self):
-        self.__response.set_cookie(authentication_helper._COOKIE_NAME, '', path='/', expires=0)
+        # self.__response.set_cookie(authentication_helper._COOKIE_NAME, '', path='/', expires=0)
         return True

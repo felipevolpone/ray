@@ -1,6 +1,5 @@
 
 import base64, jwt
-from . import authentication_helper
 from .exceptions import NotAuthorized
 
 
@@ -9,9 +8,9 @@ class Authentication(object):
     @classmethod
     def login(cls, login_data):
         user_json = cls.authenticate(login_data)
-        
+
         if not hasattr(cls, 'salt_key'):
-            raise NotImplementedError    
+            raise NotImplementedError
 
         if user_json:
             return {'token': jwt.encode(user_json, cls.salt_key, algorithm='HS256')}

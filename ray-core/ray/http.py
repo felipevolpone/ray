@@ -1,7 +1,5 @@
 from urllib import parse
 
-from . import authentication_helper
-
 
 def param_at(url, index):
     """
@@ -30,9 +28,9 @@ def get_id(url):
     return param_at(url, 2)
 
 
-def get_cookie_content(request):
-    cookie_text = request.cookies.get(authentication_helper._COOKIE_NAME)
-    return authentication_helper.cookie_content(cookie_text)
+# def get_cookie_content(request):
+#     cookie_text = request.cookies.get(authentication_helper._COOKIE_NAME)
+#     return authentication_helper.cookie_content(cookie_text)
 
 
 def query_params_to_dict(request):

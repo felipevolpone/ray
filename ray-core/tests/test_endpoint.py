@@ -1,5 +1,4 @@
-import unittest, webtest
-
+import unittest
 from webtest import TestApp
 from ray.api import application
 from ray.endpoint import endpoint
@@ -45,7 +44,7 @@ class TestEndpoint(unittest.TestCase):
 
     def test_get(self):
         uuid_created = '1245'
-        resp = self.app.get('/api/user/'+ uuid_created)
+        resp = self.app.get('/api/user/' + uuid_created)
         self.assertEqual(200, resp.status_int)
 
     def test_put(self):

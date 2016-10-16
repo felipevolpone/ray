@@ -1,4 +1,4 @@
-from . import exceptions, authentication_helper, http
+from . import exceptions, http
 from .shield import ShieldHandler
 from .application import ray_conf
 
@@ -18,7 +18,7 @@ class EndpointHandler(object):
     def __init__(self, request, fullpath):
         self.__request = request
         self.__url = fullpath
-        self.__endpoint_data = self._get_endpoint_data()
+        self.__endpoint_data = self.get_endpoint_data()
 
     def process(self):
         return EndpointProcessor(self.__request,
@@ -68,7 +68,7 @@ class EndpointProcessor(object):
         return methods[http_verb]()
 
     def __process_put(self):
-        if not self.__shield_class.put(self.__request.logged_user):
+        if hasattr(self.__request, 'logged_user') and not self.__shield_class.put(self.__request.logged_user):
             raise exceptions.MethodNotFound()
 
         id_param = http.get_id(self.__request.path)
