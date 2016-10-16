@@ -32,7 +32,6 @@ class TestAuthentication(unittest.TestCase):
 
     user_data = {'username': 'admin', 'password': 'admin'}
 
-    @unittest.skip('skip')
     def test_login_fail(self):
         user_json = MyAuth.login(self.user_data)
 
@@ -58,7 +57,7 @@ class TestAuthentication(unittest.TestCase):
         self.assertEqual(self.user_data, parsed_user_data)
 
     def test_parse_infos_sign_invalid_generated_token(self):
-        token_obj = MyAuth.login(self.user_data)
+        MyAuth.login(self.user_data)
         with self.assertRaises(Exception):
             MyAuth.unpack_jwt('my_invalid_token')
 
