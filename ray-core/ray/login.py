@@ -11,6 +11,7 @@ class LoginHandler(object):
 
     def process(self):
         auth_class = Authentication.__subclasses__()[-1]
+        print(auth_class)
         login_json = self.__request.json
         user_token = auth_class.login(login_json)
         return {'token': user_token.decode('utf-8')}
@@ -23,5 +24,6 @@ class LogoutHandler(object):
 
     def logout(self):
         # self.__response.set_cookie(authentication_helper._COOKIE_NAME, '', path='/', expires=0)
-        # FIXME
+        # FIXME using jwt there is no logout, but the invalidation of the token in the login
+        # each token should have a timestamp to expire
         return True

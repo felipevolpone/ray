@@ -32,7 +32,6 @@ class GamerModel(ModelInterface):
         return {'login': str}
 
 
-@unittest.skip('skip')
 class TestProctedEndpoint(unittest.TestCase):
 
     def setUp(self):

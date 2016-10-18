@@ -1,4 +1,4 @@
-import json, traceback, bottle
+import json, bottle
 from bottle import request as bottle_req, response as bottle_resp
 from .endpoint import EndpointHandler
 from .login import LoginHandler, LogoutHandler
@@ -47,9 +47,9 @@ def dispatch(url):
         response_code = 401
     except exceptions.HookException:
         response_code = 400
-    except Exception as e:
-        print(e)
-        # raise e
+    except:
+        import sys
+        print(sys.exc_info())
 
     bottle_resp.status = response_code
 

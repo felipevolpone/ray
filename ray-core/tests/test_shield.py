@@ -44,25 +44,24 @@ class TestShield(unittest.TestCase):
     def setUp(self):
         self.app = TestApp(application)
 
-    @unittest.skip('skip')
-    def test(self):
+    # @unittest.skip('skip')
+    def test_shields(self):
         response = self.app.post_json('/api/_login', {"username": "felipe", "password": '123'})
-        cookie = response.headers['Set-Cookie']
+        token = response.json['result']['token']
         self.assertEqual(200, response.status_int)
 
-        response = self.app.get('/api/person/', headers={'RayAuth': cookie})
+        response = self.app.get('/api/person/', headers={'Authentication': token})
         self.assertEqual(200, response.status_int)
 
         self.app = TestApp(application)
         response = self.app.get('/api/person', expect_errors=True)
-
-        self.assertEquals(404, response.status_int)
+        self.assertEquals(401, response.status_int)
 
         response = self.app.post('/api/person/', expect_errors=True)
-        self.assertIsNot(404, response.status_int)
+        self.assertIsNot(401, response.status_int)
 
-        response = self.app.put('/api/person/', expect_errors=True)
-        self.assertIsNot(404, response.status_int)
+        # response = self.app.put('/api/person/', expect_errors=True)
+        # self.assertIsNot(404, response.status_int)
 
-        response = self.app.delete('/api/person/', expect_errors=True)
-        self.assertIsNot(404, response.status_int)
+        # response = self.app.delete('/api/person/', expect_errors=True)
+        # self.assertIsNot(404, response.status_int)

@@ -1,5 +1,5 @@
 
-import base64, jwt
+import jwt
 from .exceptions import NotAuthorized
 
 
