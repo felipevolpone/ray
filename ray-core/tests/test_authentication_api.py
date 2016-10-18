@@ -56,14 +56,15 @@ class TestProctedEndpoint(unittest.TestCase):
     # @unittest.skip('skip')
     def test_logout(self):
         response = self.app.post_json('/api/_login', {"username": "felipe", "password": '123'})
-        cookie = response.headers['Set-Cookie']
+        self.assertIsNotNone(response.json['result']['token'])
+        token = response.json['result']['token']
         self.assertEqual(200, response.status_int)
 
-        response = self.app.get('/api/gamer/', headers={'Cookie': cookie})
+        response = self.app.get('/api/gamer/', headers={'Authentication': token})
         self.assertEqual(200, response.status_int)
 
-        response = self.app.get('/api/_logout', headers={'Cookie': cookie})
+        response = self.app.get('/api/_logout', headers={'Authentication': token})
         self.assertEqual(200, response.status_int)
 
         response = self.app.get('/api/gamer/', expect_errors=True)
-        self.assertEqual(404, response.status_int)
+        self.assertEqual(401, response.status_int)
