@@ -24,19 +24,19 @@ class Model(object):
         return return_json
 
     def describe(self):
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @classmethod
     def columns(cls):
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @classmethod
     def find(cls, *args, **kwargs):
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @classmethod
     def get(cls, id=None):
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def update(self, dict_fields_to_update):
         return self.__save()

@@ -10,7 +10,7 @@ class Authentication(object):
         user_json = cls.authenticate(login_data)
 
         if not hasattr(cls, 'salt_key'):
-            raise NotImplementedError
+            raise NotImplementedError()
 
         if user_json:
             return jwt.encode(user_json, cls.salt_key, algorithm='HS256')
@@ -24,12 +24,12 @@ class Authentication(object):
             are from the same user. This method must return
             a dict
         """
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @classmethod
     def unpack_jwt(cls, token):
         if not hasattr(cls, 'salt_key'):
-            raise NotImplementedError
+            raise NotImplementedError()
 
         return jwt.decode(token, cls.salt_key, algorithms=['HS256'])
 

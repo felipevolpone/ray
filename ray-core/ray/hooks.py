@@ -11,8 +11,9 @@ class Hook(object):
         """
         raise NotImplementedError
 
-    def before_delete(self, entity):  # FIXME nao ta lancando excecao que nem o before_save
-        raise NotImplementedError
+    def before_delete(self, entity):
+        raise NotImplementedError()
+        # FIXME its not raising exception on the same way that before_save is
 
     def after_save(self, entity):  # FIXME
-        raise NotImplementedError
+        raise NotImplementedError()

@@ -33,10 +33,8 @@ class TestAuthentication(unittest.TestCase):
     user_data = {'username': 'admin', 'password': 'admin'}
 
     def test_login_fail(self):
-        user_json = MyAuth.login(self.user_data)
-
-        self.assertEqual(dict, type(user_json))
-        self.assertTrue(user_json['token'])
+        token = MyAuth.login(self.user_data)
+        self.assertIsNotNone(token)
 
         with self.assertRaises(Exception):
             Authentication.login(self.user_data)
@@ -51,8 +49,10 @@ class TestAuthentication(unittest.TestCase):
             MyAuthWithoutSalt.login(self.user_data)
 
     def test_parse_infos_sign(self):
-        token_obj = MyAuth.login(self.user_data)
-        parsed_user_data = MyAuth.unpack_jwt(token_obj['token'])
+        token = MyAuth.login(self.user_data)
+        parsed_user_data = MyAuth.unpack_jwt(token)
+        print(parsed_user_data)
+        self.assertIsNotNone(parsed_user_data)
         self.assertEqual(dict, type(parsed_user_data))
         self.assertEqual(self.user_data, parsed_user_data)
 
@@ -63,7 +63,7 @@ class TestAuthentication(unittest.TestCase):
 
     def test_user_loged(self):
         token_obj = MyAuth.login(self.user_data)
-        self.assertTrue(MyAuth.is_loged(token_obj['token']))
+        self.assertTrue(MyAuth.is_loged(token_obj))
 
     def test_user_not_loged(self):
         self.assertFalse(MyAuth.is_loged(''))

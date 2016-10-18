@@ -6,7 +6,7 @@ from ray.model import Model as RayModel
 class PeeweeModel(PeeweeNativeModel, RayModel):
 
     def describe(self):
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @classmethod
     def columns(cls):

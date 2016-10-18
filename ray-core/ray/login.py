@@ -23,4 +23,5 @@ class LogoutHandler(object):
 
     def logout(self):
         # self.__response.set_cookie(authentication_helper._COOKIE_NAME, '', path='/', expires=0)
+        # FIXME
         return True

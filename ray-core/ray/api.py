@@ -47,13 +47,18 @@ def dispatch(url):
         response_code = 401
     except exceptions.HookException:
         response_code = 400
+    except Exception as e:
+        print(e)
+        # raise e
 
     bottle_resp.status = response_code
 
 
 def process(fullpath, request, response):
     if is_login(fullpath):
-        return LoginHandler(request, response, fullpath).process()
+        a = LoginHandler(request, response, fullpath).process()
+        print(a)
+        return a
 
     if is_logout(fullpath):
         return LogoutHandler(response).logout()
