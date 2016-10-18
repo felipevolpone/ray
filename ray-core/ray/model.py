@@ -1,6 +1,4 @@
 
-from ray.exceptions import HookException
-
 
 class Model(object):
 

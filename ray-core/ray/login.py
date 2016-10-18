@@ -11,6 +11,7 @@ class LoginHandler(object):
 
     def process(self):
         auth_class = Authentication.__subclasses__()[-1]
+        print(auth_class)
         login_json = self.__request.json
         user_token = auth_class.login(login_json)
         return {'token': user_token.decode('utf-8')}
