@@ -53,7 +53,7 @@ class TestProctedEndpoint(unittest.TestCase):
         response = self.app.get('/api/gamer/', headers={'Authentication': token})
         self.assertEqual(200, response.status_int)
 
-    @unittest.skip('skip')
+    # @unittest.skip('skip')
     def test_logout(self):
         response = self.app.post_json('/api/_login', {"username": "felipe", "password": '123'})
         cookie = response.headers['Set-Cookie']
