@@ -56,13 +56,12 @@ class ActionUser(ActionAPI):
         return 'activate_user_with_id'
 
     # to test Shileds with Actions
-    # @action('/enable', protection=UserShield.protect_enable)
-    @action('/enable')
+    @action('/enable', protection=UserShield.protect_enable)
     def enable_user(self, model_id, parameters):
         global any_number
         any_number = 'enabled'
 
-    @action('/enable_fail')
+    @action('/enable_fail', protection=UserShield.protect_fail)
     def enable_fail(self, model_id, parameters):
         pass
 
@@ -90,16 +89,16 @@ class TestAction(unittest.TestCase):
         global any_number
         self.assertEqual(user_id, any_number)
 
-    @unittest.skip('skip')
     def test_action_with_shields(self):
+        global any_number
+        any_number = '123'
+
         response = self.app.post('/api/user/enable')
         self.assertEqual(200, response.status_int)
-
-        global any_number
         self.assertEqual('enabled', any_number)
 
         response = self.app.post('/api/user/enable_fail', expect_errors=True)
-        self.assertEqual(403, response.status_int)
+        self.assertEqual(401, response.status_int)
 
     def test_action_url_404(self):
         response = self.app.get('/api/user/123/dontexists', expect_errors=True)

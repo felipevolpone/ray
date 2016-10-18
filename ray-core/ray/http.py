@@ -28,11 +28,6 @@ def get_id(url):
     return param_at(url, 2)
 
 
-# def get_cookie_content(request):
-#     cookie_text = request.cookies.get(authentication_helper._COOKIE_NAME)
-#     return authentication_helper.cookie_content(cookie_text)
-
-
 def query_params_to_dict(request):
     params_with_array = parse.parse_qs(request.query_string)
     params = {}

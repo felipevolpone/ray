@@ -56,9 +56,7 @@ def dispatch(url):
 
 def process(fullpath, request, response):
     if is_login(fullpath):
-        a = LoginHandler(request, response, fullpath).process()
-        print(a)
-        return a
+        return LoginHandler(request, response, fullpath).process()
 
     if is_logout(fullpath):
         return LogoutHandler(response).logout()

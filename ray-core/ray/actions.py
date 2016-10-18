@@ -1,11 +1,13 @@
 from functools import wraps
 from . import exceptions, http
 from .application import ray_conf
+from .authentication import Authentication
 import re
 
 
 def action(url, protection=None):
     # url e.g: /<id>/action_name
+
     def dec(func):
         if protection:
             func._protection_shield_method = protection
@@ -81,11 +83,9 @@ class ActionAPI(metaclass=RegisterActions):
 
         if hasattr(method, '_protection_shield_method'):
             shield_method = method._protection_shield_method
+            user_data = self.__request.logged_user if hasattr(self.__request, 'logged_user') else None
 
-            print(self)
-            cookie_content = http.get_cookie_content(self.__request)
-
-            if not shield_method(cookie_content):  # shield returned False
+            if not shield_method(user_data):  # shield returned False
                 raise exceptions.NotAuthorized()
 
         request_parameters = self.__get_parameter(self.__request)
