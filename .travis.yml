@@ -16,8 +16,8 @@ script:
     - pip install -r venv/requirements_tests.txt
     - cd ray-core
     - pip install . # install ray-core
-    - python3 -m pytest tests/
-    # - nosetests --tests=tests --with-coverage --cover-package=ray
+    # - python3 -m pytest tests/
+    - nosetests --tests=tests --with-coverage --cover-package=ray
 
     # - cd ..
     # - cd ray-appengine
