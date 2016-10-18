@@ -1,8 +1,9 @@
 
 import unittest
-from ray.authentication import Authentication
+from ray.authentication import Authentication, register
 
 
+@register
 class MyAuth(Authentication):
 
     salt_key = 'ray_salt_key'
@@ -12,6 +13,7 @@ class MyAuth(Authentication):
         return login_data
 
 
+@register
 class MyAuthFail(Authentication):
 
     salt_key = 'ray_salt_key'
@@ -21,6 +23,7 @@ class MyAuthFail(Authentication):
         return None
 
 
+@register
 class MyAuthWithoutSalt(Authentication):
 
     @classmethod

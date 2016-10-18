@@ -1,5 +1,6 @@
 
-from .authentication import Authentication
+# from .authentication import Authentication
+from .application import ray_conf
 
 
 class LoginHandler(object):
@@ -10,8 +11,7 @@ class LoginHandler(object):
         self.__url = fullpath
 
     def process(self):
-        auth_class = Authentication.__subclasses__()[-1]
-        print(auth_class)
+        auth_class = ray_conf['authentication']
         login_json = self.__request.json
         user_token = auth_class.login(login_json)
         return {'token': user_token.decode('utf-8')}

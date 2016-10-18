@@ -1,5 +1,6 @@
 
 ray_conf = {
     'endpoint': {},
-    'action': {}
+    'action': {},
+    'authentication': None
 }

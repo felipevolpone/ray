@@ -3,7 +3,7 @@ import peewee
 from ray.shield import Shield
 from ray.hooks import Hook
 from ray.actions import ActionAPI, action
-from ray.authentication import Authentication
+from ray.authentication import Authentication, register
 from ray.wsgi.wsgi import application
 from ray.endpoint import endpoint
 from ray_peewee.all import PeeweeModel
@@ -34,6 +34,7 @@ class DBModel(PeeweeModel):
         database = database
 
 
+@register
 class MyAuth(Authentication):
 
     @classmethod

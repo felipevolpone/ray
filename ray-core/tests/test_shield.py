@@ -4,12 +4,13 @@ from webtest import TestApp
 
 from ray.endpoint import endpoint
 from ray.wsgi.wsgi import application
-from ray.authentication import Authentication
+from ray.authentication import Authentication, register
 from ray.shield import Shield
 
 from tests.model_interface import ModelInterface
 
 
+@register
 class MyAuth(Authentication):
 
     salt_key = 'ray_salt_key'

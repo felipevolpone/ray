@@ -1,6 +1,12 @@
 
 import jwt
 from .exceptions import NotAuthorized
+from .application import ray_conf
+
+
+def register(clazz):
+    ray_conf['authentication'] = clazz
+    return clazz
 
 
 class Authentication(object):
