@@ -1,5 +1,4 @@
 
-import json
 from .authentication import Authentication
 
 
@@ -12,9 +11,9 @@ class LoginHandler(object):
 
     def process(self):
         auth_class = Authentication.__subclasses__()[-1]
-        login_json = json.loads(self.__request.body)
+        login_json = self.__request.json
         user_token = auth_class.login(login_json)
-        return user_token
+        return {'token': user_token.decode('utf-8')}
 
 
 class LogoutHandler(object):

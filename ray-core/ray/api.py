@@ -41,15 +41,14 @@ def dispatch(url):
         response_code = 404
     except exceptions.BadRequest:
         response_code = 502
-    except (exceptions.Forbidden, exceptions.NotAuthorized):
+    except exceptions.Forbidden:
         response_code = 403
+    except exceptions.NotAuthorized:
+        response_code = 401
     except exceptions.HookException:
         response_code = 400
-    except Exception:
-        response_code = 500
-        traceback.print_exc()
-    finally:
-        bottle_resp.status = response_code
+
+    bottle_resp.status = response_code
 
 
 def process(fullpath, request, response):
@@ -67,7 +66,7 @@ def process(fullpath, request, response):
                                                        .unpack_jwt(request.headers['Authentication']))
                 return endpoint_handler.process()
             except:
-                response.status = 401
+                raise exceptions.NotAuthorized()
         else:
             return endpoint_handler.process()
 
