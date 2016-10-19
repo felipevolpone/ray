@@ -60,8 +60,8 @@ class TestShield(unittest.TestCase):
         response = self.app.post('/api/person/', expect_errors=True)
         self.assertIsNot(401, response.status_int)
 
-        # response = self.app.put('/api/person/', expect_errors=True)
-        # self.assertIsNot(404, response.status_int)
+        response = self.app.put('/api/person/', expect_errors=True)
+        self.assertIsNot(404, response.status_int)
 
-        # response = self.app.delete('/api/person/', expect_errors=True)
-        # self.assertIsNot(404, response.status_int)
+        response = self.app.delete('/api/person/', expect_errors=True)
+        self.assertIsNot(404, response.status_int)
