@@ -1,5 +1,5 @@
-doc-warnings: true
-test-warnings: false
+doc-warnings: false
+test-warnings: true
 strictness: veryhigh
 max-line-length: 120
 autodetect: true
