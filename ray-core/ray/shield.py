@@ -1,6 +1,4 @@
 
-from . import exceptions
-
 
 class ShieldHandler(object):
 
@@ -10,8 +8,6 @@ class ShieldHandler(object):
     def get_shield(self, model_class):
 
         for clazz in Shield.__subclasses__():
-            if not hasattr(clazz, '__model__'):
-                raise exceptions.ShieldDoNotHaveModel()
 
             if clazz.__model__ == model_class:
                 return clazz(self.user_info)
