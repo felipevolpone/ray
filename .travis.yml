@@ -17,7 +17,7 @@ script:
     - cd ray-core
     - pip install . # install ray-core
     # - python3 -m pytest tests/
-    - nosetests --tests=tests --with-coverage --cover-package=ray
+    - nosetests --tests=tests --with-coverage --cover-package=../ray-core/
 
     # - cd ..
     # - cd ray-appengine
