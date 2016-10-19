@@ -1,4 +1,5 @@
 [report]
 omit =
-    */ray/scripts/*
-    */ray/commandline.py
+    */ray-core/ray/scripts/*
+    */ray-core/ray/commandline.py
+    */ray-core/tests/*
