@@ -3,3 +3,5 @@ omit =
     */ray-core/ray/scripts/*
     */ray-core/ray/commandline.py
     */ray-core/tests/*
+    */ray-core/setup.py*
+    */ray-core/wsgi/wsgi.py*
