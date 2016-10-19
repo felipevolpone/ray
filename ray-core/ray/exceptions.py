@@ -11,10 +11,6 @@ class MethodNotFound(Exception):
     pass
 
 
-class ActionDoNotHaveModel(Exception):
-    pass
-
-
 class NotAuthorized(Exception):
     pass
 

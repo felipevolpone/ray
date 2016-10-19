@@ -37,7 +37,7 @@ def dispatch(url):
 
     try:
         return process(url, bottle_req, bottle_resp)
-    except (exceptions.MethodNotFound, exceptions.ActionDoNotHaveModel, exceptions.ModelNotFound):
+    except (exceptions.MethodNotFound, exceptions.ModelNotFound):
         response_code = 404
     except exceptions.BadRequest:
         response_code = 502

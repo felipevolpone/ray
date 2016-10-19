@@ -5,9 +5,6 @@ from ray.model import Model as RayModel
 
 class PeeweeModel(PeeweeNativeModel, RayModel):
 
-    def describe(self):
-        raise NotImplementedError()
-
     @classmethod
     def columns(cls):
         return sorted([c.name for c in cls._meta.sorted_fields])

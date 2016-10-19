@@ -74,8 +74,6 @@ class ActionAPI(metaclass=RegisterActions):
         action_class_name = ray_conf['action'][self.action_url]['class_name']
 
         for clazz in ActionAPI.__subclasses__():
-            if not hasattr(clazz, '__model__'):
-                raise exceptions.ActionDoNotHaveModel()
 
             if clazz.__name__ == action_class_name:
                 action_class = clazz
