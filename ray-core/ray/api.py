@@ -62,6 +62,7 @@ def process(fullpath, request, response):
         return LogoutHandler(response).logout()
 
     elif is_endpoint(fullpath):
+        # FIXME too complicated
         endpoint_handler = EndpointHandler(request, fullpath)
         if endpoint_handler.is_protected():
             try:

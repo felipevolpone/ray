@@ -35,7 +35,7 @@ class AlchemyModel(Model):
         if not kwargs:
             return _session.query(cls).all()
 
-        query = self._session.query(cls)
+        query = _session.query(cls)
         for field, value in kwargs.items():
             query = query.filter(getattr(cls, field) == value)
 
