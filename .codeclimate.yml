@@ -1,9 +1,9 @@
 languages:
   Python: true
 exclude_paths:
-- "ray-core/rests"
-- "ray-peewee/"
-- "ray-sqlalchemy/"
-- "ray-appengine/"
-- "examples/"
-- "venv/"
+- "ray-core/tests/*"
+- "ray-peewee/*"
+- "ray-sqlalchemy/*"
+- "ray-appengine/*"
+- "examples/*"
+- "venv/*"
