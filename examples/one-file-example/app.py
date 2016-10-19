@@ -38,8 +38,8 @@ class DBModel(PeeweeModel):
 class MyAuth(Authentication):
 
     @classmethod
-    def authenticate(cls, username, password):
-        if username == 'ray' and password == 'charles':
+    def authenticate(cls, login_data):
+        if login_data['username'] == 'ray' and login_data['password'] == 'charles':
             return {'username': 'ray'}
 
 
