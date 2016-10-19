@@ -29,8 +29,8 @@ class PersonModel(ModelInterface):
         super(PersonModel, self).__init__(*a, **k)
 
     @classmethod
-    def describe(cls):
-        return {'login': str}
+    def columns(cls):
+        return ['id']
 
 
 class PersonShield(Shield):

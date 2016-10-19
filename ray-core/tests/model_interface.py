@@ -12,12 +12,6 @@ class ModelInterface(Model):
         super(ModelInterface, self).__init__(*a, **k)
         self.id = None
 
-    @classmethod
-    def columns(cls):
-        c = list(cls.describe().keys())
-        c.append('id')
-        return c
-
     def put(self, *args, **kwargs):
         self.id = gen_uuid()
         return self
