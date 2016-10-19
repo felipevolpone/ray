@@ -45,7 +45,6 @@ class TestShield(unittest.TestCase):
     def setUp(self):
         self.app = TestApp(application)
 
-    # @unittest.skip('skip')
     def test_shields(self):
         response = self.app.post_json('/api/_login', {"username": "felipe", "password": '123'})
         token = response.json['result']['token']

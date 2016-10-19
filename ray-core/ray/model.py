@@ -21,9 +21,6 @@ class Model(object):
 
         return return_json
 
-    def describe(self):
-        raise NotImplementedError()
-
     @classmethod
     def columns(cls):
         raise NotImplementedError()

@@ -1,21 +1,6 @@
 import unittest
 from webtest import TestApp
 from ray.api import application
-from ray.endpoint import endpoint
-from tests.model_interface import ModelInterface
-
-
-@endpoint('/user')
-class UserModel(ModelInterface):
-
-    def __init__(self, *a, **k):
-        self.name = None
-        self.age = None
-        super(UserModel, self).__init__(*a, **k)
-
-    @classmethod
-    def describe(cls):
-        return {'name': str, 'age': int}
 
 
 class TestEndpoint(unittest.TestCase):

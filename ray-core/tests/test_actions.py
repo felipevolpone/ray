@@ -8,18 +8,7 @@ from ray.endpoint import endpoint
 from ray.shield import Shield
 
 from .model_interface import ModelInterface
-
-
-@endpoint('/user')
-class UserModel(ModelInterface):
-
-    def __init__(self, *a, **k):
-        self.name = None
-        self.age = None
-        super(UserModel, self).__init__(*a, **k)
-
-    def describe(self):
-        return {'name': str, 'age': int}
+from tests.common import UserModel
 
 
 any_number = 10
