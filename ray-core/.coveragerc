@@ -4,4 +4,4 @@ omit =
     */ray-core/ray/commandline.py
     */ray-core/tests/*
     */ray-core/setup.py*
-    */ray-core/wsgi/wsgi.py*
+    */ray-core/ray/wsgi/wsgi.py*
