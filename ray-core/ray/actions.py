@@ -1,7 +1,6 @@
 from functools import wraps
 from . import exceptions, http
 from .application import ray_conf
-from .authentication import Authentication
 import re
 
 
@@ -86,13 +85,13 @@ class ActionAPI(metaclass=RegisterActions):
             if not shield_method(user_data):  # shield returned False
                 raise exceptions.NotAuthorized()
 
-        request_parameters = self.__get_parameter(self.__request)
+        request_parameters = self.__get_parameter()
         return method(action_class(self.__entire_url, None, self.__request), self.__model_arg, request_parameters)
 
-    def __get_parameter(self, request):
-        if request.method.lower() == 'get':
-            return request.params
+    def __get_parameter(self):
+        if self.__request.method.lower() == 'get':
+            return self.__request.params
 
-        elif request.method.lower() == 'post':
-            if request.json:
-                return request.json
+        elif self.__request.method.lower() == 'post':
+            if self.__request.json:
+                return self.__request.json

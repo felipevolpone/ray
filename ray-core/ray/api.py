@@ -47,7 +47,7 @@ def dispatch(url):
         response_code = 401
     except exceptions.HookException:
         response_code = 400
-    except:
+    except Exception:
         import sys
         print(sys.exc_info())
 
@@ -69,7 +69,7 @@ def process(fullpath, request, response):
                 request.logged_user = (endpoint_handler.endpoint_authentication()
                                                        .unpack_jwt(request.headers['Authentication']))
                 return endpoint_handler.process()
-            except:
+            except Exception:
                 raise exceptions.NotAuthorized()
         else:
             return endpoint_handler.process()
@@ -118,7 +118,7 @@ def is_action(full_path):
     if len(full_path.split('/')) >= 4:
         try:
             int(full_path.split('/')[-1])
-        except:
+        except Exception:
             return True
 
     return len(full_path.split('/')) == 5
