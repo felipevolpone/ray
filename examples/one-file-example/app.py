@@ -72,3 +72,7 @@ class ActionPost(ActionAPI):
     @action("/now")
     def now_action(self, model_id, request_parameters):
         return datetime.now().strftime('%d/%m/%y')
+
+
+if __name__ == '__main__':
+    application.run(debug=True, reloader=True)

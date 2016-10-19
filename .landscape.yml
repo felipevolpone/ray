@@ -9,7 +9,7 @@ ignore-paths:
   - ray-appengine
   - ray-peewee
   - ray-sqlalchemy
-  - ray-core/tests/
+  - ray-core/tests
 python-targets:
   - 2
   - 3
