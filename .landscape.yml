@@ -6,6 +6,9 @@ autodetect: true
 ignore-paths:
   - examples
   - venv
+  - ray-appengine
+  - ray-peewee
+  - ray-sqlalchemy
 python-targets:
   - 2
   - 3
