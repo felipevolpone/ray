@@ -3,6 +3,12 @@
 
 ### Development
 
+**Build the enviroment**
+```bash
+cd venv
+./create_env.sh
+```
+
 **How to run the tests**
 ```bash
 cd ray-core  # or any other dir
