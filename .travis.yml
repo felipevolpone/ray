@@ -1,11 +1,13 @@
 language: python
 
 python:
+  - 2.7
   - 3.5
 
 before_install:
     - pip install python-coveralls
     - pip install nose
+    - pip install -r venv/requirements_tests.txt
 
     - wget https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.38.zip
     - unzip -q google_appengine_1.9.38.zip
@@ -13,10 +15,8 @@ before_install:
     - export PYTHONPATH="$PYTHONPATH:/home/travis/build/felipevolpone/ray/google_appengine/"
 
 script:
-    - pip install -r venv/requirements_tests.txt
     - cd ray-core
     - pip install . # install ray-core
-    # - python3 -m pytest tests/
     - nosetests --tests=tests --with-coverage --cover-package=../ray-core/
 
     # - cd ..
@@ -29,10 +29,10 @@ script:
     # - pip install .
     # - nosetests --tests=tests --with-coverage --cover-package=ray_sqlalchemy
 
-    # - cd ..
-    # - cd ray-peewee  # install ray-peewee
-    # - pip install .
-    # - nosetests --tests=tests --with-coverage --cover-package=ray_peewee
+    - cd ..
+    - cd ray-peewee  # install ray-peewee
+    - pip install .
+    - nosetests --tests=tests --with-coverage --cover-package=ray_peewee
 
 after_success:
   - coveralls

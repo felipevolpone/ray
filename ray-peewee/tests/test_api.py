@@ -62,41 +62,35 @@ class TestRayPeeweeAPI(unittest.TestCase):
         self._create(name='john', age=26)
 
         # test get all
-        req = self.app.get(build_url())
-        resp = MockResponse(req.get_response(application))
-        result = resp.to_json()['result']
+        resp = self.app.get(build_url())
+        result = resp.json['result']
+
         self.assertEqual(result[0]['name'], 'felipe')
         self.assertEqual(result[0]['age'], 22)
         self.assertIsNotNone(result[0]['id'])
         self.assertEqual(result[1]['name'], 'john')
 
         # test get by id
-        req = Request.blank(build_url(id_created), method='GET')
-        resp = MockResponse(req.get_response(application))
-        result = resp.to_json()['result']
+        resp = self.app.get(build_url(id_created))
+        result = resp.json['result']
         self.assertEqual('felipe', result['name'])
         self.assertEqual(22, result['age'])
 
         # test update
-        req = Request.blank(build_url(id_created), method='PUT')
-        req.json = {'name': 'felipe volpone'}
-        resp = req.get_response(application)
-        self.assertEqual(200, resp.status_code)
+        resp = self.app.put_json(build_url(id_created), {'name': 'felipe volpone'})
+        self.assertEqual(200, resp.status_int)
 
         # testing if update worked
-        req = Request.blank(build_url(id_created), method='GET')
-        resp = MockResponse(req.get_response(application))
-        result = resp.to_json()['result']
+        resp = self.app.get(build_url(id_created))
+        result = resp.json['result']
         self.assertEqual('felipe volpone', result['name'])
         self.assertEqual(22, result['age'])
         self.assertEqual(int(id_created), result['id'])
 
         # test delete
-        req = Request.blank(build_url(id_created), method='DELETE')
-        resp = req.get_response(application)
-        self.assertEqual(200, resp.status_code)
+        resp = self.app.delete(build_url(id_created))
+        self.assertEqual(200, resp.status_int)
 
         # test get
-        req = Request.blank(build_url(id_created), method='GET')
-        resp = req.get_response(application)
-        self.assertEqual(404, resp.status_code)
+        resp = self.app.get(build_url(id_created), expect_errors=True)
+        self.assertEqual(404, resp.status_int)
