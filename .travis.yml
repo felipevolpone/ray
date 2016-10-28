@@ -22,7 +22,7 @@ script:
     - cd ..
     - cd ray-appengine
     - pip install . # install ray-appengine
-    - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; nosetests --tests=tests --with-coverage --cover-package=ray_appengine; fi;
+    - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then nosetests --tests=tests --with-coverage --cover-package=ray_appengine; fi;
 
     - cd ..
     - cd ray-sqlalchemy  # install ray-sqlalchemy
