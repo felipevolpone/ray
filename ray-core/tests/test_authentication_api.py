@@ -53,7 +53,7 @@ class TestProctedEndpoint(unittest.TestCase):
         self.assertEqual(401, response.status_int)
 
         self.app = TestApp(application)
-        response = self.app.get('/api/gamer/', headers={'Authentication': token})
+        response = self.app.get('/api/gamer/', headers={'Authentication': str(token)})
         self.assertEqual(200, response.status_int)
 
     def test_logout(self):
@@ -64,11 +64,11 @@ class TestProctedEndpoint(unittest.TestCase):
         self.assertEqual(200, response.status_int)
 
         self.app = TestApp(application)
-        response = self.app.get('/api/gamer/', headers={'Authentication': token})
+        response = self.app.get('/api/gamer/', headers={'Authentication': str(token)})
         self.assertEqual(200, response.status_int)
 
         self.app = TestApp(application)
-        response = self.app.get('/api/_logout', headers={'Authentication': token})
+        response = self.app.get('/api/_logout', headers={'Authentication': str(token)})
         self.assertEqual(200, response.status_int)
 
         self.app = TestApp(application)

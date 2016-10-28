@@ -50,7 +50,7 @@ class TestShield(unittest.TestCase):
         token = response.json['result']['token']
         self.assertEqual(200, response.status_int)
 
-        response = self.app.get('/api/person/', headers={'Authentication': token})
+        response = self.app.get('/api/person/', headers={'Authentication': str(token)})
         self.assertEqual(200, response.status_int)
 
         self.app = TestApp(application)

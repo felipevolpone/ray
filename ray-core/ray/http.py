@@ -1,4 +1,8 @@
-from urllib import parse
+
+try:
+    from urllib import parse
+except Exception as e:
+    import urlparse as parse
 
 
 def param_at(url, index):

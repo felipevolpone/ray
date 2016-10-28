@@ -3,4 +3,4 @@
 *.sublime-*
 *.todo
 .ropeproject
-venv/env
+venv/env*

@@ -22,7 +22,6 @@ class LogoutHandler(object):
         self.__response = response
 
     def logout(self):
-        # self.__response.set_cookie(authentication_helper._COOKIE_NAME, '', path='/', expires=0)
         # FIXME using jwt there is no logout, but the invalidation of the token in the login
         # each token should have a timestamp to expire
         return True

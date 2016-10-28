@@ -1,14 +1,10 @@
 language: python
 
 python:
-  # - 2.7 FIXME
+  - 2.7
   - 3.5
 
 before_install:
-    - pip install python-coveralls
-    - pip install nose
-    - pip install -r venv/requirements_tests.txt
-
     - wget https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.38.zip
     - unzip -q google_appengine_1.9.38.zip
     - export PATH=$PATH:/home/travis/build/felipevolpone/ray/google_appengine/
@@ -19,10 +15,10 @@ script:
     - pip install . # install ray-core
     - nosetests --tests=tests --with-coverage --cover-package=../ray-core/
 
-    # - cd ..
-    # - cd ray-appengine
-    # - pip install . # install ray-appengine
-    # - nosetests --tests=tests --with-coverage --cover-package=ray_appengine
+    - cd ..
+    - cd ray-appengine
+    - pip install . # install ray-appengine
+    - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; nosetests --tests=tests --with-coverage --cover-package=ray_appengine; fi;
 
     - cd ..
     - cd ray-sqlalchemy  # install ray-sqlalchemy

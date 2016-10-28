@@ -1,6 +1,7 @@
 from functools import wraps
 from . import exceptions, http
 from .application import ray_conf
+from future.utils import with_metaclass
 import re
 
 
@@ -45,7 +46,7 @@ class RegisterActions(type):
         return type.__new__(cls, name, bases, methods)
 
 
-class ActionAPI(metaclass=RegisterActions):
+class ActionAPI(with_metaclass(RegisterActions)):
 
     def __init__(self, url=None, model_arg=None, request=None):
         # url e.g: /api/user/123/action_name
