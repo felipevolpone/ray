@@ -5,6 +5,10 @@ python:
   - 3.5
 
 before_install:
+    - pip install python-coveralls
+    - pip install nose
+    - pip install -r venv/requirements_tests.txt
+
     - wget https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.38.zip
     - unzip -q google_appengine_1.9.38.zip
     - export PATH=$PATH:/home/travis/build/felipevolpone/ray/google_appengine/
