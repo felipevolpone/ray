@@ -37,7 +37,7 @@ def dispatch(url):
 
     try:
         return process(url, bottle_req, bottle_resp)
-    except (exceptions.MethodNotFound, exceptions.ModelNotFound):
+    except (exceptions.MethodNotFound, exceptions.ModelNotFound, exceptions.EndpointNotFound):
         response_code = 404
     except exceptions.BadRequest:
         response_code = 502
@@ -47,9 +47,10 @@ def dispatch(url):
         response_code = 401
     except exceptions.HookException:
         response_code = 400
-    except Exception:
-        import sys
-        print(sys.exc_info())
+
+    # except Exception:
+    #     import sys
+    #     print(sys.exc_info())
 
     bottle_resp.status = response_code
 

@@ -26,10 +26,12 @@ class EndpointHandler(object):
                                  self.__user_data()).process()
 
     def get_endpoint_data(self):
-        full_path = self.__url.split('/')
-        model_url = full_path[-1] if len(full_path) == 3 else full_path[-2]
-
-        return ray_conf['endpoint'][model_url]
+        try:
+            full_path = self.__url.split('/')
+            model_url = full_path[-1] if len(full_path) == 3 else full_path[-2]
+            return ray_conf['endpoint'][model_url]
+        except:
+            raise exceptions.EndpointNotFound()
 
     def is_protected(self):
         return self.get_endpoint_data()['authentication'] is not None

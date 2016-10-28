@@ -29,3 +29,7 @@ class BadRequest(Exception):
 
 class HookException(Exception):
     pass
+
+
+class EndpointNotFound(Exception):
+    pass

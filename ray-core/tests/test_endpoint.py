@@ -8,9 +8,13 @@ class TestEndpoint(unittest.TestCase):
     def setUp(self):
         self.app = TestApp(application)
 
-    def test_404(self):
+    def testing_wrong_endpoints(self):
         response = self.app.get('/api/', expect_errors=True)
         self.assertEqual(502, response.status_int)
+
+        response = self.app.get('/api/wrongurl', expect_errors=True)
+        # print(response.json)
+        self.assertEqual(404, response.status_int)
 
     def __create(self):
         return self.app.post_json('/api/user', {"name": "felipe", "age": 22})
