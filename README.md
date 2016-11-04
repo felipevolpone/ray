@@ -1,6 +1,6 @@
 # Ray :saxophone:
 
-Ray is a framework that helps you to deliver well-designed software without been stuck in your framework.
+Ray is a framework that let you deliver well-designed software without been stuck in a framework.
 
 Ray is compatible with SQLAlchemy and Peewee!
 Are you using Google App Engine? Great! Ray is compatible with it.
@@ -14,7 +14,7 @@ Are you using Google App Engine? Great! Ray is compatible with it.
 
 ## Features
 
-* Easy APIs
+* Creating an API has never been so easy
 * Actions in APIs
 * Database Hooks
 * Authentication
@@ -26,7 +26,7 @@ Are you using Google App Engine? Great! Ray is compatible with it.
 
 ## How to start
 
-Ray has a great getting started documentation, [you can check it here](https://rayframework.github.io/site/getting_started/).
+Ray has a great documentation, [you can check it here](https://rayframework.github.io/site/) including a well documented [getting started guide](https://rayframework.github.io/site/getting_started/).
 
 ### Contributing
-Check the [CONTRIBUTING.md](https://github.com/felipevolpone/ray/blob/master/CONTRIBUTING.md) guide.
+To contribute, check the [Contributing Guider](https://github.com/felipevolpone/ray/blob/master/CONTRIBUTING.md).
