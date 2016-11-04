@@ -19,7 +19,6 @@ Are you using Google App Engine? Great! Ray is compatible with it.
 * Database Hooks
 * Authentication
 * API protection
-* uWSGI built-in server
 * Integration with Peewee
 * Integration with SQLAlchemy
 * Integration with Google App Engine

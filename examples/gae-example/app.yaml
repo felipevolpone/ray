@@ -7,7 +7,7 @@ threadsafe: yes
 handlers:
 
 - url: /api.*
-  script: src.models.application
+  script: src.app.application
 
 libraries:
 - name: pycrypto
