@@ -6,7 +6,8 @@
 **Build the enviroment**
 ```bash
 cd venv
-./create_env.sh
+./create_env.sh python3 # to use python 3
+./create_env.sh python2.7 # to use python 2.7
 ```
 
 **How to run the tests**
