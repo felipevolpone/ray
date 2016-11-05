@@ -22,7 +22,7 @@ class TestEndpoint(unittest.TestCase):
         resp = self.__create()
         result = resp.json
         self.assertEqual('felipe', result['result']['name'])
-        self.assertEqual(200, resp.status_int)
+        self.assertEqual(201, resp.status_int)
 
     def test_get_all(self):
         self.__create()

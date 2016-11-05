@@ -1,7 +1,7 @@
 import json, bottle
 from bottle import request as bottle_req, response as bottle_resp
 from .endpoint import EndpointHandler
-from .login import LoginHandler, LogoutHandler, get_authenticated_user
+from .login import LoginHandler, LogoutHandler
 from .actions import ActionAPI
 from . import exceptions, http
 from functools import wraps
@@ -31,24 +31,18 @@ def dispatch(url):
 
     response_code = 200
 
-    # FIXME each exception should contain there http response code
-    # to do this create an class httpexception and all httpexception like this
-    # bellow will inherit from it
-
     try:
-        return process(url, bottle_req, bottle_resp)
-        # TODO the process method could return the status
-        # something like: process(), 200
-    except (exceptions.MethodNotFound, exceptions.ModelNotFound, exceptions.EndpointNotFound):
-        response_code = 404
-    except exceptions.BadRequest:
-        response_code = 502
-    except exceptions.Forbidden:
-        response_code = 403
-    except exceptions.NotAuthorized:
-        response_code = 401
-    except exceptions.HookException:
-        response_code = 400
+        processed = process(url, bottle_req, bottle_resp)
+
+        try:
+            from_func, http_status = processed[0], processed[1]
+            bottle_resp.status = http_status
+            return from_func
+        except:
+            return processed
+
+    except exceptions.RayException as e:
+        response_code = e.http_code
 
     except Exception:
         import sys
@@ -68,7 +62,7 @@ def process(fullpath, request, response):
         return EndpointHandler(request, fullpath).process()
 
     elif is_action(fullpath):
-        return __handle_action(fullpath)
+        return __handle_action(fullpath), 200
 
     else:
         raise exceptions.BadRequest()
