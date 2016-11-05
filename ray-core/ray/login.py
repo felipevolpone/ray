@@ -2,6 +2,14 @@
 from .application import ray_conf
 
 
+_COOKIE_NAME = 'RayAuth'
+
+
+def get_authenticated_user(request, endpoint_handler):
+    token = request.get_cookie(_COOKIE_NAME)
+    return endpoint_handler.endpoint_authentication().unpack_jwt(token)
+
+
 class LoginHandler(object):
 
     def __init__(self, request, response, fullpath):
@@ -13,7 +21,7 @@ class LoginHandler(object):
         auth_class = ray_conf['authentication']
         login_json = self.__request.json
         user_token = auth_class.login(login_json)
-        return {'token': user_token.decode('utf-8')}
+        self.__response.set_cookie(_COOKIE_NAME, user_token)
 
 
 class LogoutHandler(object):
@@ -22,6 +30,4 @@ class LogoutHandler(object):
         self.__response = response
 
     def logout(self):
-        # FIXME using jwt there is no logout, but the invalidation of the token in the login
-        # each token should have a timestamp to expire
-        return True
+        self.__response.set_cookie(_COOKIE_NAME, '')

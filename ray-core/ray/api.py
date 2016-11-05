@@ -1,7 +1,7 @@
 import json, bottle
 from bottle import request as bottle_req, response as bottle_resp
 from .endpoint import EndpointHandler
-from .login import LoginHandler, LogoutHandler
+from .login import LoginHandler, LogoutHandler, get_authenticated_user
 from .actions import ActionAPI
 from . import exceptions, http
 from functools import wraps
@@ -37,6 +37,8 @@ def dispatch(url):
 
     try:
         return process(url, bottle_req, bottle_resp)
+        # TODO the process method could return the status
+        # something like: process(), 200
     except (exceptions.MethodNotFound, exceptions.ModelNotFound, exceptions.EndpointNotFound):
         response_code = 404
     except exceptions.BadRequest:
@@ -48,9 +50,9 @@ def dispatch(url):
     except exceptions.HookException:
         response_code = 400
 
-    # except Exception:
-    #     import sys
-    #     print(sys.exc_info())
+    except Exception:
+        import sys
+        print(sys.exc_info())
 
     bottle_resp.status = response_code
 
@@ -65,11 +67,14 @@ def process(fullpath, request, response):
     elif is_endpoint(fullpath):
         # FIXME too complicated
         endpoint_handler = EndpointHandler(request, fullpath)
+
         if endpoint_handler.is_protected():
+
             try:
-                request.logged_user = (endpoint_handler.endpoint_authentication()
-                                                       .unpack_jwt(request.headers['Authentication']))
-                return endpoint_handler.process()
+                logged_user = get_authenticated_user(request, endpoint_handler)
+                request.logged_user = logged_user
+                return endpoint_handler.process(logged_user_data=logged_user)
+
             except Exception:
                 raise exceptions.NotAuthorized()
         else:

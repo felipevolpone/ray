@@ -13,7 +13,6 @@ class TestEndpoint(unittest.TestCase):
         self.assertEqual(502, response.status_int)
 
         response = self.app.get('/api/wrongurl', expect_errors=True)
-        # print(response.json)
         self.assertEqual(404, response.status_int)
 
     def __create(self):

@@ -20,10 +20,10 @@ class EndpointHandler(object):
         self.__url = fullpath
         self.__endpoint_data = self.get_endpoint_data()
 
-    def process(self):
+    def process(self, logged_user_data=None):
         return EndpointProcessor(self.__request,
                                  self.__endpoint_data['model'],
-                                 self.__user_data()).process()
+                                 logged_user_data).process()
 
     def get_endpoint_data(self):
         try:
@@ -38,12 +38,6 @@ class EndpointHandler(object):
 
     def endpoint_authentication(self):
         return self.get_endpoint_data()['authentication']
-
-    def __user_data(self):
-        if not self.is_protected():
-            return {}
-
-        return self.__endpoint_data['authentication'].unpack_jwt(self.__request.headers['Authentication'])
 
 
 class EndpointProcessor(object):

@@ -40,8 +40,6 @@ class TestProctedEndpoint(unittest.TestCase):
     def test_login(self):
         self.app = TestApp(application)
         response = self.app.post_json('/api/_login', {"username": "felipe", "password": '123'})
-        self.assertIsNotNone(response.json['result']['token'])
-        token = response.json['result']['token']
         self.assertEqual(200, response.status_int)
 
         self.app = TestApp(application)
@@ -53,24 +51,24 @@ class TestProctedEndpoint(unittest.TestCase):
         self.assertEqual(401, response.status_int)
 
         self.app = TestApp(application)
-        response = self.app.get('/api/gamer/', headers={'Authentication': str(token)})
+        response = self.app.post_json('/api/_login', {"username": "felipe", "password": '123'})
+        self.assertEqual(200, response.status_int)
+
+        response = self.app.get('/api/gamer/')
         self.assertEqual(200, response.status_int)
 
     def test_logout(self):
         self.app = TestApp(application)
         response = self.app.post_json('/api/_login', {"username": "felipe", "password": '123'})
-        self.assertIsNotNone(response.json['result']['token'])
-        token = response.json['result']['token']
         self.assertEqual(200, response.status_int)
 
-        self.app = TestApp(application)
-        response = self.app.get('/api/gamer/', headers={'Authentication': str(token)})
+        response = self.app.get('/api/gamer/')
         self.assertEqual(200, response.status_int)
 
-        self.app = TestApp(application)
-        response = self.app.get('/api/_logout', headers={'Authentication': str(token)})
+        response = self.app.get('/api/_logout')
         self.assertEqual(200, response.status_int)
 
         self.app = TestApp(application)
         response = self.app.get('/api/gamer/', expect_errors=True)
         self.assertEqual(401, response.status_int)
+

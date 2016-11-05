@@ -54,7 +54,6 @@ class TestAuthentication(unittest.TestCase):
     def test_parse_infos_sign(self):
         token = MyAuth.login(self.user_data)
         parsed_user_data = MyAuth.unpack_jwt(token)
-        print(parsed_user_data)
         self.assertIsNotNone(parsed_user_data)
         self.assertEqual(dict, type(parsed_user_data))
         self.assertEqual(self.user_data, parsed_user_data)

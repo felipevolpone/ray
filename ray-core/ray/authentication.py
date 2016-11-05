@@ -19,9 +19,10 @@ class Authentication(object):
             raise NotImplementedError()
 
         if user_json:
-            return jwt.encode(user_json, cls.salt_key, algorithm='HS256')
+            return str(jwt.encode(user_json, cls.salt_key, algorithm='HS256'))
 
         raise NotAuthorized()
+
 
     @classmethod
     def authenticate(cls, login_data):

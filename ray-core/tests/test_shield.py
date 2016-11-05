@@ -47,21 +47,23 @@ class TestShield(unittest.TestCase):
 
     def test_shields(self):
         response = self.app.post_json('/api/_login', {"username": "felipe", "password": '123'})
-        token = response.json['result']['token']
         self.assertEqual(200, response.status_int)
 
-        response = self.app.get('/api/person/', headers={'Authentication': str(token)})
+        response = self.app.get('/api/person/')
         self.assertEqual(200, response.status_int)
 
         self.app = TestApp(application)
         response = self.app.get('/api/person', expect_errors=True)
         self.assertEquals(401, response.status_int)
 
+        self.app = TestApp(application)
         response = self.app.post('/api/person/', expect_errors=True)
         self.assertIsNot(401, response.status_int)
 
+        self.app = TestApp(application)
         response = self.app.put('/api/person/', expect_errors=True)
         self.assertIsNot(404, response.status_int)
 
+        self.app = TestApp(application)
         response = self.app.delete('/api/person/', expect_errors=True)
         self.assertIsNot(404, response.status_int)
