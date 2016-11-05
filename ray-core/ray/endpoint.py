@@ -1,6 +1,7 @@
 from . import exceptions, http
 from .shield import ShieldHandler
 from .application import ray_conf
+from .login import get_authenticated_user
 
 
 def endpoint(url=None, authentication=None):
@@ -20,10 +21,21 @@ class EndpointHandler(object):
         self.__url = fullpath
         self.__endpoint_data = self.get_endpoint_data()
 
-    def process(self, logged_user_data=None):
-        return EndpointProcessor(self.__request,
-                                 self.__endpoint_data['model'],
-                                 logged_user_data).process()
+    def process(self):
+
+        if self.is_protected():
+
+            try:
+                logged_user = get_authenticated_user(self.__request, self)
+                self.__request.logged_user = logged_user
+                return EndpointProcessor(self.__request, self.__endpoint_data['model'],
+                                         logged_user).process()
+
+            except Exception:
+                raise exceptions.NotAuthorized()
+
+        else:
+            return EndpointProcessor(self.__request, self.__endpoint_data['model'], None).process()
 
     def get_endpoint_data(self):
         try:

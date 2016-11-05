@@ -65,20 +65,7 @@ def process(fullpath, request, response):
         return LogoutHandler(response).logout()
 
     elif is_endpoint(fullpath):
-        # FIXME too complicated
-        endpoint_handler = EndpointHandler(request, fullpath)
-
-        if endpoint_handler.is_protected():
-
-            try:
-                logged_user = get_authenticated_user(request, endpoint_handler)
-                request.logged_user = logged_user
-                return endpoint_handler.process(logged_user_data=logged_user)
-
-            except Exception:
-                raise exceptions.NotAuthorized()
-        else:
-            return endpoint_handler.process()
+        return EndpointHandler(request, fullpath).process()
 
     elif is_action(fullpath):
         return __handle_action(fullpath)
