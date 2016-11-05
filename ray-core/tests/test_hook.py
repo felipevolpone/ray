@@ -44,7 +44,14 @@ class UserWithTwoHooks(Model):
 
 class TestHookBeforeSave(unittest.TestCase):
 
-    def test_before_save_hook_case_exception(self):
+    def test_before_save(self):
+        class UserRight(Model):
+            hooks = [UserHookTrue]
+
+        user = UserRight()
+        self.assertTrue(user.put())
+
+    def test_before_save_hook_failing(self):
         user = User(name='felipe')
         with self.assertRaises(Exception) as e:
             user.put()
@@ -59,6 +66,7 @@ class TestHookBeforeSave(unittest.TestCase):
     def test_hook_before_save_not_implemented(self):
         user = UserWithUselessHook()
         self.assertTrue(user.put())
+        self.assertTrue(user.delete())
 
 
 class UserDeleteHookTrue(Hook):
@@ -147,7 +155,3 @@ class TestHookAfterSave(unittest.TestCase):
 
         u = UserAfterSaveUseless()
         self.assertTrue(u.put())
-
-
-if __name__ == '__main__':
-    unittest.main()
