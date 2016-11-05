@@ -19,7 +19,7 @@ class Authentication(object):
             raise NotImplementedError()
 
         if user_json:
-            return str(jwt.encode(user_json, cls.salt_key, algorithm='HS256'))
+            return jwt.encode(user_json, cls.salt_key, algorithm='HS256')
 
         raise NotAuthorized()
 

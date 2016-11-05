@@ -21,7 +21,7 @@ class LoginHandler(object):
         auth_class = ray_conf['authentication']
         login_json = self.__request.json
         user_token = auth_class.login(login_json)
-        self.__response.set_cookie(_COOKIE_NAME, user_token)
+        self.__response.set_cookie(_COOKIE_NAME, user_token.decode('utf-8'))
 
 
 class LogoutHandler(object):
