@@ -1,5 +1,4 @@
 
-
 class Model(object):
 
     def __init__(self, *args, **kwargs):
@@ -37,7 +36,22 @@ class Model(object):
         return self.__save()
 
     def put(self):
-        return self.__save()
+        result = self.__save()
+
+        if self._hasnt_hooks():
+            return result
+
+        if result:
+
+            for hook in self.hooks:
+                instance = hook()
+
+                # this is to make AND with the result of all hooks
+                # the flow just continue if the result of all hoks is true
+
+                instance.after_save(self)
+
+        return result
 
     def __save(self):
         if self._hasnt_hooks():

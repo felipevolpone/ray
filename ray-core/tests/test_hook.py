@@ -58,8 +58,7 @@ class TestHookBeforeSave(unittest.TestCase):
 
     def test_hook_before_save_not_implemented(self):
         user = UserWithUselessHook()
-        with self.assertRaises(NotImplementedError) as e:
-            user.put()
+        self.assertTrue(user.put())
 
 
 class UserDeleteHookTrue(Hook):
@@ -113,5 +112,42 @@ class TestHookBeforeDelete(unittest.TestCase):
             hooks = [UserDeleteHookTrue]
 
         u = UserDelete()
-        with self.assertRaises(NotImplementedError) as e:
-            u.delete()
+        self.assertTrue(u.delete())
+
+
+class UserAfterSaveHook(Hook):
+    def before_save(self, user):
+        return True
+
+    def after_save(self, user):
+        user.name = 'modified'
+
+
+class UserAfterSave(Model):
+    hooks = [UserAfterSaveHook]
+
+    def __init__(self, name=None):
+        self.name = name
+
+
+class TestHookAfterSave(unittest.TestCase):
+
+    def test_after_save(self):
+        u = UserAfterSave(name='ray')
+        u.put()
+
+        self.assertEqual('modified', u.name)
+
+    def test_after_save_not_implemented(self):
+        class UserAfterSaveUselessHook(Hook):
+            pass
+
+        class UserAfterSaveUseless(Model):
+            hooks = [UserAfterSaveUselessHook]
+
+        u = UserAfterSaveUseless()
+        self.assertTrue(u.put())
+
+
+if __name__ == '__main__':
+    unittest.main()

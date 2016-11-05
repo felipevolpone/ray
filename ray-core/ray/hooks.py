@@ -1,7 +1,7 @@
 
 class Hook(object):
 
-    methods = ['before_save', 'before_delete']
+    methods = ['before_save', 'before_delete', 'after_save']
 
     def before_save(self, entity):
         """
@@ -9,8 +9,17 @@ class Hook(object):
             if the methods return true, the entity will be saved, if doesnt
             will not.
         """
-        raise NotImplementedError
+        return True
 
     def before_delete(self, entity):
-        raise NotImplementedError()
-        # FIXME its not raising exception on the same way that before_save is
+        """
+            before_delete it's the moment right before the entity is deleted.
+            the entity will only be removed if this method returns true.
+        """
+        return True
+
+    def after_save(self, entity):
+        """
+            after_save it's the moment after the entity is saved.
+        """
+        pass
