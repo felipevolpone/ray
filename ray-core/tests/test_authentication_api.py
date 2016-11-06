@@ -21,11 +21,11 @@ class MyAuth(Authentication):
             return {'username': 'felipe'}
 
 
-@endpoint('/gamer', authentication=MyAuth)
-class GamerModel(ModelInterface):
+@endpoint('/resource', authentication=MyAuth)
+class ResourceModel(ModelInterface):
 
     def __init__(self, *a, **k):
-        super(GamerModel, self).__init__(*a, **k)
+        super(ResourceModel, self).__init__(*a, **k)
 
     @classmethod
     def columns(cls):
@@ -47,14 +47,14 @@ class TestProctedEndpoint(unittest.TestCase):
         self.assertEqual(401, response.status_int)
 
         self.app = FakeApp(application)
-        response = self.app.get('/api/gamer/', expect_errors=True)
+        response = self.app.get('/api/resource/', expect_errors=True)
         self.assertEqual(401, response.status_int)
 
         self.app = FakeApp(application)
         response = self.app.post_json('/api/_login', {"username": "felipe", "password": '123'})
         self.assertEqual(200, response.status_int)
 
-        response = self.app.get('/api/gamer/')
+        response = self.app.get('/api/resource/')
         self.assertEqual(200, response.status_int)
 
     def test_logout(self):
@@ -62,13 +62,13 @@ class TestProctedEndpoint(unittest.TestCase):
         response = self.app.post_json('/api/_login', {"username": "felipe", "password": '123'})
         self.assertEqual(200, response.status_int)
 
-        response = self.app.get('/api/gamer/')
+        response = self.app.get('/api/resource/')
         self.assertEqual(200, response.status_int)
 
         response = self.app.get('/api/_logout')
         self.assertEqual(200, response.status_int)
 
         self.app = FakeApp(application)
-        response = self.app.get('/api/gamer/', expect_errors=True)
+        response = self.app.get('/api/resource/', expect_errors=True)
         self.assertEqual(401, response.status_int)
 
