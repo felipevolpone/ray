@@ -9,7 +9,6 @@ _ray_conf = {
 import logging
 
 log = logging.getLogger('ray')
-log.setLevel(logging.DEBUG)
 
 
 def add_endpoint(url, modelclass, authentication):
