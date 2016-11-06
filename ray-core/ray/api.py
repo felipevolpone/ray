@@ -1,12 +1,15 @@
-import json, bottle, traceback
+import json, bottle, traceback, logging
 from bottle import request as bottle_req, response as bottle_resp
+
 from .endpoint import EndpointHandler
 from .login import LoginHandler, LogoutHandler
 from .actions import ActionAPI
 from . import exceptions, http
 from functools import wraps
 
+
 application = bottle.Bottle()
+log = logging.getLogger('ray')
 
 
 def to_json(fnc):
@@ -24,7 +27,9 @@ def dispatch(url):
         This class is the beginning of all entrypoint in the Ray API. Here, each url
         will be redirect to the right handler: ActionHandler, LoginHandler or EndpointHandler.
     """
+
     url = bottle_req.path
+    log.debug('request: %s', url)
 
     if url[-1] == '/':
         url = url[:-1]
@@ -42,9 +47,11 @@ def dispatch(url):
             return processed
 
     except exceptions.RayException as e:
+        log.warn('RayException raised: %s', e)
         response_code = e.http_code
 
-    except Exception:
+    except Exception as e:
+        log.error('Not expected exception raised: %s', e.message())
         traceback.print_exc()
 
     bottle_resp.status = response_code
@@ -58,7 +65,6 @@ def process(fullpath, request, response):
         return LogoutHandler(response).logout()
 
     elif is_endpoint(fullpath):
-        print('veiop aquioasjds')
         return EndpointHandler(request, fullpath).process()
 
     elif is_action(fullpath):
