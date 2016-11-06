@@ -1,6 +1,6 @@
 import unittest
 
-from webtest import TestApp
+from webtest import TestApp as FakeApp
 
 from ray.wsgi.wsgi import application
 from ray.actions import ActionAPI, action
@@ -63,7 +63,7 @@ class ActionUser(ActionAPI):
 class TestAction(unittest.TestCase):
 
     def setUp(self):
-        self.app = TestApp(application)
+        self.app = FakeApp(application)
 
     def test_action(self):
         response = self.app.post('/api/user/activate')
@@ -120,9 +120,7 @@ class ActionWrong(ActionAPI):
 
 class TestWrongCases(unittest.TestCase):
 
-    def setUp(self):
-        self.app = TestApp(application)
-
     def test_action_without_model(self):
+        self.app = FakeApp(application)
         response = self.app.post('/api/any/123/activate', expect_errors=True)
         self.assertEqual(404, response.status_int)

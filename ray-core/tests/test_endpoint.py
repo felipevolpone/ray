@@ -1,12 +1,12 @@
 import unittest
-from webtest import TestApp
+from webtest import TestApp as FakeApp
 from ray.api import application
 
 
 class TestEndpoint(unittest.TestCase):
 
     def setUp(self):
-        self.app = TestApp(application)
+        self.app = FakeApp(application)
 
     def testing_wrong_endpoints(self):
         response = self.app.get('/api/', expect_errors=True)

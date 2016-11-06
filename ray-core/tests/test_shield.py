@@ -1,6 +1,6 @@
 
 import unittest
-from webtest import TestApp
+from webtest import TestApp as FakeApp
 
 from ray.endpoint import endpoint
 from ray.wsgi.wsgi import application
@@ -43,7 +43,7 @@ class PersonShield(Shield):
 class TestShield(unittest.TestCase):
 
     def setUp(self):
-        self.app = TestApp(application)
+        self.app = FakeApp(application)
 
     def test_shields(self):
         response = self.app.post_json('/api/_login', {"username": "felipe", "password": '123'})
@@ -52,18 +52,18 @@ class TestShield(unittest.TestCase):
         response = self.app.get('/api/person/')
         self.assertEqual(200, response.status_int)
 
-        self.app = TestApp(application)
+        self.app = FakeApp(application)
         response = self.app.get('/api/person', expect_errors=True)
         self.assertEquals(401, response.status_int)
 
-        self.app = TestApp(application)
+        self.app = FakeApp(application)
         response = self.app.post('/api/person/', expect_errors=True)
         self.assertIsNot(401, response.status_int)
 
-        self.app = TestApp(application)
+        self.app = FakeApp(application)
         response = self.app.put('/api/person/', expect_errors=True)
         self.assertIsNot(404, response.status_int)
 
-        self.app = TestApp(application)
+        self.app = FakeApp(application)
         response = self.app.delete('/api/person/', expect_errors=True)
         self.assertIsNot(404, response.status_int)

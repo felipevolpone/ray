@@ -1,7 +1,7 @@
 
 import unittest
 
-from webtest import TestApp
+from webtest import TestApp as FakeApp
 
 from ray.wsgi.wsgi import application
 from ray.endpoint import endpoint
@@ -35,22 +35,22 @@ class GamerModel(ModelInterface):
 class TestProctedEndpoint(unittest.TestCase):
 
     def setUp(self):
-        self.app = TestApp(application)
+        self.app = FakeApp(application)
 
     def test_login(self):
-        self.app = TestApp(application)
+        self.app = FakeApp(application)
         response = self.app.post_json('/api/_login', {"username": "felipe", "password": '123'})
         self.assertEqual(200, response.status_int)
 
-        self.app = TestApp(application)
+        self.app = FakeApp(application)
         response = self.app.post_json('/api/_login', {"username": "felipe", "password": 'admin'}, expect_errors=True)
         self.assertEqual(401, response.status_int)
 
-        self.app = TestApp(application)
+        self.app = FakeApp(application)
         response = self.app.get('/api/gamer/', expect_errors=True)
         self.assertEqual(401, response.status_int)
 
-        self.app = TestApp(application)
+        self.app = FakeApp(application)
         response = self.app.post_json('/api/_login', {"username": "felipe", "password": '123'})
         self.assertEqual(200, response.status_int)
 
@@ -58,7 +58,7 @@ class TestProctedEndpoint(unittest.TestCase):
         self.assertEqual(200, response.status_int)
 
     def test_logout(self):
-        self.app = TestApp(application)
+        self.app = FakeApp(application)
         response = self.app.post_json('/api/_login', {"username": "felipe", "password": '123'})
         self.assertEqual(200, response.status_int)
 
@@ -68,7 +68,7 @@ class TestProctedEndpoint(unittest.TestCase):
         response = self.app.get('/api/_logout')
         self.assertEqual(200, response.status_int)
 
-        self.app = TestApp(application)
+        self.app = FakeApp(application)
         response = self.app.get('/api/gamer/', expect_errors=True)
         self.assertEqual(401, response.status_int)
 
