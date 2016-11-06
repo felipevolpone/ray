@@ -22,20 +22,16 @@ class EndpointHandler(object):
         self.__endpoint_data = self.get_endpoint_data()
 
     def process(self):
+        logged_user = None
 
         if self.is_protected():
-
-            try:
-                logged_user = get_authenticated_user(self.__request, self)
-                self.__request.logged_user = logged_user
-                return EndpointProcessor(self.__request, self.__endpoint_data['model'],
-                                         logged_user).process()
-
-            except Exception:
+            logged_user = get_authenticated_user(self.__request)
+            if not logged_user:
                 raise exceptions.NotAuthorized()
 
-        else:
-            return EndpointProcessor(self.__request, self.__endpoint_data['model'], None).process()
+            self.__request.logged_user = logged_user
+
+        return EndpointProcessor(self.__request, self.__endpoint_data['model'], logged_user).process()
 
     def get_endpoint_data(self):
         try:

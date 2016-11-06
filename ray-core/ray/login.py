@@ -5,9 +5,11 @@ from .application import ray_conf
 _COOKIE_NAME = 'RayAuth'
 
 
-def get_authenticated_user(request, endpoint_handler):
+def get_authenticated_user(request):
     token = request.get_cookie(_COOKIE_NAME)
-    return endpoint_handler.endpoint_authentication().unpack_jwt(token)
+    if not token:
+        return None
+    return ray_conf['authentication'].unpack_jwt(token)
 
 
 class LoginHandler(object):

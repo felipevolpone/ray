@@ -1,5 +1,5 @@
 from functools import wraps
-from . import exceptions, http
+from . import exceptions, http, login
 from .application import ray_conf
 from future.utils import with_metaclass
 import re
@@ -81,7 +81,7 @@ class ActionAPI(with_metaclass(RegisterActions)):
 
         if hasattr(method, '_protection_shield_method'):
             shield_method = method._protection_shield_method
-            user_data = self.__request.logged_user if hasattr(self.__request, 'logged_user') else None
+            user_data = login.get_authenticated_user(self.__request)
 
             if not shield_method(user_data):  # shield returned False
                 raise exceptions.NotAuthorized()
