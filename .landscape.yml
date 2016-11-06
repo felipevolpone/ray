@@ -13,3 +13,7 @@ ignore-paths:
 python-targets:
   - 2
   - 3
+pylint:
+  disable:
+    - global-variable-not-assigned
+    - protected-access
