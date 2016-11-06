@@ -1,5 +1,5 @@
 from ray.actions import ActionAPI, action
-from ray.application import ray_conf
+from ray.application import _ray_conf
 
 from tests.common import UserModel
 import unittest
@@ -16,4 +16,4 @@ class UserAction(ActionAPI):
 class TestActionMapping(unittest.TestCase):
 
     def test(self):
-        self.assertTrue('user/activate' in ray_conf['action'])
+        self.assertTrue('user/activate' in _ray_conf['action'])
