@@ -1,11 +1,11 @@
 
 import jwt
 from .exceptions import NotAuthorized
-from .application import ray_conf
+from . import application
 
 
 def register(clazz):
-    ray_conf['authentication'] = clazz
+    application.register_authentication(clazz)
     return clazz
 
 
@@ -22,7 +22,6 @@ class Authentication(object):
             return jwt.encode(user_json, cls.salt_key, algorithm='HS256')
 
         raise NotAuthorized()
-
 
     @classmethod
     def authenticate(cls, login_data):

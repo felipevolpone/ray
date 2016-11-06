@@ -1,5 +1,5 @@
 
-from .application import ray_conf
+from . import application
 
 
 _COOKIE_NAME = 'RayAuth'
@@ -9,7 +9,7 @@ def get_authenticated_user(request):
     token = request.get_cookie(_COOKIE_NAME)
     if not token:
         return None
-    return ray_conf['authentication'].unpack_jwt(token)
+    return application.get_authentication().unpack_jwt(token)
 
 
 class LoginHandler(object):
@@ -20,7 +20,7 @@ class LoginHandler(object):
         self.__url = fullpath
 
     def process(self):
-        auth_class = ray_conf['authentication']
+        auth_class = application.get_authentication()
         login_json = self.__request.json
         user_token = auth_class.login(login_json)
         self.__response.set_cookie(_COOKIE_NAME, user_token.decode('utf-8'))

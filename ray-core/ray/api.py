@@ -58,6 +58,7 @@ def process(fullpath, request, response):
         return LogoutHandler(response).logout()
 
     elif is_endpoint(fullpath):
+        print('veiop aquioasjds')
         return EndpointHandler(request, fullpath).process()
 
     elif is_action(fullpath):

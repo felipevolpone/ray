@@ -1,6 +1,5 @@
 from functools import wraps
-from . import exceptions, http, login
-from .application import ray_conf
+from . import exceptions, http, login, application
 from future.utils import with_metaclass
 import re
 
@@ -41,7 +40,7 @@ class RegisterActions(type):
         for method_name, method in methods.items():
             if not method_name.startswith('__'):
                 url = model_class._endpoint_url + '/' + method._action_url
-                ray_conf['action'][url] = {'method': method, 'class_name': name}
+                application.add_action(url, method, name)
 
         return type.__new__(cls, name, bases, methods)
 
@@ -67,11 +66,11 @@ class ActionAPI(with_metaclass(RegisterActions)):
 
         method = None
         try:
-            method = ray_conf['action'][self.action_url]['method']
+            method = application.get_action_method(self.action_url)
         except:
             raise exceptions.MethodNotFound()
 
-        action_class_name = ray_conf['action'][self.action_url]['class_name']
+        action_class_name = application.get_action_class_name(self.action_url)
 
         for clazz in ActionAPI.__subclasses__():
 

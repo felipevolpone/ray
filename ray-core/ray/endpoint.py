@@ -1,6 +1,6 @@
 from . import exceptions, http
 from .shield import ShieldHandler
-from .application import ray_conf
+from . import application
 from .login import get_authenticated_user
 
 
@@ -8,7 +8,7 @@ def endpoint(url=None, authentication=None):
     def decorator(clazz):
         fixed_url = url.replace('/', '')
         clazz._endpoint_url = fixed_url
-        ray_conf['endpoint'][fixed_url] = {'model': clazz, 'authentication': authentication}
+        application.add_endpoint(fixed_url, clazz, authentication)
 
         return clazz
     return decorator
@@ -37,7 +37,7 @@ class EndpointHandler(object):
         try:
             full_path = self.__url.split('/')
             model_url = full_path[-1] if len(full_path) == 3 else full_path[-2]
-            return ray_conf['endpoint'][model_url]
+            return application.get_endpoint(model_url)
         except:
             raise exceptions.EndpointNotFound()
 
