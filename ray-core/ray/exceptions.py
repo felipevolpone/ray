@@ -2,6 +2,9 @@
 class RayException(Exception):
     http_code = None
 
+    def __init__(self, *args, **kwargs):
+        super(RayException, self).__init__(*args, **kwargs)
+
 
 class ModelNotFound(RayException):
     http_code = 404

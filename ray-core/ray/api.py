@@ -1,4 +1,4 @@
-import json, bottle, traceback, logging
+import json, bottle, logging
 from bottle import request as bottle_req, response as bottle_resp
 
 from .endpoint import EndpointHandler
@@ -17,7 +17,8 @@ def to_json(fnc):
     def inner(*args, **kwargs):
         bottle_resp.headers['Content-Type'] = 'application/json'
         from_func = fnc(*args, **kwargs)
-        return json.dumps({'result': from_func})
+        if from_func is not None:
+            return json.dumps({'result': from_func})
     return inner
 
 
@@ -47,12 +48,12 @@ def dispatch(url):
             return processed
 
     except exceptions.RayException as e:
-        log.warn('RayException raised: %s', e)
+        log.exception('ray exception: ')
         response_code = e.http_code
 
-    except Exception as e:
-        log.error('Not expected exception raised: %s', e.message())
-        traceback.print_exc()
+    except:
+        log.exception('exception:')
+        raise
 
     bottle_resp.status = response_code
 

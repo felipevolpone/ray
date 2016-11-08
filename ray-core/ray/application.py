@@ -1,14 +1,18 @@
 
+import logging, sys
+
+
 _ray_conf = {
     'endpoint': {},
     'action': {},
     'authentication': None
 }
 
-
-import logging
-
 log = logging.getLogger('ray')
+__formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+__console_handler = logging.StreamHandler(sys.stdout)
+__console_handler.setFormatter(__formatter)
+log.addHandler(__console_handler)
 
 
 def add_endpoint(url, modelclass, authentication):

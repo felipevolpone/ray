@@ -1,6 +1,5 @@
-from . import exceptions, http
+from . import exceptions, http, application
 from .shield import ShieldHandler
-from . import application
 from .login import get_authenticated_user
 
 
@@ -89,13 +88,10 @@ class EndpointProcessor(object):
         id_param = http.get_id(self.__request.path)
         params = http.query_params_to_dict(self.__request)
 
-        try:
-            if not id_param:
-                return [model.to_json() for model in self.__model.find(**params)]
+        if not id_param:
+            return [model.to_json() for model in self.__model.find(**params)]
 
-            return self._find_database(id_param).to_json()
-        except:
-            raise exceptions.ModelNotFound()
+        return self._find_database(id_param).to_json()
 
     def __process_delete(self):
         if not self.__shield_class.delete(self.__shield_class.info):
@@ -107,8 +103,6 @@ class EndpointProcessor(object):
 
         except exceptions.HookException:
             raise exceptions.HookException()
-        except:
-            raise exceptions.ModelNotFound()
 
     def _find_database(self, id_param):
         model = self.__model.get(id=id_param)
