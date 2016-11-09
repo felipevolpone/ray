@@ -16,7 +16,7 @@ class Authentication(object):
         user_json = cls.authenticate(login_data)
 
         if not hasattr(cls, 'salt_key'):
-            raise NotImplementedError()
+            raise NotImplementedError('You must define the salt_key')
 
         if user_json:
             return jwt.encode(user_json, cls.salt_key, algorithm='HS256')
@@ -35,7 +35,7 @@ class Authentication(object):
     @classmethod
     def unpack_jwt(cls, token):
         if not hasattr(cls, 'salt_key'):
-            raise NotImplementedError()
+            raise NotImplementedError('You must define the salt_key')
 
         return jwt.decode(token, cls.salt_key, algorithms=['HS256'])
 

@@ -1,4 +1,5 @@
 
+from playhouse.shortcuts import model_to_dict
 from peewee import Model as PeeweeNativeModel
 from ray.model import Model as RayModel
 
@@ -16,6 +17,9 @@ class PeeweeModel(PeeweeNativeModel, RayModel):
             query = query.where(getattr(cls, field) == value)
 
         return query
+
+    def to_json(self):
+        return model_to_dict(self, recurse=False)
 
     @classmethod
     def get(cls, id=None):

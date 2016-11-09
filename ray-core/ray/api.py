@@ -59,16 +59,16 @@ def dispatch(url):
 
 
 def process(fullpath, request, response):
-    if is_login(fullpath):
+    if __is_login(fullpath):
         return LoginHandler(request, response, fullpath).process()
 
-    if is_logout(fullpath):
+    if __is_logout(fullpath):
         return LogoutHandler(response).logout()
 
-    elif is_endpoint(fullpath):
+    elif _is_endpoint(fullpath):
         return EndpointHandler(request, fullpath).process()
 
-    elif is_action(fullpath):
+    elif _is_action(fullpath):
         return __handle_action(fullpath), 200
 
     else:
@@ -85,15 +85,15 @@ def __handle_action(url):
     return ActionAPI(url, arg, bottle_req).process_action()
 
 
-def is_login(full_path):
+def __is_login(full_path):
     return full_path == '/api/_login'
 
 
-def is_logout(full_path):
+def __is_logout(full_path):
     return full_path == '/api/_logout'
 
 
-def is_endpoint(full_path):
+def _is_endpoint(full_path):
     full_path = full_path.split('?')[0]
     if len(full_path.split('/')) == 4:
         try:
@@ -105,7 +105,7 @@ def is_endpoint(full_path):
     return len(full_path.split('/')) <= 4 and len(full_path.split('/')) > 2
 
 
-def is_action(full_path):
+def _is_action(full_path):
     # full_path e.g: /api/user/123/action
     # full_path e.g: /api/user/action
 
