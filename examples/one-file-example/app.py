@@ -1,7 +1,7 @@
 
 import peewee
 from ray.shield import Shield
-from ray.hooks import Hook
+from ray.hooks import DatabaseHook
 from ray.actions import ActionAPI, action
 from ray.authentication import Authentication, register
 from ray.wsgi.wsgi import application
@@ -14,7 +14,7 @@ from datetime import datetime
 database = peewee.SqliteDatabase('example.db')
 
 
-class PostHook(Hook):
+class PostHook(DatabaseHook):
 
     def before_save(self, post):
         if not post.title:

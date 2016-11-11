@@ -1,5 +1,5 @@
 
-class Hook(object):
+class DatabaseHook(object):
 
     methods = ['before_save', 'before_delete', 'after_save']
 

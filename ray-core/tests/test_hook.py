@@ -1,9 +1,9 @@
 import unittest
-from ray.hooks import Hook
+from ray.hooks import DatabaseHook
 from ray.model import Model
 
 
-class UserHookUseless(Hook):
+class UserHookUseless(DatabaseHook):
     pass
 
 
@@ -11,22 +11,22 @@ class UserWithUselessHook(Model):
     hooks = [UserHookUseless]
 
 
-class UserHookException(Hook):
+class UserHookException(DatabaseHook):
     def before_save(self, user):
         raise Exception('Any exception %s' % (user.name,))
 
 
-class UserHookFalse(Hook):
+class UserHookFalse(DatabaseHook):
     def before_save(self, user):
         return False
 
 
-class UserHookFalse2(Hook):
+class UserHookFalse2(DatabaseHook):
     def before_save(self, user):
         return False
 
 
-class UserHookTrue(Hook):
+class UserHookTrue(DatabaseHook):
     def before_save(self, user):
         return True
 
@@ -69,12 +69,12 @@ class TestHookBeforeSave(unittest.TestCase):
         self.assertTrue(user.delete())
 
 
-class UserDeleteHookTrue(Hook):
+class UserDeleteHookTrue(DatabaseHook):
     def before_delete(self, user):
         return bool(user.name)
 
 
-class UserDeleteHookFalse(Hook):
+class UserDeleteHookFalse(DatabaseHook):
     def before_delete(self, user):
         return False
 
@@ -113,7 +113,7 @@ class TestHookBeforeDelete(unittest.TestCase):
         self.assertEqual(str(e.exception), 'The hook(s) UserDeleteHookTrue, UserDeleteHookFalse.before_delete didnt return True')
 
     def test_before_delete_not_implemented(self):
-        class UserDeleteHookTrue(Hook):
+        class UserDeleteHookTrue(DatabaseHook):
             pass
 
         class UserDelete(Model):
@@ -123,7 +123,7 @@ class TestHookBeforeDelete(unittest.TestCase):
         self.assertTrue(u.delete())
 
 
-class UserAfterSaveHook(Hook):
+class UserAfterSaveHook(DatabaseHook):
     def before_save(self, user):
         return True
 
@@ -147,7 +147,7 @@ class TestHookAfterSave(unittest.TestCase):
         self.assertEqual('modified', u.name)
 
     def test_after_save_not_implemented(self):
-        class UserAfterSaveUselessHook(Hook):
+        class UserAfterSaveUselessHook(DatabaseHook):
             pass
 
         class UserAfterSaveUseless(Model):

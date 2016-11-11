@@ -6,7 +6,7 @@ from datetime import datetime
 
 from ray.authentication import Authentication, register
 from ray import login
-from ray.hooks import Hook
+from ray.hooks import DatabaseHook
 from ray.wsgi.wsgi import application
 from ray.endpoint import endpoint
 from ray_peewee.all import PeeweeModel
@@ -20,7 +20,7 @@ class DBModel(PeeweeModel):
         database = database
 
 
-class UserHook(Hook):
+class UserHook(DatabaseHook):
 
     def before_save(self, user):
         users_same_username = User.select().where(User.username == user.username)
@@ -51,7 +51,7 @@ class SimpleNoteAuthentication(Authentication):
         return users[0].to_json()
 
 
-class CreatedAtBaseHook(Hook):
+class CreatedAtBaseHook(DatabaseHook):
 
     def before_save(self, model):
         model.created_at = int(datetime.now().strftime('%s')) * 1000

@@ -1,12 +1,12 @@
 
-from ray.hooks import Hook
+from ray.hooks import DatabaseHook
 from ray.endpoint import endpoint
 
 from ray_appengine.all import GAEModel
 from google.appengine.ext import ndb
 
 
-class PostHook(Hook):
+class PostHook(DatabaseHook):
 
     def before_save(self, post):
         if len(post.text) < 10:
