@@ -5,6 +5,7 @@ from .endpoint import EndpointHandler
 from .login import LoginHandler, LogoutHandler
 from .actions import ActionAPI
 from . import exceptions, http
+from . import application as ray_app
 from functools import wraps
 
 
@@ -62,6 +63,9 @@ def process(fullpath, request, response):
     if __is_login(fullpath):
         return LoginHandler(request, response, fullpath).process()
 
+    if __is_info_status(fullpath):
+        return _info_status(fullpath)
+
     if __is_logout(fullpath):
         return LogoutHandler(response).logout()
 
@@ -73,6 +77,14 @@ def process(fullpath, request, response):
 
     else:
         raise exceptions.BadRequest()
+
+
+def __is_info_status(fullpath):
+    return fullpath == '/api/_info'
+
+
+def _info_status(fullpath):
+    return ray_app.get_authentication().get_logged_user()
 
 
 def __handle_action(url):

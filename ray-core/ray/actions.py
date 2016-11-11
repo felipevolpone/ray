@@ -1,5 +1,5 @@
 from functools import wraps
-from . import exceptions, http, login, application
+from . import exceptions, http, application
 from future.utils import with_metaclass
 import re
 
@@ -80,7 +80,7 @@ class ActionAPI(with_metaclass(RegisterActions)):
 
         if hasattr(method, '_protection_shield_method'):
             shield_method = method._protection_shield_method
-            user_data = login.get_logged_user()
+            user_data = application.get_authentication().get_logged_user()
 
             if not shield_method(user_data):  # shield returned False
                 raise exceptions.NotAuthorized()

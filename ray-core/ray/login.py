@@ -5,7 +5,7 @@ from . import application
 _COOKIE_NAME = 'RayAuth'
 
 
-def get_logged_user():
+def _get_logged_user():
     token = bottle_req.get_cookie(_COOKIE_NAME)
     if not token:
         return None

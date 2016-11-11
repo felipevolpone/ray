@@ -80,7 +80,7 @@ class NotebookHook(CreatedAtBaseHook):
         if not notebook.title:
             raise Exception('Title cannot be None')
 
-        notebook.owner = dict_to_model(User, login.get_logged_user())
+        notebook.owner = dict_to_model(User, SimpleNoteAuthentication.get_logged_user())
         return True
 
 

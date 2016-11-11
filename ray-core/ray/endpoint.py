@@ -1,6 +1,5 @@
 from . import exceptions, http, application
 from .shield import ShieldHandler
-from .login import get_logged_user
 
 
 def endpoint(url=None, authentication=None):
@@ -24,7 +23,7 @@ class EndpointHandler(object):
         logged_user = None
 
         if self.is_protected():
-            logged_user = get_logged_user()
+            logged_user = application.get_authentication().get_logged_user()
             if not logged_user:
                 raise exceptions.NotAuthorized()
 
