@@ -61,7 +61,12 @@ class TestProctedEndpoint(Test):
 
         response = self.app.post_json('/api/_info')
         self.assertEqual(200, response.status_int)
-        self.assertEqual({'result': {'profile': 'admin', 'username': 'felipe'}}, response.json)
+        result = response.json
+        del result['result']['__expiration']
+        self.assertEqual({'result': {'profile': 'admin', 'username': 'felipe'}}, result)
+
+        response = self.app.post_json('/api/_ping', self.user_data)
+        self.assertEqual(200, response.status_int)
 
     def test_logout(self):
         self.app = FakeApp(application)
@@ -77,4 +82,3 @@ class TestProctedEndpoint(Test):
         self.app = FakeApp(application)
         response = self.app.get('/api/resource/', expect_errors=True)
         self.assertEqual(401, response.status_int)
-

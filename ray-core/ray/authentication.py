@@ -1,5 +1,6 @@
 import jwt
 from .exceptions import NotAuthorized
+from datetime import datetime
 from . import application, login
 
 
@@ -18,13 +19,18 @@ class Authentication(object):
             raise NotImplementedError('You must define the salt_key')
 
         if user_json:
-            return jwt.encode(user_json, cls.salt_key, algorithm='HS256')
+            return Authentication.pack_jwt(user_json, cls.salt_key)
 
         raise NotAuthorized()
 
     @classmethod
     def get_logged_user(cls):
         return login._get_logged_user()
+
+    @classmethod
+    def pack_jwt(cls, user_json, salt_key):
+        user_json['__expiration'] = int(datetime.now().strftime('%s')) * 1000
+        return jwt.encode(user_json, salt_key, algorithm='HS256')
 
     @classmethod
     def authenticate(cls, login_data):
