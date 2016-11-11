@@ -1,5 +1,9 @@
 from ray.endpoint import endpoint
 from tests.model_interface import ModelInterface
+from ray.wsgi.wsgi import application
+
+import unittest
+from webtest import TestApp as FakeApp
 
 
 @endpoint('/user')
@@ -13,3 +17,9 @@ class UserModel(ModelInterface):
     @classmethod
     def columns(cls):
         return ['age', 'id', 'name']
+
+
+class Test(unittest.TestCase):
+
+    def setUp(self):
+        self.app = FakeApp(application)

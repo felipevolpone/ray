@@ -1,13 +1,11 @@
 
-import unittest
-
-from webtest import TestApp as FakeApp
-
 from ray.wsgi.wsgi import application
 from ray.endpoint import endpoint
 from ray.authentication import Authentication, register
 
+from webtest import TestApp as FakeApp
 from tests.model_interface import ModelInterface
+from .common import Test
 
 
 @register
@@ -32,12 +30,9 @@ class ResourceModel(ModelInterface):
         return ['id']
 
 
-class TestProctedEndpoint(unittest.TestCase):
+class TestProctedEndpoint(Test):
 
     user_data = {"username": "felipe", "password": '123'}
-
-    def setUp(self):
-        self.app = FakeApp(application)
 
     def test_login(self):
         self.app = FakeApp(application)

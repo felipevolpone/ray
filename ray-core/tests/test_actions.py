@@ -1,4 +1,3 @@
-import unittest
 
 from webtest import TestApp as FakeApp
 
@@ -7,6 +6,7 @@ from ray.actions import ActionAPI, action
 from ray.endpoint import endpoint
 from ray.shield import Shield
 
+from .common import Test
 from .model_interface import ModelInterface
 from tests.common import UserModel
 
@@ -60,10 +60,7 @@ class ActionUser(ActionAPI):
         any_data = parameters
 
 
-class TestAction(unittest.TestCase):
-
-    def setUp(self):
-        self.app = FakeApp(application)
+class TestAction(Test):
 
     def test_action(self):
         response = self.app.post('/api/user/activate')
@@ -118,7 +115,7 @@ class ActionWrong(ActionAPI):
         return False
 
 
-class TestWrongCases(unittest.TestCase):
+class TestWrongCases(Test):
 
     def test_action_without_model(self):
         self.app = FakeApp(application)
