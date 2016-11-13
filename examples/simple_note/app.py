@@ -41,6 +41,7 @@ class User(DBModel):
 class SimpleNoteAuthentication(Authentication):
 
     salt_key = 'anything'
+    expiration_time = 5
 
     @classmethod
     def authenticate(cls, login_data):

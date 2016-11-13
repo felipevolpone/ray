@@ -37,6 +37,9 @@ class DBModel(PeeweeModel):
 @register
 class MyAuth(Authentication):
 
+    salt_key = 'salt_key'
+    expiration_time = 5
+
     @classmethod
     def authenticate(cls, login_data):
         if login_data['username'] == 'ray' and login_data['password'] == 'charles':

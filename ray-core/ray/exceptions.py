@@ -40,3 +40,7 @@ class HookException(RayException):
 
 class EndpointNotFound(RayException):
     http_code = 404
+
+
+class AuthenticationExpirationTime(RayException):
+    http_code = 500

@@ -6,11 +6,13 @@ from ray.authentication import Authentication, register
 from webtest import TestApp as FakeApp
 from tests.model_interface import ModelInterface
 from .common import Test
+import time
 
 
 @register
 class CustomAuthentication(Authentication):
 
+    expiration_time = 0.05
     salt_key = 'ray_salt_key'
 
     @classmethod
@@ -41,7 +43,7 @@ class TestProctedEndpoint(Test):
 
         self.app = FakeApp(application)
         response = self.app.post_json('/api/_login', {"username": "felipe", "password": 'admin'}, expect_errors=True)
-        self.assertEqual(401, response.status_int)
+        self.assertEqual(403, response.status_int)
 
         self.app = FakeApp(application)
         response = self.app.get('/api/resource/', expect_errors=True)
@@ -59,14 +61,13 @@ class TestProctedEndpoint(Test):
         response = self.app.post_json('/api/_login', self.user_data)
         self.assertEqual(200, response.status_int)
 
-        response = self.app.post_json('/api/_info')
-        self.assertEqual(200, response.status_int)
-        result = response.json
-        del result['result']['__expiration']
-        self.assertEqual({'result': {'profile': 'admin', 'username': 'felipe'}}, result)
-
         response = self.app.post_json('/api/_ping', self.user_data)
         self.assertEqual(200, response.status_int)
+
+        time.sleep(6)
+
+        response = self.app.post_json('/api/_ping', self.user_data, expect_errors=True)
+        self.assertEqual(401, response.status_int)
 
     def test_logout(self):
         self.app = FakeApp(application)

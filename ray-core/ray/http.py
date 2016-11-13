@@ -34,13 +34,4 @@ def get_id(url):
 
 def query_params_to_dict(request):
     params_with_array = parse.parse_qs(request.query_string)
-    params = {}
-    for key, values in params_with_array.items():
-        value = values[0]
-        try:
-            value = int(values[0])
-        except:
-            pass
-        params[key] = value
-
-    return params
+    return params_with_array

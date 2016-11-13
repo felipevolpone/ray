@@ -2,10 +2,9 @@ import json, bottle, logging
 from bottle import request as bottle_req, response as bottle_resp
 
 from .endpoint import EndpointHandler
-from .login import LoginHandler, LogoutHandler, _increase_cookie_timestamp
+from .login import LoginHandler, LogoutHandler, increase_cookie_timestamp
 from .actions import ActionAPI
 from . import exceptions, http
-from . import application as ray_app
 from functools import wraps
 
 
@@ -61,18 +60,13 @@ def dispatch(url):
 
 def process(fullpath, request, response):
     if __is_login(fullpath):
-        return LoginHandler(request, response, fullpath).process()
+        return LoginHandler.process(request, response)
 
-    # FIXME
-    if __is_info_status(fullpath):
-        return _info_status(fullpath)
+    elif __is_ping_status(fullpath):
+        return _handle_ping_status()
 
-    # FIXME
-    if __is_ping_status(fullpath):
-        return _ping_status()
-
-    if __is_logout(fullpath):
-        return LogoutHandler(response).logout()
+    elif __is_logout(fullpath):
+        return LogoutHandler.logout(response)
 
     elif _is_endpoint(fullpath):
         return EndpointHandler(request, fullpath).process()
@@ -84,8 +78,9 @@ def process(fullpath, request, response):
         raise exceptions.BadRequest()
 
 
-def _info_status(fullpath):
-    return ray_app.get_authentication().get_logged_user()
+def _handle_ping_status():
+    cookie_name, user_token = increase_cookie_timestamp()
+    bottle_resp.set_cookie(cookie_name, user_token.decode('utf-8'))
 
 
 def __handle_action(url):
@@ -98,16 +93,8 @@ def __handle_action(url):
     return ActionAPI(url, arg, bottle_req).process_action()
 
 
-def _ping_status():
-    _increase_cookie_timestamp()
-
-
 def __is_ping_status(fullpath):
     return fullpath == '/api/_ping'
-
-
-def __is_info_status(fullpath):
-    return fullpath == '/api/_info'
 
 
 def __is_login(full_path):

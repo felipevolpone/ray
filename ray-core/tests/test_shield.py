@@ -17,6 +17,7 @@ class TestShield(Test):
         @register
         class MyAuth(Authentication):
 
+            expiration_time = 5
             salt_key = 'ray_salt_key'
 
             @classmethod

@@ -1,6 +1,6 @@
 import jwt
-from .exceptions import NotAuthorized
-from datetime import datetime
+from .exceptions import NotAuthorized, AuthenticationExpirationTime, Forbidden
+from datetime import datetime, timedelta
 from . import application, login
 
 
@@ -18,19 +18,47 @@ class Authentication(object):
         if not hasattr(cls, 'salt_key'):
             raise NotImplementedError('You must define the salt_key')
 
-        if user_json:
-            return Authentication.pack_jwt(user_json, cls.salt_key)
+        if not hasattr(cls, 'expiration_time'):
+            raise NotImplementedError('You must define the expiration_time')
 
-        raise NotAuthorized()
+        try:
+            float(cls.expiration_time)
+        except:
+            raise AuthenticationExpirationTime('The expiration_time must be a integer')
+
+        if user_json:
+            return cls.keep_user_logged(user_json)
+
+        raise Forbidden()
+
+    @classmethod
+    def keep_user_logged(cls, user_data):
+        cls.get_logged_user()
+
+        if not '__expiration' in user_data:
+            new_timestamp = datetime.now() + timedelta(minutes=cls.expiration_time)
+        else:
+            timestamp = int(user_data['__expiration'])
+            new_timestamp = datetime.fromtimestamp(timestamp / 1000) + timedelta(minutes=cls.expiration_time)
+
+        user_data['__expiration'] = int(new_timestamp.strftime('%s')) * 1000
+        cookie_as_token = jwt.encode(user_data, cls.salt_key, algorithm='HS256')
+        return cookie_as_token
 
     @classmethod
     def get_logged_user(cls):
-        return login._get_logged_user()
+        user_data = login._get_logged_user()
+        if not user_data:
+            return user_data
 
-    @classmethod
-    def pack_jwt(cls, user_json, salt_key):
-        user_json['__expiration'] = int(datetime.now().strftime('%s')) * 1000
-        return jwt.encode(user_json, salt_key, algorithm='HS256')
+        timestamp = int(user_data['__expiration'])
+        expiration_time = datetime.fromtimestamp(timestamp / 1000)
+        now = datetime.now()
+
+        if expiration_time < now:
+            raise NotAuthorized()
+
+        return user_data
 
     @classmethod
     def authenticate(cls, login_data):
@@ -43,9 +71,6 @@ class Authentication(object):
 
     @classmethod
     def unpack_jwt(cls, token):
-        if not hasattr(cls, 'salt_key'):
-            raise NotImplementedError('You must define the salt_key')
-
         return jwt.decode(token, cls.salt_key, algorithms=['HS256'])
 
     @classmethod
