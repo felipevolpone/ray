@@ -38,10 +38,11 @@ class TestIntegrated(unittest.TestCase):
         # test get all
         resp = self.app.get(build_url())
         result = resp.json['result']
-        self.assertEqual(result[0]['name'], 'felipe')
-        self.assertEqual(result[0]['age'], 22)
-        self.assertIsNotNone(result[0]['id'])
-        self.assertEqual(result[1]['name'], 'john')
+
+        names = ['felipe', 'john']
+        for user in result:
+            self.assertTrue(user['name'] in names)
+            self.assertIsNotNone(user['id'])
 
         # test get by id
         resp = self.app.get(build_url(id_created))

@@ -30,7 +30,7 @@ def dispatch(url):
     """
 
     url = bottle_req.path
-    log.debug('request: %s', url)
+    log.debug('request: %s', bottle_req.url)
 
     if url[-1] == '/':
         url = url[:-1]

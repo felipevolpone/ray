@@ -52,10 +52,10 @@ class TestRayPeeweeAPI(unittest.TestCase):
 
     def test_api(self):
         # test post create
-        resp = self._create(name='felipe', age=22)
+        resp = self._create(name='felipe', age=23)
         result = resp.json['result']
         self.assertEqual(result['name'], 'felipe')
-        self.assertEqual(result['age'], 22)
+        self.assertEqual(result['age'], 23)
         self.assertIsNotNone(result['id'])
         id_created = str(result['id'])
 
@@ -66,7 +66,7 @@ class TestRayPeeweeAPI(unittest.TestCase):
         result = resp.json['result']
 
         self.assertEqual(result[0]['name'], 'felipe')
-        self.assertEqual(result[0]['age'], 22)
+        self.assertEqual(result[0]['age'], 23)
         self.assertIsNotNone(result[0]['id'])
         self.assertEqual(result[1]['name'], 'john')
 
@@ -74,7 +74,14 @@ class TestRayPeeweeAPI(unittest.TestCase):
         resp = self.app.get(build_url(id_created))
         result = resp.json['result']
         self.assertEqual('felipe', result['name'])
-        self.assertEqual(22, result['age'])
+        self.assertEqual(23, result['age'])
+
+        resp = self.app.get(build_url(params="?name=felipe"))
+        self.assertEqual(200, resp.status_int)
+        result = resp.json['result']
+        self.assertEqual(1, len(result))
+        self.assertEqual(result[0]['name'], 'felipe')
+        self.assertEqual(result[0]['age'], 23)
 
         # test update
         resp = self.app.put_json(build_url(id_created), {'name': 'felipe volpone'})
@@ -84,7 +91,7 @@ class TestRayPeeweeAPI(unittest.TestCase):
         resp = self.app.get(build_url(id_created))
         result = resp.json['result']
         self.assertEqual('felipe volpone', result['name'])
-        self.assertEqual(22, result['age'])
+        self.assertEqual(23, result['age'])
         self.assertEqual(int(id_created), result['id'])
 
         # test delete
