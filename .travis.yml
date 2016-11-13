@@ -25,10 +25,10 @@ script:
     - pip install . # install ray-appengine
     - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then nosetests --tests=tests --with-coverage --cover-package=ray_appengine; fi;
 
-    - cd ..
-    - cd ray-sqlalchemy  # install ray-sqlalchemy
-    - pip install .
-    - nosetests --tests=tests --with-coverage --cover-package=ray_sqlalchemy
+    # - cd ..
+    # - cd ray-sqlalchemy  # install ray-sqlalchemy
+    # - pip install .
+    # - nosetests --tests=tests --with-coverage --cover-package=ray_sqlalchemy
 
     - cd ..
     - cd ray-peewee  # install ray-peewee
