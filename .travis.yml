@@ -6,8 +6,6 @@ python:
   - 3.5
 
 before_install:
-    - pip install python-coveralls
-    - pip install nose
     - pip install -r venv/requirements_tests.txt
 
     - wget https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.38.zip
@@ -36,8 +34,8 @@ script:
     - nosetests --tests=tests --with-coverage --cover-package=ray_peewee
 
 after_success:
-  - coveralls
   - cd ../ray-core
+  - coveralls
   - coveralls --config_file=.coveragerc
 
 notifications:
