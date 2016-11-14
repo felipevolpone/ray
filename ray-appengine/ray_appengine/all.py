@@ -20,7 +20,8 @@ class GAEModel(AppEngineModel, Model):
         for field_name in json_attributes.keys():
             value = json_attributes[field_name]
             if field_name in keys_and_kinds:
-                value = ndb.Key(keys_and_kinds[field_name], json_attributes[field_name])
+                json_value = json_attributes[field_name]
+                value = ndb.Key(keys_and_kinds[field_name], json_value)
 
             setattr(instance, field_name, value)
         return instance
@@ -62,7 +63,8 @@ class GAEModel(AppEngineModel, Model):
         if bool(fields_to_filter & keys):  # check if there are keys in the fields to filter
             keys_and_kinds = cls._get_keys_and_kinds()
             for key, kind in keys_and_kinds.items():
-                query = query.filter(getattr(cls, key) == ndb.Key(kind, kwargs[key]))
+                key_id = kwargs[key]
+                query = query.filter(getattr(cls, key) == ndb.Key(kind, key_id))
 
         return query.fetch()
 
@@ -73,7 +75,7 @@ class GAEModel(AppEngineModel, Model):
     @classmethod
     def update(cls, fields_to_update):
         if 'id' not in fields_to_update:
-            raise Exception('eh necessario passar o id no json')
+            raise Exception('You should provide an id')
 
         entity = ndb.Key(cls.__name__, fields_to_update['id']).get()
 

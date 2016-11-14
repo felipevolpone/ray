@@ -4,7 +4,6 @@ from ray_appengine.all import GAEModel
 from .gae_test import TestCreateEnviroment
 from ray.endpoint import endpoint
 
-
 @endpoint('/post')
 class User(GAEModel):
     name = ndb.StringProperty()
