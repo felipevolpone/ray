@@ -43,3 +43,12 @@ def query_params_to_dict(request):
             pass
         params[key] = value
     return params
+
+
+def get_parameters(request):
+    if request.method.lower() == 'get' or request.method.lower() == 'delete':
+        return request.params
+
+    elif request.method.lower() == 'post' or request.method.lower() == 'put':
+        if request.json:
+            return request.json
