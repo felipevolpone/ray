@@ -1,5 +1,5 @@
 
-from playhouse.shortcuts import dict_to_model  # peewee
+from playhouse.shortcuts import dict_to_model, model_to_dict  # peewee
 import peewee
 
 from datetime import datetime
@@ -9,7 +9,8 @@ from ray.hooks import DatabaseHook
 from ray.wsgi.wsgi import application
 from ray.endpoint import endpoint
 from ray_peewee.all import PeeweeModel
-from ray.actions import ActionAPI, action
+from ray.actions import Action, action
+from ray.shield import Shield
 
 
 database = peewee.SqliteDatabase('example.db')
@@ -25,13 +26,14 @@ class MailHelper(object):
     @classmethod
     def send_email(self, to, message):
         # fake send email
-        print('sending email with message: %s' % (message))
+        print('sending email to: %s with message: %s' % (to, message))
 
 
 class UserHook(DatabaseHook):
 
     def before_save(self, user):
-        users_same_username = User.select().where(User.username == user.username)
+        users_same_username = (User.select()
+                                   .where(User.username == user.username))
         if any(users_same_username):
             raise Exception('The username is unique')
 
@@ -43,6 +45,7 @@ class User(DBModel):
 
     username = peewee.CharField()
     password = peewee.CharField()
+    profile = peewee.CharField()
 
 
 @register
@@ -64,7 +67,7 @@ class SimpleNoteAuthentication(Authentication):
 class CreatedAtBaseHook(DatabaseHook):
 
     def before_save(self, model):
-        model.created_at = int(datetime.now().strftime('%s')) * 1000
+        model.update_at = int(datetime.now().strftime('%s')) * 1000
         return True
 
 
@@ -99,8 +102,9 @@ class Notebook(DBModel):
     hooks = [NotebookHook]
 
     title = peewee.CharField()
-    created_at = peewee.BigIntegerField()
+    update_at = peewee.BigIntegerField()
     owner = peewee.ForeignKeyField(User)
+    active = peewee.BooleanField(default=True)
 
 
 @endpoint('/note', authentication=SimpleNoteAuthentication)
@@ -108,12 +112,25 @@ class Note(DBModel):
     hooks = [NoteHook]
 
     title = peewee.CharField()
-    created_at = peewee.BigIntegerField()
+    update_at = peewee.BigIntegerField()
     content = peewee.TextField()
     notebook = peewee.ForeignKeyField(Notebook)
 
 
-class NotebookActions(ActionAPI):
+class NotebookShield(Shield):
+    __model__ = Notebook
+
+    def delete(self, user_data, notebook_id, parameters):
+        return user_data['profile'] == Profile.ADMIN
+
+    @staticmethod
+    def only_owner_can_deactivate(user_data, notebook_id, parameters):
+        notebook = Notebook.select().where(Notebook.id == int(notebook_id))[0]
+        notebook_json = model_to_dict(notebook, recurse=False)
+        return user_data['id'] == notebook_json['owner']
+
+
+class NotebookActions(Action):
     __model__ = Notebook
 
     @action('/<id>/invite', authentication=True)
@@ -123,8 +140,22 @@ class NotebookActions(ActionAPI):
         message = 'Help me build new stuff in this notebook: %s' % (title)
         MailHelper.send_email(to, message)
 
+    @action('/<id>/deactivate', protection=NotebookShield.only_owner_can_deactivate, authentication=True)
+    def deactivate(self, notebook_id, parameters):
+        notebook = Notebook.select().where(Notebook.id == int(notebook_id))[0]
+        notebook.active = False
+        notebook.update()
+
+
+class Profile(object):
+    ADMIN = 'admin'
+    DEFAULT = 'default'
+
 
 if __name__ == '__main__':
+    database.connect()
     database.create_tables([User, Notebook, Note], safe=True)
-    User.create(username='admin', password='admin')
+    User.create(username='admin', password='admin', profile=Profile.ADMIN)
+    User.create(username='john', password='123', profile=Profile.DEFAULT)
+    database.close()
     application.run(debug=True, reloader=True)

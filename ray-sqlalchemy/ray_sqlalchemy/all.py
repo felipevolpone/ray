@@ -49,7 +49,7 @@ class AlchemyModel(Model):
                 self._session.commit()
                 return self
             except Exception as e:
-                print(e)
+                print(e)  # FIXME change print to logging
 
     @classmethod
     def get(cls, id=None):

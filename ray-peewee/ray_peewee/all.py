@@ -28,7 +28,10 @@ class PeeweeModel(PeeweeNativeModel, RayModel):
         except:
             return None
 
-    def update(self, fields_to_update):
+    def update(self, fields_to_update=None):
+        if not fields_to_update:
+            fields_to_update = model_to_dict(self, recurse=False)
+
         model_id = fields_to_update['id']
         del fields_to_update['id']
 

@@ -2,7 +2,7 @@
 import peewee
 from ray.shield import Shield
 from ray.hooks import DatabaseHook
-from ray.actions import ActionAPI, action
+from ray.actions import Action, action
 from ray.authentication import Authentication, register
 from ray.wsgi.wsgi import application
 from ray.endpoint import endpoint
@@ -64,7 +64,7 @@ class PostShield(Shield):
         return info['username'] == 'ray'
 
 
-class ActionPost(ActionAPI):
+class ActionPost(Action):
     __model__ = Post
 
     @action("/<id>/upper")

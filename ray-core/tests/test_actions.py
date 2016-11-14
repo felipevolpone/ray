@@ -20,11 +20,11 @@ class UserShield(Shield):
     __model__ = UserModel
 
     @staticmethod
-    def protect_enable(info):
+    def protect_enable(user_data, user_id, parameters):
         return True
 
     @staticmethod
-    def protect_fail(info):
+    def protect_fail(user_data, user_id, parameters):
         return False
 
 

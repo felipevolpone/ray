@@ -48,21 +48,20 @@ class EndpointHandler(object):
 
 class EndpointProcessor(object):
 
-    def __init__(self, request, model, user_info):
+    def __init__(self, request, model, user_data):
         self.__request = request
         self.__model = model
-
-        self.__shield_class = ShieldHandler(user_info).get_shield(model)
+        self.__shield_class = ShieldHandler(user_data).get_shield(model)
 
     def process(self):
         methods = {'post': self.__process_post, 'get': self.__process_get,
                    'put': self.__process_put, 'delete': self.__process_delete}
+
         http_verb = self.__request.method.lower()
         return methods[http_verb]()
 
     def __process_put(self):
-        if hasattr(self.__request, 'logged_user') and not self.__shield_class.put(self.__request.logged_user):
-            raise exceptions.MethodNotFound()
+        self.__validate_shield('put')
 
         id_param = http.get_id(self.__request.path)
         entity_json = self.__request.json
@@ -74,15 +73,13 @@ class EndpointProcessor(object):
         return entity.update(entity_json).to_json()
 
     def __process_post(self):
-        if not self.__shield_class.post(self.__shield_class.info):
-            raise exceptions.MethodNotFound()
+        self.__validate_shield('post')
 
         entity = self.__model.to_instance(self.__request.json)
         return entity.put().to_json(), 201
 
     def __process_get(self):
-        if not self.__shield_class.get(self.__shield_class.info):
-            raise exceptions.MethodNotFound()
+        self.__validate_shield('get')
 
         id_param = http.get_id(self.__request.path)
         params = http.query_params_to_dict(self.__request)
@@ -90,22 +87,32 @@ class EndpointProcessor(object):
         if not id_param:
             return [model.to_json() for model in self.__model.find(**params)]
 
-        return self._find_database(id_param).to_json()
+        return self.__find_database(id_param).to_json()
 
     def __process_delete(self):
-        if not self.__shield_class.delete(self.__shield_class.info):
-            raise exceptions.MethodNotFound()
+        self.__validate_shield('delete')
 
         id_param = http.get_id(self.__request.path)
         try:
-            return self._find_database(id_param).delete(id=id_param).to_json()
-
+            return self.__find_database(id_param).delete(id=id_param).to_json()
         except exceptions.HookException:
             raise exceptions.HookException()
 
-    def _find_database(self, id_param):
+    def __find_database(self, id_param):
         model = self.__model.get(id=id_param)
         if not model:
             raise exceptions.ModelNotFound()
 
         return model
+
+    def __validate_shield(self, shield_method_name):
+        shield_method = getattr(self.__shield_class, shield_method_name)
+
+        model_id = http.get_id(self.__request.path)
+        parameters = http.get_parameters(self.__request)
+        logged_user = self.__request.logged_user if hasattr(self.__request, 'logged_user') else None
+
+        if logged_user and not shield_method(self.__request.logged_user, model_id, parameters):
+            raise exceptions.MethodUnderShieldProtection()
+
+        return True

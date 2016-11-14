@@ -82,6 +82,7 @@ class Action(with_metaclass(RegisterActions)):
                 break
 
         authentication_class = application.get_authentication()
+        request_parameters = http.get_parameters(self.__request)
 
         user_data = None
         if authentication_class:
@@ -90,7 +91,7 @@ class Action(with_metaclass(RegisterActions)):
         if hasattr(method, '_protection_shield_method'):
             shield_method = method._protection_shield_method
 
-            if not shield_method(user_data):  # shield returned False
+            if not shield_method(user_data, self.__model_arg, request_parameters):  # shield returned False FIXME(improve tests)
                 raise exceptions.NotAuthorized()
 
         if hasattr(method, '_action_under_authentication'):

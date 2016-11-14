@@ -48,3 +48,7 @@ class AuthenticationExpirationTime(RayException):
 
 class ActionUnderAuthenticationProtection(RayException):
     http_code = 403
+
+
+class MethodUnderShieldProtection(RayException):
+    http_code = 404
