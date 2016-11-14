@@ -25,7 +25,7 @@ class MailHelper(object):
     @classmethod
     def send_email(self, to, message):
         # fake send email
-        print('sending email...')
+        print('sending email with message: %s' % (message))
 
 
 class UserHook(DatabaseHook):
@@ -119,7 +119,8 @@ class NotebookActions(ActionAPI):
     @action('/<id>/invite', authentication=True)
     def invite_to_notebook(self, notebook_id, parameters):
         to = parameters['user_to_invite']
-        message = 'Help me build new stuff'
+        title = Notebook.select().where(Notebook.id == notebook_id)[0].title
+        message = 'Help me build new stuff in this notebook: %s' % (title)
         MailHelper.send_email(to, message)
 
 
