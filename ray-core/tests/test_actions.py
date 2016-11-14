@@ -2,7 +2,7 @@
 from webtest import TestApp as FakeApp
 
 from ray.wsgi.wsgi import application
-from ray.actions import ActionAPI, action
+from ray.actions import Action, action
 from ray.endpoint import endpoint
 from ray.shield import Shield
 from ray.authentication import Authentication, register
@@ -28,7 +28,7 @@ class UserShield(Shield):
         return False
 
 
-class ActionUser(ActionAPI):
+class ActionUser(Action):
     __model__ = UserModel
 
     @action("/activate")
@@ -109,7 +109,7 @@ class AnyModel(ModelInterface):
     pass
 
 
-class ActionWrong(ActionAPI):
+class ActionWrong(Action):
 
     @action("/activate")
     def activate(self, parameters):
@@ -137,7 +137,7 @@ class TestActionWithAuthentication(Test):
             if login_data['username'] == 'felipe' and login_data['password'] == '123':
                 return {'username': 'felipe', 'profile': 'admin'}
 
-    class NoteAction(ActionAPI):
+    class NoteAction(Action):
         __model__ = UserModel
 
         @action('/under_authentication', authentication=True)

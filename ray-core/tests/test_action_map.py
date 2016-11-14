@@ -1,11 +1,11 @@
-from ray.actions import ActionAPI, action
+from ray.actions import Action, action
 from ray.application import _ray_conf
 
 from tests.common import UserModel
 import unittest
 
 
-class UserAction(ActionAPI):
+class UserAction(Action):
     __model__ = UserModel
 
     @action('activate')

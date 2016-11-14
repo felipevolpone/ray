@@ -3,7 +3,7 @@ from bottle import request as bottle_req, response as bottle_resp
 
 from .endpoint import EndpointHandler
 from .login import LoginHandler, LogoutHandler, increase_cookie_timestamp
-from .actions import ActionAPI
+from .actions import Action
 from . import exceptions, http
 from functools import wraps
 
@@ -90,7 +90,7 @@ def __handle_action(url):
     if len(url.split('/')) >= 5:  # indicate that has an id between endpoint and action_name
         arg = http.param_at(url, -2)
 
-    return ActionAPI(url, arg, bottle_req).process_action()
+    return Action(url, arg, bottle_req).process_action()
 
 
 def __is_ping_status(fullpath):

@@ -36,7 +36,7 @@ class RegisterActions(type):
 
     def __new__(cls, name, bases, methods):
 
-        if '__model__' not in methods:  # to pass the ActionAPI class
+        if '__model__' not in methods:  # to pass the Action class
             return type.__new__(cls, name, bases, methods)
 
         model_class = methods['__model__']
@@ -48,7 +48,7 @@ class RegisterActions(type):
         return type.__new__(cls, name, bases, methods)
 
 
-class ActionAPI(with_metaclass(RegisterActions)):
+class Action(with_metaclass(RegisterActions)):
 
     def __init__(self, url=None, model_arg=None, request=None):
         # url e.g: /api/user/123/action_name
@@ -75,7 +75,7 @@ class ActionAPI(with_metaclass(RegisterActions)):
 
         action_class_name = application.get_action_class_name(self.action_url)
 
-        for clazz in ActionAPI.__subclasses__():
+        for clazz in Action.__subclasses__():
 
             if clazz.__name__ == action_class_name:
                 action_class = clazz
