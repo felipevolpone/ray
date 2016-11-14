@@ -33,7 +33,7 @@ class Authentication(object):
 
     @classmethod
     def keep_user_logged(cls, user_data):
-        cls.get_logged_user()
+        cls.__user_still_valid(user_data)
 
         if not '__expiration' in user_data:
             new_timestamp = datetime.now() + timedelta(minutes=cls.expiration_time)
@@ -46,10 +46,9 @@ class Authentication(object):
         return cookie_as_token
 
     @classmethod
-    def get_logged_user(cls):
-        user_data = login._get_logged_user()
-        if not user_data:
-            return user_data
+    def __user_still_valid(cls, user_data):
+        if '__expiration' not in user_data:
+            return True
 
         timestamp = int(user_data['__expiration'])
         expiration_time = datetime.fromtimestamp(timestamp / 1000)
@@ -58,7 +57,18 @@ class Authentication(object):
         if expiration_time < now:
             raise NotAuthorized()
 
-        return user_data
+        return True
+
+
+    @classmethod
+    def get_logged_user(cls):
+        user_data = login._get_logged_user()
+        if not user_data:
+            return user_data
+
+        if cls.__user_still_valid(user_data):
+            del user_data['__expiration']
+            return user_data
 
     @classmethod
     def authenticate(cls, login_data):
@@ -72,11 +82,3 @@ class Authentication(object):
     @classmethod
     def unpack_jwt(cls, token):
         return jwt.decode(token, cls.salt_key, algorithms=['HS256'])
-
-    @classmethod
-    def is_loged(cls, token):
-        try:
-            cls.unpack_jwt(token)
-            return True
-        except:
-            return False

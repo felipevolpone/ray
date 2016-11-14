@@ -44,3 +44,7 @@ class EndpointNotFound(RayException):
 
 class AuthenticationExpirationTime(RayException):
     http_code = 500
+
+
+class ActionUnderAuthenticationProtection(RayException):
+    http_code = 403

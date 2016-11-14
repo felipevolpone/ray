@@ -5,6 +5,7 @@ from ray.wsgi.wsgi import application
 from ray.actions import ActionAPI, action
 from ray.endpoint import endpoint
 from ray.shield import Shield
+from ray.authentication import Authentication, register
 
 from .common import Test
 from .model_interface import ModelInterface
@@ -121,3 +122,36 @@ class TestWrongCases(Test):
         self.app = FakeApp(application)
         response = self.app.post('/api/any/123/activate', expect_errors=True)
         self.assertEqual(404, response.status_int)
+
+
+class TestActionWithAuthentication(Test):
+
+    @register
+    class SimpleNoteAuthentication(Authentication):
+
+        salt_key = 'anything'
+        expiration_time = 5
+
+        @classmethod
+        def authenticate(cls, login_data):
+            if login_data['username'] == 'felipe' and login_data['password'] == '123':
+                return {'username': 'felipe', 'profile': 'admin'}
+
+    class NoteAction(ActionAPI):
+        __model__ = UserModel
+
+        @action('/under_authentication', authentication=True)
+        def test_action_under_authentication(self, model_id, parameters):
+            pass
+
+    def test_actions_under_authentication(self):
+        response = self.app.get('/api/user/under_authentication', expect_errors=True)
+        self.assertEqual(403, response.status_int)
+
+        self.app = FakeApp(application)
+        response = self.app.post_json('/api/_login', {"username": "felipe", "password": '123'})
+        self.assertEqual(200, response.status_int)
+
+        response = self.app.get('/api/user/under_authentication', expect_errors=True)
+        self.assertEqual(200, response.status_int)
+

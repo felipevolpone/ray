@@ -68,14 +68,6 @@ class TestAuthentication(unittest.TestCase):
         with self.assertRaises(Exception):
             MyAuth.unpack_jwt('my_invalid_token')
 
-    def test_user_loged(self):
-        token_obj = MyAuth.login(self.user_data)
-        self.assertTrue(MyAuth.is_loged(token_obj))
-
-    def test_user_not_loged(self):
-        self.assertFalse(MyAuth.is_loged(''))
-        self.assertFalse(MyAuth.is_loged(None))
-
     def test_authentication_expiration_time(self):
         class MyAuthWithoutExpirationTime(Authentication):
 

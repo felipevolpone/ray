@@ -1,15 +1,15 @@
 
-from playhouse.shortcuts import model_to_dict, dict_to_model  # peewee
+from playhouse.shortcuts import dict_to_model  # peewee
 import peewee
 
 from datetime import datetime
 
 from ray.authentication import Authentication, register
-from ray import login
 from ray.hooks import DatabaseHook
 from ray.wsgi.wsgi import application
 from ray.endpoint import endpoint
 from ray_peewee.all import PeeweeModel
+from ray.actions import ActionAPI, action
 
 
 database = peewee.SqliteDatabase('example.db')
@@ -18,6 +18,14 @@ database = peewee.SqliteDatabase('example.db')
 class DBModel(PeeweeModel):
     class Meta:
         database = database
+
+
+class MailHelper(object):
+
+    @classmethod
+    def send_email(self, to, message):
+        # fake send email
+        print('sending email...')
 
 
 class UserHook(DatabaseHook):
@@ -45,7 +53,8 @@ class SimpleNoteAuthentication(Authentication):
 
     @classmethod
     def authenticate(cls, login_data):
-        users = User.select().where(User.username == login_data['username'], User.password == login_data['password'])
+        users = User.select().where(User.username == login_data['username'],
+                                    User.password == login_data['password'])
         if not any(users):
             raise Exception('Wrong username or/and password')
 
@@ -102,6 +111,16 @@ class Note(DBModel):
     created_at = peewee.BigIntegerField()
     content = peewee.TextField()
     notebook = peewee.ForeignKeyField(Notebook)
+
+
+class NotebookActions(ActionAPI):
+    __model__ = Notebook
+
+    @action('/<id>/invite', authentication=True)
+    def invite_to_notebook(self, notebook_id, parameters):
+        to = parameters['user_to_invite']
+        message = 'Help me build new stuff'
+        MailHelper.send_email(to, message)
 
 
 if __name__ == '__main__':

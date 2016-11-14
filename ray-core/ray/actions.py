@@ -4,12 +4,15 @@ from future.utils import with_metaclass
 import re
 
 
-def action(url, protection=None):
+def action(url, protection=None, authentication=False):
     # url e.g: /<id>/action_name
 
     def dec(func):
         if protection:
             func._protection_shield_method = protection
+
+        if authentication:
+            func._action_under_authentication = True
 
         edit_url = url
         if edit_url.startswith('/'):  # remove the first /
@@ -78,12 +81,21 @@ class ActionAPI(with_metaclass(RegisterActions)):
                 action_class = clazz
                 break
 
+        authentication_class = application.get_authentication()
+
+        user_data = None
+        if authentication_class:
+            user_data = authentication_class.get_logged_user()
+
         if hasattr(method, '_protection_shield_method'):
             shield_method = method._protection_shield_method
-            user_data = application.get_authentication().get_logged_user()
 
             if not shield_method(user_data):  # shield returned False
                 raise exceptions.NotAuthorized()
+
+        if hasattr(method, '_action_under_authentication'):
+            if not user_data:
+                raise exceptions.ActionUnderAuthenticationProtection()
 
         request_parameters = self.__get_parameter()
         return method(action_class(self.__entire_url, None, self.__request), self.__model_arg, request_parameters)
