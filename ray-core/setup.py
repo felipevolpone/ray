@@ -11,7 +11,7 @@ def description():
 
 setup(
     name="ray_framework",
-    version="0.0.1",
+    version="0.0.2",
     author="Felipe Volpone",
     author_email="felipevolpone@gmail.com",
     description=description(),

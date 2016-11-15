@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="ray_sqlalchemy",
-    version="0.0.1",
+    version="0.0.2",
     author="Felipe Volpone",
     author_email="felipevolpone@gmail.com",
     license="MIT",
