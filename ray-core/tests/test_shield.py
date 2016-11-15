@@ -22,7 +22,10 @@ class TestShield(Test):
         class MyAuth(Authentication):
 
             expiration_time = 5
-            salt_key = 'ray_salt_key'
+
+            @classmethod
+            def salt_key(cls):
+                return 'ray_salt_key'
 
             @classmethod
             def authenticate(cls, login_data):

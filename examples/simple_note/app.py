@@ -51,8 +51,7 @@ class User(DBModel):
 @register
 class SimpleNoteAuthentication(Authentication):
 
-    salt_key = 'anything'
-    expiration_time = 5
+    expiration_time = 5  # in minutes
 
     @classmethod
     def authenticate(cls, login_data):
@@ -62,6 +61,10 @@ class SimpleNoteAuthentication(Authentication):
             raise Exception('Wrong username or/and password')
 
         return users[0].to_json()
+
+    @classmethod
+    def salt_key(cls):
+        return 'anything'  # do it rightly here
 
 
 class CreatedAtBaseHook(DatabaseHook):

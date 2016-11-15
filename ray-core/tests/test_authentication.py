@@ -7,23 +7,30 @@ from ray import exceptions
 @register
 class MyAuth(Authentication):
 
-    salt_key = 'ray_salt_key'
     expiration_time = 5
 
     @classmethod
     def authenticate(cls, login_data):
         return login_data
 
+    @classmethod
+    def salt_key(cls):
+        return 'ray_salt_key'
+
 
 @register
 class MyAuthFail(Authentication):
 
-    salt_key = 'ray_salt_key'
     expiration_time = 5
 
     @classmethod
     def authenticate(cls, login_data):
         return None
+
+    @classmethod
+    def salt_key(cls):
+        return 'ray_salt_key'
+
 
 
 @register
@@ -71,7 +78,9 @@ class TestAuthentication(unittest.TestCase):
     def test_authentication_expiration_time(self):
         class MyAuthWithoutExpirationTime(Authentication):
 
-            salt_key = 'salt_key'
+            @classmethod
+            def salt_key(cls):
+                return 'ray_salt_key'
 
             @classmethod
             def authenticate(cls, login_data):
@@ -83,12 +92,15 @@ class TestAuthentication(unittest.TestCase):
     def test_authentication_expiration_time_exception(self):
         class MyAuthExpirationTimeNotAnInteger(Authentication):
 
-            salt_key = 'salt_key'
             expiration_time = 'a'
 
             @classmethod
             def authenticate(cls, login_data):
                 return login_data
+
+            @classmethod
+            def salt_key(cls):
+                return 'ray_salt_key'
 
         with self.assertRaises(exceptions.AuthenticationExpirationTime):
             MyAuthExpirationTimeNotAnInteger.login(self.user_data)

@@ -127,15 +127,18 @@ class TestWrongCases(Test):
 class TestActionWithAuthentication(Test):
 
     @register
-    class SimpleNoteAuthentication(Authentication):
+    class SimpleAuthentication(Authentication):
 
-        salt_key = 'anything'
         expiration_time = 5
 
         @classmethod
         def authenticate(cls, login_data):
             if login_data['username'] == 'felipe' and login_data['password'] == '123':
                 return {'username': 'felipe', 'profile': 'admin'}
+
+        @classmethod
+        def salt_key(cls):
+            return 'anything'
 
     class NoteAction(Action):
         __model__ = UserModel

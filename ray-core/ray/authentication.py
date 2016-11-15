@@ -16,7 +16,12 @@ class Authentication(object):
         user_json = cls.authenticate(login_data)
 
         if not hasattr(cls, 'salt_key'):
-            raise NotImplementedError('You must define the salt_key')
+            raise NotImplementedError('You must define the salt_key method')
+        else:
+            try:
+                cls.salt_key()
+            except:
+                raise NotImplementedError('You must define the salt_key method')
 
         if not hasattr(cls, 'expiration_time'):
             raise NotImplementedError('You must define the expiration_time')
@@ -42,7 +47,7 @@ class Authentication(object):
             new_timestamp = datetime.fromtimestamp(timestamp / 1000) + timedelta(minutes=cls.expiration_time)
 
         user_data['__expiration'] = int(new_timestamp.strftime('%s')) * 1000
-        cookie_as_token = jwt.encode(user_data, cls.salt_key, algorithm='HS256')
+        cookie_as_token = jwt.encode(user_data, cls.salt_key(), algorithm='HS256')
         return cookie_as_token
 
     @classmethod
@@ -81,4 +86,4 @@ class Authentication(object):
 
     @classmethod
     def unpack_jwt(cls, token):
-        return jwt.decode(token, cls.salt_key, algorithms=['HS256'])
+        return jwt.decode(token, cls.salt_key(), algorithms=['HS256'])

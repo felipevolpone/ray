@@ -13,7 +13,10 @@ import time
 class CustomAuthentication(Authentication):
 
     expiration_time = 0.05
-    salt_key = 'ray_salt_key'
+
+    @classmethod
+    def salt_key(cls):
+        return 'ray_salt_key'
 
     @classmethod
     def authenticate(cls, login_data):
@@ -64,9 +67,9 @@ class TestProctedEndpoint(Test):
         response = self.app.post_json('/api/_ping', self.user_data)
         self.assertEqual(200, response.status_int)
 
-        # time.sleep(6)
-        # response = self.app.post_json('/api/_ping', self.user_data, expect_errors=True)
-        # self.assertEqual(401, response.status_int)
+        time.sleep(6)
+        response = self.app.post_json('/api/_ping', self.user_data, expect_errors=True)
+        self.assertEqual(401, response.status_int)
 
     def test_logout(self):
         self.app = FakeApp(application)
