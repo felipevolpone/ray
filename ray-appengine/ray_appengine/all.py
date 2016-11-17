@@ -13,9 +13,17 @@ class GAEModel(AppEngineModel, Model):
 
     @classmethod
     def to_instance(cls, json_attributes):
-        instance = cls()
-
         keys_and_kinds = cls._get_keys_and_kinds()
+
+        ancestor_kind, ancestor_key = cls.ancestor()
+        if not ancestor_kind:
+            instance = cls()
+        else:
+            if ancestor_key not in json_attributes:
+                raise Exception('the ancestor key was not found')
+
+            instance = cls(parent=ndb.Key(ancestor_kind, json_attributes[ancestor_key]))
+            del json_attributes[ancestor_key]
 
         for field_name in json_attributes.keys():
             value = json_attributes[field_name]
@@ -47,11 +55,26 @@ class GAEModel(AppEngineModel, Model):
         return self.__model_to_json()
 
     @classmethod
-    def find(cls, *args, **kwargs):
-        query = cls.query()
+    def ancestor(cls):
+        """
+            map the usage of the ancestor field in GAEModel
 
+            override this method returning a tuple containing
+            (ancestor_kind, json_id)
+        """
+        return (None, None)
+
+    @classmethod
+    def find(cls, *args, **kwargs):
         if not kwargs:
-            return query.fetch()
+            return cls.query().fetch()
+
+        ancestor_kind, ancestor_key = cls.ancestor()
+        if not ancestor_kind and ancestor_key not in kwargs:
+            query = cls.query()
+        else:
+            query = cls.query(ancestor=ndb.Key(ancestor_kind, kwargs[ancestor_key]))
+            del kwargs[ancestor_key]
 
         fields_to_filter = set(kwargs.keys())
         keys = set(cls._get_keys_and_kinds().keys())
@@ -94,7 +117,6 @@ class GAEModel(AppEngineModel, Model):
             if isinstance(property_type, ndb.KeyProperty):
                 keys[name] = property_type._kind
 
-        # keys['id'] = cls.__name__
         return keys
 
     def __model_to_json(self):

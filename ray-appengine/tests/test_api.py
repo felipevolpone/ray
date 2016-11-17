@@ -4,6 +4,7 @@ from ray_appengine.all import GAEModel
 from .gae_test import TestCreateEnviroment
 from ray.endpoint import endpoint
 
+
 @endpoint('/post')
 class User(GAEModel):
     name = ndb.StringProperty()
@@ -15,6 +16,21 @@ class Post(GAEModel):
     title = ndb.StringProperty(required=False)
     text = ndb.StringProperty(required=True)
     owner = ndb.KeyProperty(kind=User)
+
+
+@endpoint('/notebook')
+class Notebook(GAEModel):
+    title = ndb.StringProperty(required=True)
+    owner = ndb.KeyProperty(kind=User, required=True)
+
+
+@endpoint('/note')
+class Note(GAEModel):
+    content = ndb.StringProperty(required=True)
+
+    @classmethod
+    def ancestor(cls):
+        return (Notebook, 'notebook_id')
 
 
 class TestInnerMethods(TestCreateEnviroment):
@@ -124,3 +140,17 @@ class TestIntegrated(TestCreateEnviroment):
 
         user = User.get(ids[-1])
         self.assertEqual('felipe', user.name)
+
+    def test_store_ancestor(self):
+        user = User(name='ray', age=50).put()
+        notebook = Notebook(title='notebook', owner=user.key).put()
+
+        note = Note.to_instance({'notebook_id': notebook.key.id(), 'content': 'something'})
+        note.put()
+
+        result = Note.find(notebook_id=notebook.key.id())
+        self.assertEqual(1, len(result))
+
+        result = Note.find(notebook_id=12123)
+        self.assertEqual(0, len(result))
+

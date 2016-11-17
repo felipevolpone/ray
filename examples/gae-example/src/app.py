@@ -35,7 +35,11 @@ class User(GAEModel):
 @register
 class SimpleNoteAuthentication(Authentication):
 
-    salt_key = 'anything'
+    expiration_time = 5
+
+    @classmethod
+    def salt_key(cls):
+        return 'anything'
 
     @classmethod
     def authenticate(cls, login_data):
@@ -53,10 +57,7 @@ class NoteHook(DatabaseHook):
         if not note.title:
             raise Exception('Title cannot be None')
 
-        if not note.notebook:
-            raise Exception('A note only exists inside a notebook')
-
-        if not note.notebook.get():
+        if not note.key.parent().get():
             raise Exception('Invalid notebook')
 
         return True
@@ -88,7 +89,10 @@ class Note(GAEModel):
 
     title = ndb.StringProperty(required=True)
     content = ndb.StringProperty(required=True)
-    notebook = ndb.KeyProperty(required=True, kind=Notebook)
     created_at = ndb.DateTimeProperty(auto_now_add=True)
+
+    @classmethod
+    def ancestor(cls):
+        return (Notebook, 'notebook_id')
 
 
