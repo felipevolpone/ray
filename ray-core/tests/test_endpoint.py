@@ -5,7 +5,7 @@ class TestEndpoint(Test):
 
     def testing_wrong_endpoints(self):
         response = self.app.get('/api/', expect_errors=True)
-        self.assertEqual(502, response.status_int)
+        self.assertEqual(404, response.status_int)
 
         response = self.app.get('/api/wrongurl', expect_errors=True)
         self.assertEqual(404, response.status_int)
@@ -34,6 +34,7 @@ class TestEndpoint(Test):
         uuid_created = '1245'
         response = self.app.put_json('/api/user/' + uuid_created, {"name": "ray", 'uuid': uuid_created})
         self.assertEqual(200, response.status_int)
+        self.assertEquals('', response.body.decode('utf-8'))
 
     def test_delete(self):
         response = self.app.delete('/api/user/1245')

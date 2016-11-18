@@ -70,7 +70,7 @@ class EndpointProcessor(object):
 
         entity_json['id'] = id_param
         entity = self.__model.to_instance(entity_json)
-        return entity.update(entity_json).to_json()
+        entity.update(entity_json).to_json()
 
     def __process_post(self):
         self.__validate_shield('post')

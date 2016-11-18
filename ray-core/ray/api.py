@@ -1,5 +1,5 @@
 import json, bottle, logging
-from bottle import request as bottle_req, response as bottle_resp
+from bottle import request as bottle_req, response as bottle_resp, static_file
 
 from .endpoint import EndpointHandler
 from .login import LoginHandler, LogoutHandler, increase_cookie_timestamp
@@ -22,7 +22,12 @@ def to_json(fnc):
     return inner
 
 
-@application.route('/<url:re:.+>', method=['GET', 'POST', 'PUT', 'DELETE'], apply=to_json)
+@application.route('/static/<filepath:path>')
+def server_static(filepath):
+    return static_file(filepath, root='static')
+
+
+@application.route('/api/<url:re:.+>', method=['GET', 'POST', 'PUT', 'DELETE'], apply=to_json)
 def dispatch(url):
     """
         This class is the beginning of all entrypoint in the Ray API. Here, each url
