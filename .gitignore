@@ -4,3 +4,4 @@
 *.todo
 .ropeproject
 venv/env*
+.DS_Store
