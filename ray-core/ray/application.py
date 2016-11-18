@@ -5,14 +5,58 @@ import logging, sys
 _ray_conf = {
     'endpoint': {},
     'action': {},
-    'authentication': None
+    'authentication': None,
+    'single_request': {}
 }
+
+# example
+# {
+#   "action": {
+#     "notebook/#arg/deactivate": {
+#       "class_name": "NotebookActions",
+#       "method": <function NotebookActions.deactivate at 0x1033aed90>
+#     },
+#     "notebook/#arg/invite": {
+#       "class_name": "NotebookActions",
+#       "method": <function NotebookActions.invite_to_notebook at 0x1033a7f28>
+#     }
+#   },
+#   "authentication": <class __main__.SimpleNoteAuthentication>,
+#   "endpoint": {
+#     "note": {
+#       "authentication": <class __main__.SimpleNoteAuthentication>,
+#       "model": <class __main__.Note>
+#     },
+#     "notebook": {
+#       "authentication": <class __main__.SimpleNoteAuthentication>,
+#       "model": <class __main__.Notebook>
+#     }
+#   },
+#   "single_request": {"/api/status": {"class": <class __main__.SimpleNoteAuthentication>,
+#                                      "authentication": Fale }
+# }
 
 log = logging.getLogger('ray')
 __formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 __console_handler = logging.StreamHandler(sys.stdout)
 __console_handler.setFormatter(__formatter)
 log.addHandler(__console_handler)
+
+
+def has_single_url(fullpath):
+    for url, clazz in _ray_conf['single_request'].items():
+        if url == fullpath:
+            return True
+
+    return False
+
+
+def add_single_url(url, clazz, authentication):
+    _ray_conf['single_request'][url] = {'class': clazz, 'authentication': authentication}
+
+
+def get_single_url(url):
+    return _ray_conf['single_request'].get(url)
 
 
 def add_endpoint(url, modelclass, authentication):

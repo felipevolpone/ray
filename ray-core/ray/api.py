@@ -5,6 +5,8 @@ from .endpoint import EndpointHandler
 from .login import LoginHandler, LogoutHandler, increase_cookie_timestamp
 from .actions import Action
 from . import exceptions, http
+from . import application as app_control
+from .single_request import SingleRequestHandler
 from functools import wraps
 
 
@@ -35,7 +37,7 @@ def dispatch(url):
     """
 
     url = bottle_req.path
-    log.debug('request: %s', bottle_req.url)
+    log.info('request: %s', bottle_req.url)
 
     if url[-1] == '/':
         url = url[:-1]
@@ -64,6 +66,8 @@ def dispatch(url):
 
 
 def process(fullpath, request, response):
+    #FIXME
+
     if __is_login(fullpath):
         return LoginHandler.process(request, response)
 
@@ -73,14 +77,16 @@ def process(fullpath, request, response):
     elif __is_logout(fullpath):
         return LogoutHandler.logout(response)
 
+    elif _is_single_url(fullpath):
+        return SingleRequestHandler.process(fullpath, bottle_req.method.lower(), bottle_req, bottle_resp)
+
     elif _is_endpoint(fullpath):
         return EndpointHandler(request, fullpath).process()
 
     elif _is_action(fullpath):
         return __handle_action(fullpath), 200
 
-    else:
-        raise exceptions.BadRequest()
+    raise exceptions.BadRequest()
 
 
 def _handle_ping_status():
@@ -96,6 +102,10 @@ def __handle_action(url):
         arg = http.param_at(url, -2)
 
     return Action(url, arg, bottle_req).process_action()
+
+
+def _is_single_url(fullpath):
+    return app_control.has_single_url(fullpath)
 
 
 def __is_ping_status(fullpath):
