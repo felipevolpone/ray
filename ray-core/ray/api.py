@@ -32,8 +32,8 @@ def server_static(filepath):
 @application.route('/api/<url:re:.+>', method=['GET', 'POST', 'PUT', 'DELETE'], apply=to_json)
 def dispatch(url):
     """
-        This class is the beginning of all entrypoint in the Ray API. Here, each url
-        will be redirect to the right handler: ActionHandler, LoginHandler or EndpointHandler.
+        This class is the beginning of all entrypoints in the Ray API. Here, each url
+        will be redirect to the right handler
     """
 
     url = bottle_req.path

@@ -52,3 +52,7 @@ class ActionUnderAuthenticationProtection(RayException):
 
 class MethodUnderShieldProtection(RayException):
     http_code = 404
+
+
+class SingleRequestUnderAuthentication(RayException):
+    http_code = 403
