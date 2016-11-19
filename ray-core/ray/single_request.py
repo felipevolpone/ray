@@ -40,14 +40,8 @@ class SingleRequestHandler(object):
         clazz, has_auth = single_request['class'], single_request['authentication']
         instance = clazz()
 
-        print('fullpath', fullpath)
-        print('has_auth', has_auth)
-
         if has_auth:
             authentication_class = application.get_authentication()
-
-            print('authentication_class', authentication_class)
-            print('user', authentication_class.get_logged_user())
 
             if authentication_class and authentication_class.get_logged_user():
                 return getattr(instance, http_method)(request, response)
@@ -55,5 +49,3 @@ class SingleRequestHandler(object):
             raise SingleRequestUnderAuthentication()
 
         return getattr(instance, http_method)(request, response)
-
-
