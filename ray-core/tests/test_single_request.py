@@ -29,20 +29,6 @@ class PingRequest(Request):
         return {'status': True}
 
 
-@register
-class DumbAuthentication(Authentication):
-
-    expiration_time = 5
-
-    @classmethod
-    def salt_key(cls):
-        return 'ray_salt_key'
-
-    @classmethod
-    def authenticate(cls, login_data):
-        return {'username': 'ray'}
-
-
 class TestSingleRequests(Test):
 
     def test_methods(self):
@@ -51,6 +37,20 @@ class TestSingleRequests(Test):
         self.assertTrue(it_has)
 
     def test_api(self):
+
+        @register
+        class DumbAuthentication(Authentication):
+
+            expiration_time = 5
+
+            @classmethod
+            def salt_key(cls):
+                return 'ray_salt_key'
+
+            @classmethod
+            def authenticate(cls, login_data):
+                return {'username': 'ray'}
+
         response = self.app.get('/api/status')
         self.assertEquals(200, response.status_int)
         self.assertEquals({'result': {'type': 'get'}}, response.json)
