@@ -66,7 +66,6 @@ def dispatch(url):
 
 
 def process(fullpath, request, response):
-    #FIXME
 
     if __is_login(fullpath):
         return LoginHandler.process(request, response)

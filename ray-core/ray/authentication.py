@@ -64,7 +64,6 @@ class Authentication(object):
 
         return True
 
-
     @classmethod
     def get_logged_user(cls):
         user_data = login._get_logged_user()
