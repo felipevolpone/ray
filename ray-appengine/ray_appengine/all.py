@@ -138,6 +138,7 @@ class GAEModel(AppEngineModel, Model):
     def __from_type_to_raw_value(cls, field, value):
         types = {'StringProperty': cls.__decode_str,
                  'IntegerProperty': cls.__to_int,
+                 'FloatProperty': cls.__to_float,
                  'DateTimeProperty': cls._convert_date,
                  'BooleanProperty': bool,
                  'BlobKeyProperty': cls.__blob_to_url,
@@ -151,6 +152,7 @@ class GAEModel(AppEngineModel, Model):
     def __from_raw_to_type(cls, field, value):
         types = {'StringProperty': cls.__decode_str,
                  'IntegerProperty': cls.__to_int,
+                 'FloatProperty': cls.__to_float,
                  'DateTimeProperty': cls._str_to_date,
                  'BooleanProperty': bool,
                  'TextProperty': cls.__decode_str}
@@ -183,6 +185,14 @@ class GAEModel(AppEngineModel, Model):
         elif type(value) is list:
             return value
         return int(value)
+
+    @classmethod
+    def __to_float(cls, value):
+        if not value:
+            return 0.0
+        elif type(value) is list:
+            return value
+        return float(value)
 
     @classmethod
     def __blob_to_url(self, blob):
