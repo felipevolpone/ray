@@ -33,10 +33,27 @@ class Note(GAEModel):
         return (Notebook, 'notebook_id')
 
 
+@endpoint('/student')
+class Student(GAEModel):
+    name = ndb.StringProperty()
+
+
+@endpoint('/classroom')
+class Classroom(GAEModel):
+    name = ndb.StringProperty()
+    students = ndb.KeyProperty(kind=Student, repeated=True)
+
+
+@endpoint('/subject')
+class Subject(GAEModel):
+    name = ndb.StringProperty()
+    grades = ndb.FloatProperty(repeated=True)
+
+
 class TestInnerMethods(TestCreateEnviroment):
 
     def test_get_keys(self):
-        self.assertEqual(Post._get_keys_and_kinds(), {'owner': 'User'})
+        self.assertEqual(Post._get_keys_and_properties(), {'owner': ('User', False)})
 
 
 class TestIntegrated(TestCreateEnviroment):
@@ -154,3 +171,29 @@ class TestIntegrated(TestCreateEnviroment):
         result = Note.find(notebook_id=12123)
         self.assertEqual(0, len(result))
 
+    def test_save_repeated_property(self):
+        students = [Student(name='ray').put().key.id(),
+                    Student(name='charles').put().key.id()]
+
+        classroom = Classroom.to_instance({'name': '9B', 'students': students}).put()
+
+        self.assertEqual(2, len(classroom.students))
+
+    def test_key_with_repeated_property(self):
+        students_keys = [Student(name='ray').put().key.id(),
+                         Student(name='charles').put().key.id()]
+
+        classroom = Classroom.to_instance({'name': '9B', 'students': students_keys}).put()
+
+        result = Classroom.find(students=[ndb.Key(Student, students_keys[1])])
+        self.assertEqual(1, len(result))
+
+        result = classroom.find(students=[ndb.Key(Student, 1231212321L)])
+        self.assertEqual(0, len(result))
+
+    def test_query_repeated_property(self):
+        math = Subject.to_instance({'name': 'Math', 'grades': [4.5, 5.5, 5.0, 5.0]}).put()
+        chemistry = Subject.to_instance({'name': 'Chemistry', 'grades': [4.0, 6.0, 5.0, 5.0]}).put()
+
+        result = Subject.find(grades=[5.0])
+        self.assertEqual(2, len(result))

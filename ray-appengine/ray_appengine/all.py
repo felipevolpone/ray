@@ -13,7 +13,7 @@ class GAEModel(AppEngineModel, Model):
 
     @classmethod
     def to_instance(cls, json_attributes):
-        keys_and_kinds = cls._get_keys_and_kinds()
+        keys_and_properties = cls._get_keys_and_properties()
 
         ancestor_kind, ancestor_key = cls.ancestor()
         if not ancestor_kind:
@@ -27,9 +27,13 @@ class GAEModel(AppEngineModel, Model):
 
         for field_name in json_attributes.keys():
             value = json_attributes[field_name]
-            if field_name in keys_and_kinds:
+            if field_name in keys_and_properties:
                 json_value = json_attributes[field_name]
-                value = ndb.Key(keys_and_kinds[field_name], json_value)
+                kind, repeated = keys_and_properties[field_name]
+                if repeated:
+                    value = [ndb.Key(kind, val) for val in json_value]
+                else:
+                    value = ndb.Key(kind, json_value)
 
             setattr(instance, field_name, value)
         return instance
@@ -76,18 +80,27 @@ class GAEModel(AppEngineModel, Model):
             query = cls.query(ancestor=ndb.Key(ancestor_kind, kwargs[ancestor_key]))
             del kwargs[ancestor_key]
 
+        keys_and_properties = cls._get_keys_and_properties()
         fields_to_filter = set(kwargs.keys())
-        keys = set(cls._get_keys_and_kinds().keys())
+        keys = set(keys_and_properties.keys())
         fields_arent_keys = fields_to_filter - keys
 
         for field in fields_arent_keys:
-            query = query.filter(getattr(cls, field) == kwargs[field])
+            prop = getattr(cls, field)
+            value = kwargs[field]
+            if type(value) is list and prop._repeated:
+                query = query.filter(prop.IN(value))
+            else:
+                query = query.filter(prop == value)
 
         if bool(fields_to_filter & keys):  # check if there are keys in the fields to filter
-            keys_and_kinds = cls._get_keys_and_kinds()
-            for key, kind in keys_and_kinds.items():
+            for key, prop in keys_and_properties.items():
                 key_id = kwargs[key]
-                query = query.filter(getattr(cls, key) == ndb.Key(kind, key_id))
+                kind, repeated = prop
+                if type(key_id) is list and repeated:
+                    query = query.filter(getattr(cls, key).IN(key_id))
+                else:
+                    query = query.filter(getattr(cls, key) == ndb.Key(kind, key_id))
 
         return query.fetch()
 
@@ -111,11 +124,11 @@ class GAEModel(AppEngineModel, Model):
         return entity
 
     @classmethod
-    def _get_keys_and_kinds(cls):
+    def _get_keys_and_properties(cls):
         keys = {}
         for name, property_type in cls._properties.items():
             if isinstance(property_type, ndb.KeyProperty):
-                keys[name] = property_type._kind
+                keys[name] = property_type._kind, property_type._repeated
 
         return keys
 
@@ -138,6 +151,7 @@ class GAEModel(AppEngineModel, Model):
     def __from_type_to_raw_value(cls, field, value):
         types = {'StringProperty': cls.__decode_str,
                  'IntegerProperty': cls.__to_int,
+                 'FloatProperty': cls.__to_float,
                  'DateTimeProperty': cls._convert_date,
                  'BooleanProperty': bool,
                  'BlobKeyProperty': cls.__blob_to_url,
@@ -151,6 +165,7 @@ class GAEModel(AppEngineModel, Model):
     def __from_raw_to_type(cls, field, value):
         types = {'StringProperty': cls.__decode_str,
                  'IntegerProperty': cls.__to_int,
+                 'FloatProperty': cls.__to_float,
                  'DateTimeProperty': cls._str_to_date,
                  'BooleanProperty': bool,
                  'TextProperty': cls.__decode_str}
@@ -183,6 +198,14 @@ class GAEModel(AppEngineModel, Model):
         elif type(value) is list:
             return value
         return int(value)
+
+    @classmethod
+    def __to_float(cls, value):
+        if not value:
+            return 0.0
+        elif type(value) is list:
+            return value
+        return float(value)
 
     @classmethod
     def __blob_to_url(self, blob):
