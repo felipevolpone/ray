@@ -44,6 +44,12 @@ class Classroom(GAEModel):
     students = ndb.KeyProperty(kind=Student, repeated=True)
 
 
+@endpoint('/subject')
+class Subject(GAEModel):
+    name = ndb.StringProperty()
+    grades = ndb.FloatProperty(repeated=True)
+
+
 class TestInnerMethods(TestCreateEnviroment):
 
     def test_get_keys(self):
@@ -173,14 +179,21 @@ class TestIntegrated(TestCreateEnviroment):
 
         self.assertEqual(2, len(classroom.students))
 
-    def test_find_in_repeated_property(self):
+    def test_key_with_repeated_property(self):
         students_keys = [Student(name='ray').put().key.id(),
                          Student(name='charles').put().key.id()]
 
         classroom = Classroom.to_instance({'name': '9B', 'students': students_keys}).put()
 
-        result = classroom.find(students=[ndb.Key(Student, students_keys[1])])
+        result = Classroom.find(students=[ndb.Key(Student, students_keys[1])])
         self.assertEqual(1, len(result))
 
         result = classroom.find(students=[ndb.Key(Student, 1231212321L)])
         self.assertEqual(0, len(result))
+
+    def test_query_repeated_property(self):
+        math = Subject.to_instance({'name': 'Math', 'grades': [4.5, 5.5, 5.0, 5.0]}).put()
+        chemistry = Subject.to_instance({'name': 'Chemistry', 'grades': [4.0, 6.0, 5.0, 5.0]}).put()
+
+        result = Subject.find(grades=[5.0])
+        self.assertEqual(2, len(result))

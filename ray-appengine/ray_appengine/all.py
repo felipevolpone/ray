@@ -86,7 +86,12 @@ class GAEModel(AppEngineModel, Model):
         fields_arent_keys = fields_to_filter - keys
 
         for field in fields_arent_keys:
-            query = query.filter(getattr(cls, field) == kwargs[field])
+            prop = getattr(cls, field)
+            value = kwargs[field]
+            if type(value) is list and prop._repeated:
+                query = query.filter(prop.IN(value))
+            else:
+                query = query.filter(prop == value)
 
         if bool(fields_to_filter & keys):  # check if there are keys in the fields to filter
             for key, prop in keys_and_properties.items():
