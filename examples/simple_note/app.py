@@ -2,6 +2,8 @@
 from playhouse.shortcuts import dict_to_model, model_to_dict  # peewee
 import peewee
 
+from bottle import static_file
+
 from datetime import datetime
 
 from ray.authentication import Authentication, register
@@ -153,6 +155,11 @@ class NotebookActions(Action):
 class Profile(object):
     ADMIN = 'admin'
     DEFAULT = 'default'
+
+
+@application.route('/static/<filepath:path>')
+def server_static(filepath):
+    return static_file(filepath, root='static')
 
 
 if __name__ == '__main__':
