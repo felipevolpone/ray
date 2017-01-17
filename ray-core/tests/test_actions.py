@@ -60,6 +60,16 @@ class ActionUser(Action):
         global any_data
         any_data = parameters
 
+    @action('/test_method', method='POST')
+    def test_action_method(self, model_id, parameters):
+        global any_data
+        any_data = 'received_post'
+
+    @action('/test_method_lower', method='post')
+    def test_action_method_lower(self, model_id, parameters):
+        global any_data
+        any_data = 'received_post_lower'
+
 
 class TestAction(Test):
 
@@ -102,6 +112,20 @@ class TestAction(Test):
         self.assertEqual(200, response.status_int)
         global any_data
         self.assertEqual({'user_id': '10', 'age': '3', 'name': 'felipe'}, any_data)
+
+    def test_action_with_method_parameter(self):
+        response = self.app.post('/api/user/test_method')
+        self.assertEqual(200, response.status_int)
+        global any_data
+        self.assertEqual('received_post', any_data)
+
+        response = self.app.get('/api/user/test_method', expect_errors=True)
+        self.assertEqual(502, response.status_int)
+
+        response = self.app.post('/api/user/test_method_lower')
+        self.assertEqual(200, response.status_int)
+        global any_data
+        self.assertEqual('received_post_lower', any_data)
 
 
 @endpoint('/any')

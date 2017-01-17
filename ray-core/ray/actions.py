@@ -4,7 +4,7 @@ from future.utils import with_metaclass
 import re
 
 
-def action(url, protection=None, authentication=False):
+def action(url, protection=None, authentication=False, method=None):
     # url e.g: /<id>/action_name
 
     def dec(func):
@@ -13,6 +13,9 @@ def action(url, protection=None, authentication=False):
 
         if authentication:
             func._action_under_authentication = True
+
+        if method:
+            func._method_http = method.lower()
 
         edit_url = url
         if edit_url.startswith('/'):  # remove the first /
@@ -63,6 +66,7 @@ class Action(with_metaclass(RegisterActions)):
 
         self.__model_arg = model_arg
         self.__entire_url = url
+        self.__http_method = request.method.lower()
 
     def process_action(self):
         action_class = None
@@ -88,10 +92,15 @@ class Action(with_metaclass(RegisterActions)):
         if authentication_class:
             user_data = authentication_class.get_logged_user()
 
+        if hasattr(method, '_method_http'):
+            if method._method_http != self.__http_method:
+                raise exceptions.BadRequest()
+
         if hasattr(method, '_protection_shield_method'):
             shield_method = method._protection_shield_method
 
-            if not shield_method(user_data, self.__model_arg, request_parameters):  # shield returned False FIXME(improve tests)
+            # shield returned False FIXME(improve tests)
+            if not shield_method(user_data, self.__model_arg, request_parameters):
                 raise exceptions.NotAuthorized()
 
         if hasattr(method, '_action_under_authentication'):

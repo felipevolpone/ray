@@ -3,5 +3,5 @@
 *.sublime-*
 *.todo
 .ropeproject
-venv/env*
+*env_*
 .DS_Store
